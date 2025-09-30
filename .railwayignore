@@ -1,0 +1,72 @@
+# Files to ignore during Railway deployment
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Local environment files
+.env.local
+.env.development.local
+.env.test.local
+
+# Test files
+tests/
+*.test.js
+*.spec.js
+
+# Documentation
+*.md
+!README.md
+
+# Development scripts
+check_*.js
+test_*.js
+debug_*.js
+demonstrate_*.js
+validate_*.js
+verify_*.js
+investigate_*.js
+fix_*.js
+simple_*.js
+comprehensive_*.js
+final_*.js
+quick_*.js
+fetch_*.js
+sync_*.js
+update_*.js
+add_*.js
+remove_*.js
+integrate_*.js
+enable_*.js
+setup_paymongo_webhook*.js
+paymongo_webhook_manager.js
+
+# Backup files
+backups/
+
+# Trash files
+trash_files/
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Uploaded files (will be regenerated)
+uploads/documents/*
+uploads/residency/*
+uploads/verification/*
+uploads/temp/*
+!uploads/**/.gitkeep
+

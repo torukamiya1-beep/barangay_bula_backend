@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Complete Ngrok Setup Guide for PayMongo Webhooks</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            color: #333;
+        }
+        h1 {
+            color: #2c3e50;
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 10px;
+        }
+        h2 {
+            color: #34495e;
+            margin-top: 30px;
+            border-left: 4px solid #3498db;
+            padding-left: 15px;
+        }
+        h3 {
+            color: #2980b9;
+        }
+        .emoji {
+            font-size: 1.2em;
+        }
+        code {
+            background-color: #f8f9fa;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            border: 1px solid #e9ecef;
+        }
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            border: 1px solid #e9ecef;
+            overflow-x: auto;
+        }
+        .warning {
+            background-color: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 5px;
+            padding: 10px;
+            margin: 10px 0;
+        }
+        .success {
+            background-color: #d4edda;
+            border: 1px solid #c3e6cb;
+            border-radius: 5px;
+            padding: 10px;
+            margin: 10px 0;
+        }
+        .info {
+            background-color: #d1ecf1;
+            border: 1px solid #bee5eb;
+            border-radius: 5px;
+            padding: 10px;
+            margin: 10px 0;
+        }
+        .checklist {
+            background-color: #f8f9fa;
+            border-left: 4px solid #28a745;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        ul {
+            padding-left: 20px;
+        }
+        li {
+            margin-bottom: 5px;
+        }
+        .step-number {
+            background-color: #3498db;
+            color: white;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 10px;
+            font-weight: bold;
+        }
+        .terminal {
+            background-color: #2c3e50;
+            color: #ecf0f1;
+            padding: 15px;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            margin: 10px 0;
+        }
+        .highlight {
+            background-color: #fff3cd;
+            padding: 2px 4px;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body>
+    <h1><span class="emoji">🚀</span> Complete Ngrok Setup Guide for PayMongo Webhooks</h1>
+    
+    <div class="info">
+        <strong>Purpose:</strong> This guide will help you set up ngrok to receive PayMongo webhooks in your local development environment.
+    </div>
+
+    <h2>Table of Contents</h2>
+    <ol>
+        <li><a href="#step1">Download & Install Ngrok</a></li>
+        <li><a href="#step2">Create Account & Get Token</a></li>
+        <li><a href="#step3">Configure Ngrok</a></li>
+        <li><a href="#step4">Start Backend Server</a></li>
+        <li><a href="#step5">Start Ngrok Tunnel</a></li>
+        <li><a href="#step6">Update Configuration Files</a></li>
+        <li><a href="#step7">Create PayMongo Webhook</a></li>
+        <li><a href="#step8">Update Webhook Secret</a></li>
+        <li><a href="#step9">Restart Backend</a></li>
+        <li><a href="#step10">Test Setup</a></li>
+        <li><a href="#restart">Restart Procedure</a></li>
+        <li><a href="#troubleshooting">Troubleshooting</a></li>
+    </ol>
+
+    <h2 id="step1"><span class="step-number">1</span> Download & Install Ngrok</h2>
+    
+    <h3>Option A: Download from Website</h3>
+    <ol>
+        <li>Go to <strong>https://ngrok.com/download</strong></li>
+        <li>Click <strong>"Download for Windows"</strong></li>
+        <li>Extract the <code>ngrok.exe</code> file to a folder</li>
+        <li>Recommended location: <code>C:\ngrok\</code> or keep in <code>Downloads</code></li>
+    </ol>
+
+    <div class="info">
+        <strong>Example path:</strong> <code>C:\Users\collegeblk23\Downloads\ngrok-v3-stable-windows-amd64</code>
+    </div>
+
+    <h3>Option B: Using Package Managers</h3>
+    <div class="terminal">
+# Using Chocolatey<br>
+choco install ngrok<br><br>
+# Using Scoop<br>
+scoop install ngrok
+    </div>
+
+    <h2 id="step2"><span class="step-number">2</span> Create Ngrok Account & Get Token</h2>
+    
+    <ol>
+        <li><strong>Sign up:</strong> Go to <strong>https://dashboard.ngrok.com/signup</strong></li>
+        <li><strong>Create account</strong> with email/password or use Google/GitHub</li>
+        <li><strong>Get your token:</strong> After signup, go to <strong>https://dashboard.ngrok.com/get-started/your-authtoken</strong></li>
+        <li><strong>Copy the token</strong> (looks like: <code>2abc123def456ghi789jkl_1MnOpQrStUvWxYz</code>)</li>
+    </ol>
+
+    <div class="warning">
+        <strong>⚠️ Important:</strong> Keep this token safe - you'll need it for configuration!
+    </div>
+
+    <h2 id="step3"><span class="step-number">3</span> Configure Ngrok with Your Token</h2>
+    
+    <p>Open <strong>PowerShell</strong> or <strong>Command Prompt</strong> and navigate to where you extracted ngrok:</p>
+
+    <div class="terminal">
+# Navigate to ngrok folder<br>
+cd C:\Users\collegeblk23\Downloads\ngrok-v3-stable-windows-amd64<br><br>
+# Configure with your token (replace with your actual token)<br>
+.\ngrok.exe config add-authtoken YOUR_TOKEN_HERE
+    </div>
+
+    <p><strong>Example:</strong></p>
+    <div class="terminal">
+.\ngrok.exe config add-authtoken 2abc123def456ghi789jkl_1MnOpQrStUvWxYz
+    </div>
+
+    <div class="success">
+        <strong>Success message:</strong> You should see a confirmation that the authtoken was added.
+    </div>
+
+    <h2 id="step4"><span class="step-number">4</span> Start Your Backend Server</h2>
+    
+    <p><strong>Before starting ngrok</strong>, make sure your backend is running:</p>
+
+    <div class="terminal">
+# Navigate to your backend folder<br>
+cd D:\cap2_rhai_front_and_back\rhai_backend<br><br>
+# Start the server<br>
+npm run dev
+    </div>
+
+    <div class="success">
+        <strong>Wait until you see:</strong> <code>🚀 Server is running on port 7000</code>
+    </div>
+
+    <div class="warning">
+        <strong>⚠️ Keep this terminal open</strong> - your server must stay running!
+    </div>
+
+    <h2 id="step5"><span class="step-number">5</span> Start Ngrok Tunnel</h2>
+    
+    <p>Open a <strong>NEW</strong> PowerShell window (don't close the backend server):</p>
+
+    <div class="terminal">
+# Navigate to ngrok folder<br>
+cd C:\Users\collegeblk23\Downloads\ngrok-v3-stable-windows-amd64<br><br>
+# Start tunnel for port 7000<br>
+.\ngrok.exe http 7000
+    </div>
+
+    <p><strong>You'll see output like:</strong></p>
+    <div class="terminal">
+Session Status                online<br>
+Account                       your-email@gmail.com (Plan: Free)<br>
+Forwarding                    https://abc123def456.ngrok-free.app -> http://localhost:7000
+    </div>
+
+    <div class="highlight">
+        <strong>📝 COPY THE HTTPS URL</strong> (e.g., <code>https://abc123def456.ngrok-free.app</code>)
+    </div>
+
+    <div class="warning">
+        <strong>⚠️ Keep this terminal open</strong> - ngrok must stay running!
+    </div>
+
+    <h2 id="step6"><span class="step-number">6</span> Update Your Configuration Files</h2>
+    
+    <h3>A. Update .env file:</h3>
+    <ol>
+        <li>Navigate to your backend folder: <code>D:\cap2_rhai_front_and_back\rhai_backend</code></li>
+        <li>Open <code>rhai_backend\.env</code> file</li>
+        <li>Find the line: <code>WEBHOOK_URL=...</code></li>
+        <li>Update it with your new ngrok URL:</li>
+    </ol>
+
+    <div class="terminal">
+WEBHOOK_URL=https://YOUR_NEW_NGROK_URL.ngrok-free.app/api/webhooks/paymongo
+    </div>
+
+    <p><strong>Example:</strong></p>
+    <div class="terminal">
+WEBHOOK_URL=https://abc123def456.ngrok-free.app/api/webhooks/paymongo
+    </div>
+
+    <h3>B. Update paymongo_webhook_manager.js:</h3>
+    <ol>
+        <li>Open <code>rhai_backend\paymongo_webhook_manager.js</code></li>
+        <li>Find line 6: <code>const WEBHOOK_URL = '...'</code></li>
+        <li>Update it with your new ngrok URL:</li>
+    </ol>
+
+    <div class="terminal">
+const WEBHOOK_URL = 'https://YOUR_NEW_NGROK_URL.ngrok-free.app/api/webhooks/paymongo';
+    </div>
+
+    <h2 id="step7"><span class="step-number">7</span> Create PayMongo Webhook</h2>
+    
+    <p>Open a <strong>third</strong> PowerShell window:</p>
+
+    <div class="terminal">
+# Navigate to backend folder<br>
+cd D:\cap2_rhai_front_and_back\rhai_backend<br><br>
+# List existing webhooks (to see what's there)<br>
+node paymongo_webhook_manager.js list<br><br>
+# Delete old webhooks if any (replace with actual webhook ID)<br>
+node paymongo_webhook_manager.js delete hook_OLD_WEBHOOK_ID<br><br>
+# Create new webhook<br>
+node paymongo_webhook_manager.js create
+    </div>
+
+    <p><strong>After creating</strong>, you'll get output like:</p>
+    <div class="terminal">
+✅ Webhook created successfully!<br>
+📋 Webhook Details:<br>
+   ID: hook_NzWTGvTKcEkuMmEW29qP85Zb<br>
+   Secret: whsk_pLUE6a2nzFbVSRUbjhEdYEq7
+    </div>
+
+    <div class="highlight">
+        <strong>📝 COPY THE SECRET</strong> (the <code>whsk_...</code> part)
+    </div>
+
+    <h2 id="step8"><span class="step-number">8</span> Update Webhook Secret</h2>
+    
+    <p>Update your <code>.env</code> file with the new webhook secret:</p>
+
+    <ol>
+        <li>Open <code>rhai_backend\.env</code></li>
+        <li>Find: <code>PAYMONGO_WEBHOOK_SECRET=...</code></li>
+        <li>Replace with your new secret:</li>
+    </ol>
+
+    <div class="terminal">
+PAYMONGO_WEBHOOK_SECRET=whsk_pLUE6a2nzFbVSRUbjhEdYEq7
+    </div>
+
+    <h2 id="step9"><span class="step-number">9</span> Restart Backend Server</h2>
+    
+    <ol>
+        <li>Go back to your <strong>backend server terminal</strong></li>
+        <li><strong>Stop the server:</strong> Press <code>Ctrl+C</code></li>
+        <li><strong>Restart it:</strong></li>
+    </ol>
+
+    <div class="terminal">
+npm run dev
+    </div>
+
+    <div class="success">
+        Wait for: <code>🚀 Server is running on port 7000</code>
+    </div>
+
+    <h2 id="step10"><span class="step-number">10</span> Test the Setup</h2>
+    
+    <h3>Test 1: Check if ngrok tunnel works</h3>
+    <ol>
+        <li>Open your web browser</li>
+        <li>Go to: <code>https://YOUR_NGROK_URL.ngrok-free.app/api/webhooks/paymongo/test</code></li>
+        <li>You should see:</li>
+    </ol>
+
+    <div class="terminal">
+{"message":"PayMongo webhook endpoint is active","timestamp":"..."}
+    </div>
+
+    <h3>Test 2: Monitor webhook traffic</h3>
+    <ol>
+        <li>Open: <strong>http://127.0.0.1:4040</strong> (Ngrok web interface)</li>
+        <li>This shows all incoming requests to your tunnel</li>
+    </ol>
+
+    <h2 id="restart"><span class="emoji">🔄</span> When You Restart (IMPORTANT!)</h2>
+    
+    <p>Every time you restart ngrok, you get a <strong>NEW URL</strong>. You must:</p>
+
+    <div class="checklist">
+        <h3>✅ Checklist:</h3>
+        <ol>
+            <li><strong>Copy the new ngrok URL</strong> from the terminal</li>
+            <li><strong>Update .env file</strong> → <code>WEBHOOK_URL=...</code></li>
+            <li><strong>Update paymongo_webhook_manager.js</strong> → <code>const WEBHOOK_URL = '...'</code></li>
+            <li><strong>Delete old webhook:</strong> <code>node paymongo_webhook_manager.js delete OLD_ID</code></li>
+            <li><strong>Create new webhook:</strong> <code>node paymongo_webhook_manager.js create</code></li>
+            <li><strong>Update webhook secret in .env</strong> → <code>PAYMONGO_WEBHOOK_SECRET=...</code></li>
+            <li><strong>Restart backend server:</strong> <code>Ctrl+C</code> then <code>npm run dev</code></li>
+        </ol>
+    </div>
+
+    <h2 id="troubleshooting"><span class="emoji">🚨</span> Troubleshooting</h2>
+    
+    <h3>❌ "Authentication failed" error</h3>
+    <p><strong>Problem:</strong> Ngrok can't authenticate</p>
+    <p><strong>Solution:</strong></p>
+    <div class="terminal">
+.\ngrok.exe config add-authtoken YOUR_TOKEN
+    </div>
+    <p>Make sure you copied the token correctly from the dashboard.</p>
+
+    <h3>❌ "Address already in use" error</h3>
+    <p><strong>Problem:</strong> Another process is using port 7000</p>
+    <p><strong>Solutions:</strong></p>
+    <ol>
+        <li>Find the process: <code>netstat -ano | findstr :7000</code></li>
+        <li>Kill it: <code>taskkill /F /PID PROCESS_ID</code></li>
+        <li>Or use a different port: <code>.\ngrok.exe http 8000</code></li>
+    </ol>
+
+    <h3>❌ Webhook not receiving data</h3>
+    <p><strong>Check these:</strong></p>
+    <ul>
+        <li>✅ Ngrok is running and shows "online"</li>
+        <li>✅ Backend server is running on port 7000</li>
+        <li>✅ Webhook URL is correct in PayMongo</li>
+        <li>✅ Check ngrok web interface (http://127.0.0.1:4040) for incoming requests</li>
+    </ul>
+
+    <h2><span class="emoji">📱</span> Final Test Procedure</h2>
+    
+    <h3>1. Verify Everything is Running</h3>
+    <ul>
+        <li>✅ Backend server: <code>🚀 Server is running on port 7000</code></li>
+        <li>✅ Ngrok: <code>Session Status: online</code></li>
+        <li>✅ Webhook created: Check with <code>node paymongo_webhook_manager.js list</code></li>
+    </ul>
+
+    <h3>2. Test the Connection</h3>
+    <ol>
+        <li><strong>Browser test:</strong> Go to <code>https://YOUR_NGROK_URL.ngrok-free.app/api/webhooks/paymongo/test</code></li>
+        <li><strong>Should see:</strong> <code>{"message":"PayMongo webhook endpoint is active"}</code></li>
+    </ol>
+
+    <h3>3. Test with Real Payment</h3>
+    <ol>
+        <li><strong>Make a test payment</strong> in your app</li>
+        <li><strong>Check ngrok web interface</strong> (http://127.0.0.1:4040) - you should see the webhook request</li>
+        <li><strong>Check backend logs</strong> - should show webhook processing messages</li>
+        <li><strong>Check AdminRequests.vue</strong> - should receive payment confirmation notification</li>
+    </ol>
+
+    <div class="success">
+        <h3>🎉 Success Indicators</h3>
+        <ul>
+            <li>✅ Payment status changes to "Payment Confirmed"</li>
+            <li>✅ Admin receives notification</li>
+            <li>✅ Webhook appears in ngrok web interface</li>
+            <li>✅ Backend logs show successful webhook processing</li>
+        </ul>
+    </div>
+
+    <div class="info">
+        <h3>📞 Need Help?</h3>
+        <ul>
+            <li>Ngrok Documentation: https://ngrok.com/docs</li>
+            <li>PayMongo Documentation: https://developers.paymongo.com/docs</li>
+            <li>Check the ngrok web interface: http://127.0.0.1:4040</li>
+        </ul>
+    </div>
+
+    <hr>
+    <p><strong>Last Updated:</strong> July 27, 2025</p>
+    <p><strong>Remember:</strong> Keep both ngrok and your backend server running while testing payments!</p>
+</body>
+</html>

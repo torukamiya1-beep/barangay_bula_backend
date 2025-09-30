@@ -1,0 +1,910 @@
+  id: 49,
+  username: 'floy1414',
+  type: 'client',
+  iat: 1757998243,
+  exp: 1760590243
+}
+Token decoded successfully: {
+  id: 49,
+  username: 'floy1414',
+  type: 'client',
+  iat: 1757998243,
+  exp: 1760590243
+}
+Client query result: [
+  {
+    id: 49,
+    username: 'floy1414',
+    status: 'active',
+    created_at: 2025-09-16T04:48:41.000Z,
+    email: 'floyfloyy21@gmail.com',
+    first_name: 'Floy',
+    last_name: 'Areliano',
+    phone_number: '09955921218'
+  }
+]
+Client query result: [
+  {
+    id: 49,
+    username: 'floy1414',
+    status: 'active',
+    created_at: 2025-09-16T04:48:41.000Z,
+    email: 'floyfloyy21@gmail.com',
+    first_name: 'Floy',
+    last_name: 'Areliano',
+    phone_number: '09955921218'
+  }
+]
+ℹ️  Purpose categories retrieved successfully
+ℹ️  Payment methods retrieved successfully
+::1 - - [16/Sep/2025:10:44:43 +0000] "GET /api/client/document-requests/payment-methods HTTP/1.1" 200 - "http://localhost:8081/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0"
+::1 - - [16/Sep/2025:10:44:43 +0000] "GET /api/client/document-requests/purpose-categories HTTP/1.1" 200 - "http://localhost:8081/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0"
+GET /api/admin/documents/requests - Origin: http://localhost:8081
+::1 - - [16/Sep/2025:10:45:10 +0000] "GET /api/admin/documents/requests?page=1&limit=10&status=&document_type=&priority=&search=&date_from=&date_to= HTTP/1.1" 200 245 "http://localhost:8081/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0"
+GET /api/admin/documents/dashboard/stats - Origin: http://localhost:8081
+::1 - - [16/Sep/2025:10:45:10 +0000] "GET /api/admin/documents/dashboard/stats HTTP/1.1" 200 - "http://localhost:8081/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0"
+GET /api/admin/documents/requests - Origin: http://localhost:8081
+::1 - - [16/Sep/2025:10:45:40 +0000] "GET /api/admin/documents/requests?page=1&limit=10&status=&document_type=&priority=&search=&date_from=&date_to= HTTP/1.1" 200 245 "http://localhost:8081/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0"
+GET /api/admin/documents/dashboard/stats - Origin: http://localhost:8081
+::1 - - [16/Sep/2025:10:45:40 +0000] "GET /api/admin/documents/dashboard/stats HTTP/1.1" 200 - "http://localhost:8081/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0"
+GET /api/admin/documents/requests - Origin: http://localhost:8081
+::1 - - [16/Sep/2025:10:46:10 +0000] "GET /api/admin/documents/requests?page=1&limit=10&status=&document_type=&priority=&search=&date_from=&date_to= HTTP/1.1" 200 245 "http://localhost:8081/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0"
+GET /api/admin/documents/dashboard/stats - Origin: http://localhost:8081
+::1 - - [16/Sep/2025:10:46:10 +0000] "GET /api/admin/documents/dashboard/stats HTTP/1.1" 200 - "http://localhost:8081/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0"
+POST /api/client/document-requests - Origin: http://localhost:8081
+Token decoded successfully: {
+  id: 49,
+  username: 'floy1414',
+  type: 'client',
+  iat: 1757998243,
+  exp: 1760590243
+}
+Client query result: [
+  {
+    id: 49,
+    username: 'floy1414',
+    status: 'active',
+    created_at: 2025-09-16T04:48:41.000Z,
+    email: 'floyfloyy21@gmail.com',
+    first_name: 'Floy',
+    last_name: 'Areliano',
+    phone_number: '09955921218'
+  }
+]
+🎯 DocumentRequestController.submitRequest called
+👤 Client ID: 49
+📋 Request data: {
+  document_type_id: 2,
+  purpose_category_id: 1,
+  purpose_details: null,
+  payment_method_id: 1,
+  delivery_method: 'pickup',
+  priority: 'normal',
+  is_third_party_request: true,
+  requestor_notes: null,
+  beneficiary: {
+    first_name: 'floy1414',
+    middle_name: null,
+    last_name: 'Stone',
+    suffix: 'Jr',
+    birth_date: '2000-12-12',
+    gender: 'male',
+    civil_status_id: 1,
+    nationality: 'Filipino',
+    phone_number: '09022295558',
+    email: 'floyyyrec21@gmail.com',
+    house_number: '21',
+    street: 'Bayavas',
+    subdivision: null,
+    barangay: 'Bula',
+    city_municipality: 'General Santos City (Dadiangas)',
+    province: 'South Cotabato',
+    postal_code: null,
+    years_of_residency: null,
+    months_of_residency: null,
+    relationship_to_requestor: 'child',
+    region: 'Region XII (SOCCSKSARGEN)',
+    region_code: '12',
+    province_code: '1263',
+    city_code: '126303',
+    barangay_code: '126303005'
+  },
+  authorized_pickup: {
+    first_name: 'Ashley',
+    middle_name: null,
+    last_name: 'Stone',
+    suffix: null,
+    phone_number: '09068283334',
+    email: null,
+    relationship_to_beneficiary: 'friend'
+  },
+  has_pending_cases: true,
+  pending_cases_details: 'Test Pending case sept16 6:45',
+  voter_registration_status: true,
+  total_fee: 150,
+  total_document_fee: 150
+}
+🔄 Calling DocumentRequestService.submitRequest...
+Service: submitRequest called with: {
+  requestData: {
+    document_type_id: 2,
+    purpose_category_id: 1,
+    purpose_details: null,
+    payment_method_id: 1,
+    delivery_method: 'pickup',
+    priority: 'normal',
+    is_third_party_request: true,
+    requestor_notes: null,
+    beneficiary: {
+      first_name: 'floy1414',
+      middle_name: null,
+      last_name: 'Stone',
+      suffix: 'Jr',
+      birth_date: '2000-12-12',
+      gender: 'male',
+      civil_status_id: 1,
+      nationality: 'Filipino',
+      phone_number: '09022295558',
+      email: 'floyyyrec21@gmail.com',
+      house_number: '21',
+      street: 'Bayavas',
+      subdivision: null,
+      barangay: 'Bula',
+      city_municipality: 'General Santos City (Dadiangas)',
+      province: 'South Cotabato',
+      postal_code: null,
+      years_of_residency: null,
+      months_of_residency: null,
+      relationship_to_requestor: 'child',
+      region: 'Region XII (SOCCSKSARGEN)',
+      region_code: '12',
+      province_code: '1263',
+      city_code: '126303',
+      barangay_code: '126303005'
+    },
+    authorized_pickup: {
+      first_name: 'Ashley',
+      middle_name: null,
+      last_name: 'Stone',
+      suffix: null,
+      phone_number: '09068283334',
+      email: null,
+      relationship_to_beneficiary: 'friend'
+    },
+    has_pending_cases: true,
+    pending_cases_details: 'Test Pending case sept16 6:45',
+    voter_registration_status: true,
+    total_fee: 150,
+    total_document_fee: 150
+  },
+  clientId: 49
+}
+Service: Fixed undefined parameters issue
+Service: Sanitized request data: {
+  document_type_id: 2,
+  purpose_category_id: 1,
+  purpose_details: null,
+  payment_method_id: 1,
+  delivery_method: 'pickup',
+  priority: 'normal',
+  is_third_party_request: true,
+  requestor_notes: null,
+  beneficiary: {
+    first_name: 'floy1414',
+    middle_name: null,
+    last_name: 'Stone',
+    suffix: 'Jr',
+    birth_date: '2000-12-12',
+    gender: 'male',
+    civil_status_id: 1,
+    nationality: 'Filipino',
+    phone_number: '09022295558',
+    email: 'floyyyrec21@gmail.com',
+    house_number: '21',
+    street: 'Bayavas',
+    subdivision: null,
+    barangay: 'Bula',
+    city_municipality: 'General Santos City (Dadiangas)',
+    province: 'South Cotabato',
+    postal_code: null,
+    years_of_residency: null,
+    months_of_residency: null,
+    relationship_to_requestor: 'child',
+    region: 'Region XII (SOCCSKSARGEN)',
+    region_code: '12',
+    province_code: '1263',
+    city_code: '126303',
+    barangay_code: '126303005'
+  },
+  authorized_pickup: {
+    first_name: 'Ashley',
+    middle_name: null,
+    last_name: 'Stone',
+    suffix: null,
+    phone_number: '09068283334',
+    email: null,
+    relationship_to_beneficiary: 'friend'
+  },
+  has_pending_cases: true,
+  pending_cases_details: 'Test Pending case sept16 6:45',
+  voter_registration_status: true,
+  total_fee: 150,
+  total_document_fee: 150
+}
+Service: Getting document type for ID: 2
+Service: Document type query result: [ { type_name: 'Barangay Clearance' } ]
+Service: Document type found: { type_name: 'Barangay Clearance' }
+Service: Total document fee from frontend: 150
+Service: Creating document request with params: {
+  client_id: 49,
+  document_type_id: 2,
+  purpose_category_id: 1,
+  purpose_details: null,
+  is_third_party_request: true,
+  requestor_notes: null,
+  beneficiary: {
+    first_name: 'floy1414',
+    middle_name: null,
+    last_name: 'Stone',
+    suffix: 'Jr',
+    birth_date: '2000-12-12',
+    gender: 'male',
+    civil_status_id: 1,
+    nationality: 'Filipino',
+    phone_number: '09022295558',
+    email: 'floyyyrec21@gmail.com',
+    house_number: '21',
+    street: 'Bayavas',
+    subdivision: null,
+    barangay: 'Bula',
+    city_municipality: 'General Santos City (Dadiangas)',
+    province: 'South Cotabato',
+    postal_code: null,
+    years_of_residency: null,
+    months_of_residency: null,
+    relationship_to_requestor: 'child',
+    region: 'Region XII (SOCCSKSARGEN)',
+    region_code: '12',
+    province_code: '1263',
+    city_code: '126303',
+    barangay_code: '126303005'
+  },
+  authorized_pickup: {
+    first_name: 'Ashley',
+    middle_name: null,
+    last_name: 'Stone',
+    suffix: null,
+    phone_number: '09068283334',
+    email: null,
+    relationship_to_beneficiary: 'friend'
+  },
+  total_document_fee: 150,
+  payment_method_id: 1,
+  delivery_method: 'pickup',
+  delivery_address: null,
+  priority: 'normal'
+}
+🔍 DocumentRequest.findById query: 
+      SELECT dr.*, rs.status_name as status
+      FROM document_requests dr
+      JOIN request_status rs ON dr.status_id = rs.id
+      WHERE dr.id = ?
+     with ID: 182
+📋 DocumentRequest.findById results: [
+  {
+    id: 182,
+    request_number: 'BC-2025-000001',
+    client_id: 49,
+    is_third_party_request: 1,
+    document_type_id: 2,
+    purpose_category_id: 1,
+    purpose_details: null,
+    requestor_notes: null,
+    status_id: 1,
+    priority: 'normal',
+    processed_by: null,
+    approved_by: null,
+    processed_at: null,
+    approved_at: null,
+    payment_method_id: 1,
+    payment_status: 'pending',
+    payment_reference: null,
+    payment_provider_reference: null,
+    paid_at: null,
+    delivery_method: 'pickup',
+    delivery_address: null,
+    total_document_fee: '150.00',
+    requested_at: 2025-09-16T10:46:18.000Z,
+    target_completion_date: null,
+    completed_at: null,
+    created_at: 2025-09-16T10:46:18.000Z,
+    updated_at: 2025-09-16T10:46:18.000Z,
+    status: 'pending'
+  }
+]
+✅ DocumentRequest created: { id: 182, status_id: 1, status: 'pending', client_id: 49 }
+🔔 DocumentRequest model: Calling notifyNewRequest for request ID 182
+🔔 NotificationService.notifyNewRequest called with requestId: 182
+📋 Getting request details for ID: 182
+📋 Executing request query:
+        SELECT dr.*, c.first_name, c.last_name, dt.type_name
+        FROM document_requests dr
+        JOIN client_profiles c ON dr.client_id = c.account_id
+        JOIN document_types dt ON dr.document_type_id = dt.id
+        WHERE dr.id = ?
+
+📋 Request query result: [
+  {
+    id: 182,
+    request_number: 'BC-2025-000001',
+    client_id: 49,
+    is_third_party_request: 1,
+    document_type_id: 2,
+    purpose_category_id: 1,
+    purpose_details: null,
+    requestor_notes: null,
+    status_id: 1,
+    priority: 'normal',
+    processed_by: null,
+    approved_by: null,
+    processed_at: null,
+    approved_at: null,
+    payment_method_id: 1,
+    payment_status: 'pending',
+    payment_reference: null,
+    payment_provider_reference: null,
+    paid_at: null,
+    delivery_method: 'pickup',
+    delivery_address: null,
+    total_document_fee: '150.00',
+    requested_at: 2025-09-16T10:46:18.000Z,
+    target_completion_date: null,
+    completed_at: null,
+    created_at: 2025-09-16T10:46:18.000Z,
+    updated_at: 2025-09-16T10:46:18.000Z,
+    first_name: 'Floy',
+    last_name: 'Areliano',
+    type_name: 'Barangay Clearance'
+  }
+]
+ℹ️  Creating new request notifications for individual admins
+ℹ️  Creating notification for admin 32 (admin12345)
+ℹ️  Creating notification with data:
+ℹ️  Final notification parameters:
+ℹ️  Executing notification INSERT query with params:
+ℹ️  Notification INSERT result:
+ℹ️  Notification created successfully:
+ℹ️  Notification created successfully for admin 32:
+ℹ️  Creating notification for admin 34 (mark12345)
+ℹ️  Creating notification with data:
+ℹ️  Final notification parameters:
+ℹ️  Executing notification INSERT query with params:
+ℹ️  Notification INSERT result:
+ℹ️  Notification created successfully:
+ℹ️  Notification created successfully for admin 34:
+GET /api/admin/documents/requests - Origin: http://localhost:8081
+::1 - - [16/Sep/2025:10:46:18 +0000] "GET /api/admin/documents/requests?page=1&limit=10&status=&document_type=&priority=&search=&date_from=&date_to= HTTP/1.1" 200 - "http://localhost:8081/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0" 
+GET /api/admin/documents/requests - Origin: http://localhost:8081
+GET /api/admin/documents/dashboard/stats - Origin: http://localhost:8081
+::1 - - [16/Sep/2025:10:46:18 +0000] "GET /api/admin/documents/requests?page=1&limit=10&status=&document_type=&priority=&search=&date_from=&date_to= HTTP/1.1" 200 - "http://localhost:8081/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0" 
+GET /api/admin/documents/requests - Origin: http://localhost:8081
+::1 - - [16/Sep/2025:10:46:18 +0000] "GET /api/admin/documents/requests?page=1&limit=10&status=&document_type=&priority=&search=&date_from=&date_to= HTTP/1.1" 200 - "http://localhost:8081/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0" 
+GET /api/admin/documents/requests - Origin: http://localhost:8081
+::1 - - [16/Sep/2025:10:46:18 +0000] "GET /api/admin/documents/dashboard/stats HTTP/1.1" 200 - "http://localhost:8081/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0"
+GET /api/admin/documents/dashboard/stats - Origin: http://localhost:8081
+::1 - - [16/Sep/2025:10:46:18 +0000] "GET /api/admin/documents/dashboard/stats HTTP/1.1" 200 - "http://localhost:8081/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0"
+::1 - - [16/Sep/2025:10:46:18 +0000] "GET /api/admin/documents/requests?page=1&limit=10&status=&document_type=&priority=&search=&date_from=&date_to= HTTP/1.1" 200 - "http://localhost:8081/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0" 
+GET /api/admin/documents/dashboard/stats - Origin: http://localhost:8081
+::1 - - [16/Sep/2025:10:46:18 +0000] "GET /api/admin/documents/dashboard/stats HTTP/1.1" 200 - "http://localhost:8081/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0"
+GET /api/admin/documents/dashboard/stats - Origin: http://localhost:8081
+::1 - - [16/Sep/2025:10:46:18 +0000] "GET /api/admin/documents/dashboard/stats HTTP/1.1" 200 - "http://localhost:8081/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0"
+ℹ️  Email sent successfully
+ℹ️  Email sent successfully
+ℹ️  New request emails sent to admins
+ℹ️  New request email notifications sent to admins for request 182
+ℹ️  New request notification sent for request 182
+✅ DocumentRequest model: Notification sent successfully for request ID 182
+Service: Creating Barangay Clearance application (Legal Compliance)
+Service: createBarangayClearanceApplicationInTransaction called with: {
+  request_id: 182,
+  has_pending_cases: true,
+  pending_cases_details: 'Test Pending case sept16 6:45',
+  voter_registration_status: true
+}
+Service: Executing Barangay Clearance INSERT with params: [ 182, true, 'Test Pending case sept16 6:45', true ]
+Service: Barangay Clearance application created successfully (Essential Data + Voter Status)
+Service: Creating beneficiary record
+Service: createBeneficiaryInTransaction called with: {
+  request_id: 182,
+  first_name: 'floy1414',
+  middle_name: null,
+  last_name: 'Stone',
+  suffix: 'Jr',
+  birth_date: '2000-12-12',
+  gender: 'male',
+  civil_status_id: 1,
+  nationality: 'Filipino',
+  phone_number: '09022295558',
+  email: 'floyyyrec21@gmail.com',
+  house_number: '21',
+  street: 'Bayavas',
+  subdivision: null,
+  barangay: 'Bula',
+  city_municipality: 'General Santos City (Dadiangas)',
+  province: 'South Cotabato',
+  postal_code: null,
+  years_of_residency: null,
+  months_of_residency: null,
+  relationship_to_requestor: 'child',
+  region: 'Region XII (SOCCSKSARGEN)',
+  region_code: '12',
+  province_code: '1263',
+  city_code: '126303',
+  barangay_code: '126303005'
+}
+Service: Executing beneficiary INSERT with params: [
+  182,
+  'floy1414',
+  null,
+  'Stone',
+  'Jr',
+  '2000-12-12',
+  'male',
+  1,
+  'Filipino',
+  'floyyyrec21@gmail.com',
+  '09022295558',
+  '21',
+  'Bayavas',
+  null,
+  'Bula',
+  'General Santos City (Dadiangas)',
+  'South Cotabato',
+  'Region XII (SOCCSKSARGEN)',
+  '12',
+  '1263',
+  '126303',
+  '126303005',
+  null,
+  null,
+  null,
+  'child'
+]
+Service: Beneficiary created successfully
+ℹ️  Document request submitted successfully
+✅ DocumentRequestService.submitRequest completed: {
+  success: true,
+  data: DocumentRequest {
+    id: 182,
+    request_number: 'BC-2025-000001',
+    client_id: 49,
+    is_third_party_request: 1,
+    document_type_id: 2,
+    purpose_category_id: 1,
+    purpose_details: null,
+    requestor_notes: null,
+    status_id: 1,
+    status: 'pending',
+    priority: 'normal',
+    processed_by: null,
+    approved_by: null,
+    processed_at: null,
+    approved_at: null,
+    total_document_fee: '150.00',
+    payment_method_id: 1,
+    payment_status: 'pending',
+    payment_reference: null,
+    payment_provider_reference: null,
+    paid_at: null,
+    delivery_method: 'pickup',
+    delivery_address: null,
+    requested_at: 2025-09-16T10:46:18.000Z,
+    target_completion_date: null,
+    completed_at: null,
+    created_at: 2025-09-16T10:46:18.000Z,
+    updated_at: 2025-09-16T10:46:18.000Z
+  },
+  message: 'Document request submitted successfully'
+}
+✅ Activity logged: document_request_submit by client user 49 from IP ::1
+::1 - - [16/Sep/2025:10:46:21 +0000] "POST /api/client/document-requests HTTP/1.1" 201 799 "http://localhost:8081/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0"
+POST /api/client/document-requests/182/documents - Origin: http://localhost:8081
+Token decoded successfully: {
+  id: 49,
+  username: 'floy1414',
+  type: 'client',
+  iat: 1757998243,
+  exp: 1760590243
+}
+Client query result: [
+  {
+    id: 49,
+    username: 'floy1414',
+    status: 'active',
+    created_at: 2025-09-16T04:48:41.000Z,
+    email: 'floyfloyy21@gmail.com',
+    first_name: 'Floy',
+    last_name: 'Areliano',
+    phone_number: '09955921218'
+  }
+]
+::1 - - [16/Sep/2025:10:46:21 +0000] "POST /api/client/document-requests/182/documents HTTP/1.1" 400 58 "http://localhost:8081/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0"
+GET /api/client/document-requests/182 - Origin: http://localhost:8081
+Token decoded successfully: {
+  id: 49,
+  username: 'floy1414',
+  type: 'client',
+  iat: 1757998243,
+  exp: 1760590243
+}
+Client query result: [
+  {
+    id: 49,
+    username: 'floy1414',
+    status: 'active',
+    created_at: 2025-09-16T04:48:41.000Z,
+    email: 'floyfloyy21@gmail.com',
+    first_name: 'Floy',
+    last_name: 'Areliano',
+    phone_number: '09955921218'
+  }
+]
+🔍 Request data retrieved: {
+  id: 182,
+  requestor_nationality: 'Filipino',
+  requestor_months_of_residency: 3,
+  requestor_years_of_residency: 5,
+  has_requestor_data: true
+}
+🔍 Requestor object constructed: {
+  nationality: 'Filipino',
+  months_of_residency: 3,
+  years_of_residency: 5
+}
+ℹ️  Request details retrieved successfully
+::1 - - [16/Sep/2025:10:46:21 +0000] "GET /api/client/document-requests/182 HTTP/1.1" 200 - "http://localhost:8081/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0"
+POST /api/verification-documents/beneficiary/12/verification-image - Origin: http://localhost:8081
+📁 Multer destination called for file: valid-id-sample.jpg
+📄 Multer filename generated: temp-1758019581265-356506293.jpg
+ℹ️  Beneficiary verification image uploaded
+::1 - - [16/Sep/2025:10:46:21 +0000] "POST /api/verification-documents/beneficiary/12/verification-image HTTP/1.1" 200 264 "http://localhost:8081/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0"
+GET /api/client/document-requests/182/authorization-status - Origin: http://localhost:8081
+Token decoded successfully: {
+  id: 49,
+  username: 'floy1414',
+  type: 'client',
+  iat: 1757998243,
+  exp: 1760590243
+}
+Client query result: [
+  {
+    id: 49,
+    username: 'floy1414',
+    status: 'active',
+    created_at: 2025-09-16T04:48:41.000Z,
+    email: 'floyfloyy21@gmail.com',
+    first_name: 'Floy',
+    last_name: 'Areliano',
+    phone_number: '09955921218'
+  }
+]
+🔍 getAuthorizationStatus called
+📋 Request ID: 182
+👤 Client ID: 49
+🔍 Request data retrieved: {
+  id: 182,
+  requestor_nationality: 'Filipino',
+  requestor_months_of_residency: 3,
+  requestor_years_of_residency: 5,
+  has_requestor_data: true
+}
+🔍 Requestor object constructed: {
+  nationality: 'Filipino',
+  months_of_residency: 3,
+  years_of_residency: 5
+}
+ℹ️  Request details retrieved successfully
+🔍 Looking for authorized pickup person for request: 182
+📋 Found authorized pickup: YES
+✅ Authorized pickup person found: { id: 26, name: 'Ashley Stone' }
+📤 Returning authorization status: {
+  has_authorized_pickup: true,
+  pickup_person: {
+    id: 26,
+    name: 'Ashley Stone',
+    relationship: 'friend',
+    id_type: null,
+    id_number: null
+  },
+  verification_status: 'pending',
+  documents_uploaded: [],
+  admin_notes: null
+}
+::1 - - [16/Sep/2025:10:46:21 +0000] "GET /api/client/document-requests/182/authorization-status HTTP/1.1" 200 328 "http://localhost:8081/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0"
+POST /api/verification-documents/pickup-person/26/id-image - Origin: http://localhost:8081
+📁 Multer destination called for file: valid-id-sample.jpg
+📄 Multer filename generated: temp-1758019581391-991742230.jpg
+🔍 uploadPickupPersonId called
+📋 Request params: { pickupPersonId: '26' }
+📁 File info: {
+  originalname: 'valid-id-sample.jpg',
+  mimetype: 'image/jpeg',
+  size: 17858,
+  path: 'uploads\\temp\\temp-1758019581391-991742230.jpg'
+}
+🔄 Calling VerificationDocumentService.uploadPickupPersonIdImage...
+🔍 VerificationDocumentService.uploadPickupPersonIdImage called
+📋 Pickup Person ID: 26
+📁 File: {
+  fieldname: 'id_image',
+  originalname: 'valid-id-sample.jpg',
+  encoding: '7bit',
+  mimetype: 'image/jpeg',
+  destination: 'uploads/temp',
+  filename: 'temp-1758019581391-991742230.jpg',
+  path: 'uploads\\temp\\temp-1758019581391-991742230.jpg',
+  size: 17858
+}
+✅ File validation passed
+📂 Upload directory: uploads/verification/pickup_ids
+📄 Generated file path: uploads\verification\pickup_ids\pickup_id_26_1758019581410.jpg
+📤 Moving file from: uploads\temp\temp-1758019581391-991742230.jpg to: uploads\verification\pickup_ids\pickup_id_26_1758019581410.jpg
+✅ File moved successfully
+💾 Updating database with file information...
+📋 Database update params: [
+  'uploads\\verification\\pickup_ids\\pickup_id_26_1758019581410.jpg',
+  'valid-id-sample.jpg',
+  17858,
+  'image/jpeg',
+  26
+]
+✅ Database updated successfully
+ℹ️  Pickup person ID image uploaded
+📋 Service result: {
+  success: true,
+  message: 'ID image uploaded successfully',
+  data: {
+    fileName: 'pickup_id_26_1758019581410.jpg',
+    filePath: 'uploads\\verification\\pickup_ids\\pickup_id_26_1758019581410.jpg',
+    fileSize: 17858
+  }
+}
+✅ Upload successful, returning success response
+::1 - - [16/Sep/2025:10:46:21 +0000] "POST /api/verification-documents/pickup-person/26/id-image HTTP/1.1" 200 247 "http://localhost:8081/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0"
+POST /api/verification-documents/pickup-person/26/authorization-document - Origin: http://localhost:8081
+📁 Multer destination called for file: authorization_letter_sample.png
+📄 Multer filename generated: temp-1758019581458-235867453.png
+🔍 uploadPickupAuthorization called
+📋 Request params: { pickupPersonId: '26' }
+📁 File info: {
+  originalname: 'authorization_letter_sample.png',
+  mimetype: 'image/png',
+  size: 50385,
+  path: 'uploads\\temp\\temp-1758019581458-235867453.png'
+}
+🔄 Calling VerificationDocumentService.uploadPickupAuthorizationDocument...
+💾 Updating database with authorization document information...
+📋 Database update params: [
+  'uploads\\verification\\pickup_authorization\\pickup_auth_26_1758019581465.png',
+  26
+]
+✅ Database updated successfully
+ℹ️  Pickup authorization document uploaded
+📋 Service result: {
+  success: true,
+  message: 'Authorization document uploaded successfully',
+  data: {
+    fileName: 'pickup_auth_26_1758019581465.png',
+    filePath: 'uploads\\verification\\pickup_authorization\\pickup_auth_26_1758019581465.png',
+    fileSize: 50385
+  }
+}
+✅ Upload successful, returning success response
+::1 - - [16/Sep/2025:10:46:21 +0000] "POST /api/verification-documents/pickup-person/26/authorization-document HTTP/1.1" 200 275 "http://localhost:8081/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0"
+GET /api/client/document-requests/182 - Origin: http://localhost:8081
+Token decoded successfully: {
+  id: 49,
+  username: 'floy1414',
+  type: 'client',
+  iat: 1757998243,
+  exp: 1760590243
+}
+Client query result: [
+  {
+    id: 49,
+    username: 'floy1414',
+    status: 'active',
+    created_at: 2025-09-16T04:48:41.000Z,
+    email: 'floyfloyy21@gmail.com',
+    first_name: 'Floy',
+    last_name: 'Areliano',
+    phone_number: '09955921218'
+  }
+]
+🔍 Request data retrieved: {
+  id: 182,
+  requestor_nationality: 'Filipino',
+  requestor_months_of_residency: 3,
+  requestor_years_of_residency: 5,
+  has_requestor_data: true
+}
+🔍 Requestor object constructed: {
+  nationality: 'Filipino',
+  months_of_residency: 3,
+  years_of_residency: 5
+}
+ℹ️  Request details retrieved successfully
+::1 - - [16/Sep/2025:10:46:21 +0000] "GET /api/client/document-requests/182 HTTP/1.1" 200 - "http://localhost:8081/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0"
+GET /api/client/document-requests/182/verification-image/beneficiary/beneficiary_12_1758019581275.jpg - Origin: http://localhost:8081
+Token decoded successfully: {
+  id: 49,
+  username: 'floy1414',
+  type: 'client',
+  iat: 1757998243,
+  exp: 1760590243
+}
+Client query result: [
+  {
+    id: 49,
+    username: 'floy1414',
+    status: 'active',
+    created_at: 2025-09-16T04:48:41.000Z,
+    email: 'floyfloyy21@gmail.com',
+    first_name: 'Floy',
+    last_name: 'Areliano',
+    phone_number: '09955921218'
+  }
+]
+serveVerificationImage called: {
+  id: '182',
+  type: 'beneficiary',
+  filename: 'beneficiary_12_1758019581275.jpg',
+  userId: 49,
+  userRole: 'client'
+}
+🔍 Backend debug - Image serving: {
+  requestId: '182',
+  imageType: 'beneficiary',
+  filename: 'beneficiary_12_1758019581275.jpg',
+  baseDir: 'D:\\cap2_rhai_front_and_back\\rhai_backend\\uploads\\verification',
+  resolvedPath: 'D:\\cap2_rhai_front_and_back\\rhai_backend\\uploads\\verification\\beneficiaries\\beneficiary_12_1758019581275.jpg',
+  pathExists: true
+}
+✅ File exists, attempting to serve: D:\cap2_rhai_front_and_back\rhai_backend\uploads\verification\beneficiaries\beneficiary_12_1758019581275.jpg
+📄 Setting Content-Type: image/jpeg for file: beneficiary_12_1758019581275.jpg
+✅ File sent successfully: {
+  filename: 'beneficiary_12_1758019581275.jpg',
+  type: 'beneficiary',
+  mimeType: 'image/jpeg',
+  path: 'D:\\cap2_rhai_front_and_back\\rhai_backend\\uploads\\verification\\beneficiaries\\beneficiary_12_1758019581275.jpg'
+}
+::1 - - [16/Sep/2025:10:46:21 +0000] "GET /api/client/document-requests/182/verification-image/beneficiary/beneficiary_12_1758019581275.jpg HTTP/1.1" 200 17858 "http://localhost:8081/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0"      
+GET /api/client/document-requests/182/verification-image/pickup-id/pickup_id_26_1758019581410.jpg - Origin: http://localhost:8081
+Token decoded successfully: {
+  id: 49,
+  username: 'floy1414',
+  type: 'client',
+  iat: 1757998243,
+  exp: 1760590243
+}
+Client query result: [
+  {
+    id: 49,
+    username: 'floy1414',
+    status: 'active',
+    created_at: 2025-09-16T04:48:41.000Z,
+    email: 'floyfloyy21@gmail.com',
+    first_name: 'Floy',
+    last_name: 'Areliano',
+    phone_number: '09955921218'
+  }
+]
+serveVerificationImage called: {
+  id: '182',
+  type: 'pickup-id',
+  filename: 'pickup_id_26_1758019581410.jpg',
+  userId: 49,
+  userRole: 'client'
+}
+🔍 Backend debug - Image serving: {
+  requestId: '182',
+  imageType: 'pickup-id',
+  filename: 'pickup_id_26_1758019581410.jpg',
+  baseDir: 'D:\\cap2_rhai_front_and_back\\rhai_backend\\uploads\\verification',
+  resolvedPath: 'D:\\cap2_rhai_front_and_back\\rhai_backend\\uploads\\verification\\pickup_ids\\pickup_id_26_1758019581410.jpg',
+  pathExists: true
+}
+✅ File exists, attempting to serve: D:\cap2_rhai_front_and_back\rhai_backend\uploads\verification\pickup_ids\pickup_id_26_1758019581410.jpg
+📄 Setting Content-Type: image/jpeg for file: pickup_id_26_1758019581410.jpg
+✅ File sent successfully: {
+  filename: 'pickup_id_26_1758019581410.jpg',
+  type: 'pickup-id',
+  mimeType: 'image/jpeg',
+  path: 'D:\\cap2_rhai_front_and_back\\rhai_backend\\uploads\\verification\\pickup_ids\\pickup_id_26_1758019581410.jpg'
+}
+::1 - - [16/Sep/2025:10:46:22 +0000] "GET /api/client/document-requests/182/verification-image/pickup-id/pickup_id_26_1758019581410.jpg HTTP/1.1" 200 17858 "http://localhost:8081/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0"
+GET /api/client/document-requests/182/verification-image/pickup-auth/pickup_auth_26_1758019581465.png - Origin: http://localhost:8081
+Token decoded successfully: {
+  id: 49,
+  username: 'floy1414',
+  type: 'client',
+  iat: 1757998243,
+  exp: 1760590243
+}
+Client query result: [
+  {
+    id: 49,
+    username: 'floy1414',
+    status: 'active',
+    created_at: 2025-09-16T04:48:41.000Z,
+    email: 'floyfloyy21@gmail.com',
+    first_name: 'Floy',
+    last_name: 'Areliano',
+    phone_number: '09955921218'
+  }
+]
+serveVerificationImage called: {
+  id: '182',
+  type: 'pickup-auth',
+  filename: 'pickup_auth_26_1758019581465.png',
+  userId: 49,
+  userRole: 'client'
+}
+🔍 Backend debug - Image serving: {
+  requestId: '182',
+  imageType: 'pickup-auth',
+  filename: 'pickup_auth_26_1758019581465.png',
+  baseDir: 'D:\\cap2_rhai_front_and_back\\rhai_backend\\uploads\\verification',
+  resolvedPath: 'D:\\cap2_rhai_front_and_back\\rhai_backend\\uploads\\verification\\pickup_authorization\\pickup_auth_26_1758019581465.png',
+  pathExists: true
+}
+✅ File exists, attempting to serve: D:\cap2_rhai_front_and_back\rhai_backend\uploads\verification\pickup_authorization\pickup_auth_26_1758019581465.png
+📄 Setting Content-Type: image/png for file: pickup_auth_26_1758019581465.png
+✅ File sent successfully: {
+  filename: 'pickup_auth_26_1758019581465.png',
+  type: 'pickup-auth',
+  mimeType: 'image/png',
+  path: 'D:\\cap2_rhai_front_and_back\\rhai_backend\\uploads\\verification\\pickup_authorization\\pickup_auth_26_1758019581465.png'
+}
+::1 - - [16/Sep/2025:10:46:22 +0000] "GET /api/client/document-requests/182/verification-image/pickup-auth/pickup_auth_26_1758019581465.png HTTP/1.1" 200 50385 "http://localhost:8081/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0"      
+GET /api/admin/documents/requests/182 - Origin: http://localhost:8081
+::1 - - [16/Sep/2025:10:46:31 +0000] "GET /api/admin/documents/requests/182 HTTP/1.1" 200 - "http://localhost:8081/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0"
+GET /api/admin/documents/requests - Origin: http://localhost:8081
+::1 - - [16/Sep/2025:10:46:40 +0000] "GET /api/admin/documents/requests?page=1&limit=10&status=&document_type=&priority=&search=&date_from=&date_to= HTTP/1.1" 200 - "http://localhost:8081/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0" 
+GET /api/admin/documents/dashboard/stats - Origin: http://localhost:8081
+::1 - - [16/Sep/2025:10:46:40 +0000] "GET /api/admin/documents/dashboard/stats HTTP/1.1" 200 - "http://localhost:8081/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0"
+GET /api/admin/documents/requests/182 - Origin: http://localhost:8081
+::1 - - [16/Sep/2025:10:46:40 +0000] "GET /api/admin/documents/requests/182 HTTP/1.1" 200 - "http://localhost:8081/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0"
+GET /api/client/document-requests - Origin: http://localhost:8081
+Token decoded successfully: {
+  id: 49,
+  username: 'floy1414',
+  type: 'client',
+  iat: 1757998243,
+  exp: 1760590243
+}
+Client query result: [
+  {
+    id: 49,
+    username: 'floy1414',
+    status: 'active',
+    created_at: 2025-09-16T04:48:41.000Z,
+    email: 'floyfloyy21@gmail.com',
+    first_name: 'Floy',
+    last_name: 'Areliano',
+    phone_number: '09955921218'
+  }
+]
+ℹ️  Client requests retrieved successfully
+::1 - - [16/Sep/2025:10:46:54 +0000] "GET /api/client/document-requests? HTTP/1.1" 200 - "http://localhost:8081/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0"
+GET /uploads/verification/pickup_ids/pickup_id_26_1758019581410.jpg - Origin: http://localhost:8081
+::1 - - [16/Sep/2025:10:47:02 +0000] "GET /uploads/verification/pickup_ids/pickup_id_26_1758019581410.jpg HTTP/1.1" 200 17858 "http://localhost:8081/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0"
+GET /uploads/verification/pickup_authorization/pickup_auth_26_1758019581465.png - Origin: http://localhost:8081
+::1 - - [16/Sep/2025:10:47:02 +0000] "GET /uploads/verification/pickup_authorization/pickup_auth_26_1758019581465.png HTTP/1.1" 200 50385 "http://localhost:8081/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0"
+GET /api/admin/documents/requests - Origin: http://localhost:8081
+::1 - - [16/Sep/2025:10:47:10 +0000] "GET /api/admin/documents/requests?page=1&limit=10&status=&document_type=&priority=&search=&date_from=&date_to= HTTP/1.1" 200 - "http://localhost:8081/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0" 
+GET /api/admin/documents/dashboard/stats - Origin: http://localhost:8081
+::1 - - [16/Sep/2025:10:47:10 +0000] "GET /api/admin/documents/dashboard/stats HTTP/1.1" 200 - "http://localhost:8081/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0"
+GET /api/admin/documents/requests/182 - Origin: http://localhost:8081
+::1 - - [16/Sep/2025:10:47:10 +0000] "GET /api/admin/documents/requests/182 HTTP/1.1" 200 - "http://localhost:8081/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0"
+GET /

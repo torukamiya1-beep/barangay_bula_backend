@@ -6,9 +6,10 @@ class PaymentFetchService {
   constructor() {
     this.apiKey = process.env.PAYMONGO_SECRET_KEY;
     this.baseUrl = 'https://api.paymongo.com/v1';
-    
+
     if (!this.apiKey) {
-      throw new Error('PAYMONGO_SECRET_KEY not found in environment variables');
+      logger.warn('⚠️  PAYMONGO_SECRET_KEY not found in environment variables. Payment fetch service will not work.');
+      this.apiKey = null;
     }
   }
 
@@ -16,6 +17,9 @@ class PaymentFetchService {
    * Get authorization header for PayMongo API
    */
   getAuthHeader() {
+    if (!this.apiKey) {
+      throw new Error('PayMongo API key not configured');
+    }
     return {
       'Authorization': `Basic ${Buffer.from(this.apiKey + ':').toString('base64')}`,
       'Content-Type': 'application/json'

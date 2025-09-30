@@ -8,9 +8,12 @@ class PayMongoService {
     this.secretKey = process.env.PAYMONGO_SECRET_KEY;
     this.publicKey = process.env.PAYMONGO_PUBLIC_KEY;
     this.webhookSecret = process.env.PAYMONGO_WEBHOOK_SECRET;
-    
+
     if (!this.secretKey) {
-      throw new Error('PayMongo secret key is required');
+      logger.warn('⚠️  PayMongo secret key not configured. Payment service will not work.');
+      this.secretKey = null;
+      this.api = null;
+      return;
     }
 
     // Create axios instance with default config
@@ -33,6 +36,10 @@ class PayMongoService {
    * @returns {Promise<Object>} PayMongo link response
    */
   async createPaymentLink(linkData) {
+    if (!this.api) {
+      throw new Error('PayMongo service not configured. Please set PAYMONGO_SECRET_KEY environment variable.');
+    }
+
     try {
       const {
         amount,

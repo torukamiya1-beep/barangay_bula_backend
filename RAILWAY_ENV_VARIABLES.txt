@@ -1,0 +1,68 @@
+# ========================================
+# RAILWAY ENVIRONMENT VARIABLES
+# Copy and paste these into Railway Dashboard
+# ========================================
+
+# === APPLICATION SETTINGS ===
+NODE_ENV=production
+PORT=7000
+
+# === DATABASE SETTINGS (Railway MySQL) ===
+DB_HOST=mysql.railway.internal
+DB_USER=root
+DB_PASSWORD=ZJkBtQfhQyuHoYnezodhXGCUQZBnYcrN
+DB_NAME=railway
+DB_PORT=3306
+
+# === JWT SETTINGS ===
+JWT_SECRET=330c18150401b9b496b0abfdb687f10811b33b5556ce6514f00bbdb63704f8e59f7cb07aa977eda16eb9deb0de8d639d75aa08f702710835f882c6cfbf60490e
+JWT_EXPIRE=30d
+
+# === EMAIL SETTINGS (Gmail SMTP) ===
+EMAIL_HOST=smtp.gmail.com
+EMAIL_PORT=587
+EMAIL_SECURE=false
+EMAIL_USER=barangaybula45@gmail.com
+EMAIL_PASS=nqagxakkhjxpisgl
+EMAIL_FROM_NAME=Barangay Bula Management System
+EMAIL_FROM_ADDRESS=barangaybula45@gmail.com
+
+# === PAYMONGO SETTINGS (LIVE KEYS - UPDATE WITH YOUR ACTUAL KEYS) ===
+PAYMONGO_PUBLIC_KEY=pk_live_YOUR_ACTUAL_LIVE_PUBLIC_KEY
+PAYMONGO_SECRET_KEY=sk_live_YOUR_ACTUAL_LIVE_SECRET_KEY
+PAYMONGO_BASE_URL=https://api.paymongo.com/v1
+ENABLE_ONLINE_PAYMENTS=true
+PAYMENT_TIMEOUT_MINUTES=30
+
+# === FRONTEND URL (UPDATE AFTER VERCEL DEPLOYMENT) ===
+FRONTEND_URL=http://localhost:8081
+
+# === WEBHOOK SETTINGS (UPDATE AFTER DEPLOYMENT) ===
+WEBHOOK_URL=https://brgybulabackend-production.up.railway.app/api/webhooks/paymongo
+PAYMONGO_WEBHOOK_SECRET=whsk_will_update_after_creating_webhook
+
+# === SECURITY SETTINGS ===
+BCRYPT_ROUNDS=12
+RATE_LIMIT_WINDOW_MS=900000
+RATE_LIMIT_MAX_REQUESTS=100
+
+# === LOGGING ===
+LOG_LEVEL=info
+
+# === OTP SETTINGS ===
+OTP_EXPIRY_MINUTES=10
+OTP_LENGTH=6
+
+# === SMS SETTINGS (Optional - TextBee) ===
+TEXTBEE_API_KEY=your_textbee_api_key_if_you_have_one
+TEXTBEE_DEVICE_ID=your_textbee_device_id_if_you_have_one
+ENABLE_SMS_NOTIFICATIONS=false
+
+# ========================================
+# INSTRUCTIONS:
+# 1. Click "Raw Editor" in Railway
+# 2. Copy ALL lines above (except comments starting with #)
+# 3. Paste into Railway Raw Editor
+# 4. Click "Save"
+# ========================================
+

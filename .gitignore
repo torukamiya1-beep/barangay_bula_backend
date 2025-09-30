@@ -11,6 +11,13 @@ yarn-error.log*
 .env.test.local
 .env.production.local
 
+# Railway configuration files with API keys (keep local only)
+RAILWAY_COPY_PASTE.txt
+RAILWAY_ENV_VARIABLES.txt
+RAILWAY_SETUP_NOW.md
+create_webhook_production.js
+create_production_webhook.js
+
 # Logs
 logs/
 *.log

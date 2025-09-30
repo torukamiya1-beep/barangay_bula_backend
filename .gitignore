@@ -14,6 +14,7 @@ yarn-error.log*
 # Railway configuration files with API keys (keep local only)
 RAILWAY_COPY_PASTE.txt
 RAILWAY_ENV_VARIABLES.txt
+RAILWAY_RAW_EDITOR_PASTE.txt
 RAILWAY_SETUP_NOW.md
 create_webhook_production.js
 create_production_webhook.js

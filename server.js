@@ -7,7 +7,24 @@ const morgan = require('morgan');
 const rateLimit = require('express-rate-limit');
 
 // Load environment variables
-dotenv.config();
+// Railway automatically injects environment variables into process.env
+// dotenv.config() is only needed for local development
+if (process.env.NODE_ENV !== 'production') {
+  dotenv.config();
+}
+
+// Debug: Log environment variable status (without exposing secrets)
+console.log('🔍 Environment Check:');
+console.log('  NODE_ENV:', process.env.NODE_ENV || 'NOT SET');
+console.log('  PORT:', process.env.PORT || 'NOT SET');
+console.log('  DB_HOST:', process.env.DB_HOST || 'NOT SET');
+console.log('  DB_PORT:', process.env.DB_PORT || 'NOT SET');
+console.log('  DB_NAME:', process.env.DB_NAME || 'NOT SET');
+console.log('  DB_USER:', process.env.DB_USER || 'NOT SET');
+console.log('  DB_PASSWORD:', process.env.DB_PASSWORD ? '***SET***' : '***NOT SET***');
+console.log('  PAYMONGO_SECRET_KEY:', process.env.PAYMONGO_SECRET_KEY ? '***SET***' : '***NOT SET***');
+console.log('  PAYMONGO_PUBLIC_KEY:', process.env.PAYMONGO_PUBLIC_KEY ? '***SET***' : '***NOT SET***');
+console.log('  JWT_SECRET:', process.env.JWT_SECRET ? '***SET***' : '***NOT SET***');
 
 // Ensure upload directories exist on startup
 const { ensureUploadDirectories } = require('./scripts/ensure-upload-directories');
@@ -241,7 +258,13 @@ const startServer = async () => {
       console.log(`🔗 Health check: http://localhost:${PORT}/health`);
     });
   } catch (error) {
-    console.error('❌ Failed to start server:', error.message);
+    console.error('❌ Failed to start server!');
+    console.error('🔍 Error details:', {
+      message: error.message || 'No error message',
+      code: error.code || 'No error code',
+      stack: error.stack || 'No stack trace'
+    });
+    console.error('🔍 Full error object:', error);
     process.exit(1);
   }
 };

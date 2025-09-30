@@ -22,11 +22,22 @@ const pool = mysql.createPool(dbConfig);
 const connectDatabase = async () => {
   try {
     const connection = await pool.getConnection();
-    console.log('Database connected successfully');
+    console.log('✅ Database connected successfully');
+    console.log(`📊 Connected to: ${dbConfig.host}:${dbConfig.port}/${dbConfig.database}`);
     connection.release();
     return true;
   } catch (error) {
-    console.error('Database connection failed:', error.message);
+    console.error('❌ Database connection failed!');
+    console.error('📋 Connection details:', {
+      host: dbConfig.host,
+      port: dbConfig.port,
+      user: dbConfig.user,
+      database: dbConfig.database,
+      password: dbConfig.password ? '***SET***' : '***NOT SET***'
+    });
+    console.error('🔍 Full error:', error);
+    console.error('💡 Error code:', error.code);
+    console.error('💡 Error message:', error.message);
     throw error;
   }
 };

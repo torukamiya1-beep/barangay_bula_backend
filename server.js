@@ -9,6 +9,10 @@ const rateLimit = require('express-rate-limit');
 // Load environment variables
 dotenv.config();
 
+// Ensure upload directories exist on startup
+const { ensureUploadDirectories } = require('./scripts/ensure-upload-directories');
+ensureUploadDirectories();
+
 // Import configurations and middleware
 const { connectDatabase } = require('./src/config/database');
 const DatabaseUtils = require('./src/utils/database');

@@ -48,7 +48,14 @@ const executeQuery = async (query, params = []) => {
     const [results] = await pool.execute(query, params);
     return results;
   } catch (error) {
-    console.error('Database query error:', error.message);
+    console.error('❌ Database query error:');
+    console.error('📝 Query:', query.substring(0, 200) + (query.length > 200 ? '...' : ''));
+    console.error('📋 Params:', params);
+    console.error('🔍 Error code:', error.code);
+    console.error('🔍 Error message:', error.message);
+    console.error('🔍 SQL State:', error.sqlState);
+    console.error('🔍 SQL Message:', error.sqlMessage);
+    console.error('🔍 Full error:', error);
     throw error;
   }
 };

@@ -61,6 +61,81 @@ router.get('/table-structure/:tableName', protect, authorize('admin'), async (re
 });
 
 /**
+ * @route   GET /api/diagnostic/test-document-requests
+ * @desc    Test document requests query specifically
+ * @access  Public (for debugging)
+ */
+router.get('/test-document-requests', async (req, res) => {
+  try {
+    console.log('🔍 Testing document requests query...');
+
+    // Test the exact query from adminDocumentService
+    const testQuery = `
+      SELECT
+        dr.id,
+        dr.request_number,
+        dr.client_id,
+        dr.document_type_id,
+        dr.purpose_category_id,
+        dr.purpose_details,
+        dr.requestor_notes,
+        dr.status_id,
+        dr.priority,
+        dr.processed_by,
+        dr.approved_by,
+        dr.processed_at,
+        dr.approved_at,
+        dr.payment_method_id,
+        dr.payment_status,
+        dr.payment_reference,
+        dr.total_document_fee,
+        dr.requested_at,
+        dr.target_completion_date,
+        dr.completed_at,
+        dr.created_at,
+        dr.updated_at,
+        dt.type_name as document_type_name,
+        pc.category_name as purpose_category_name,
+        rs.status_name,
+        rs.status_color,
+        cp.first_name as client_first_name,
+        cp.last_name as client_last_name,
+        cp.email as client_email,
+        cp.phone_number as client_phone_number
+      FROM document_requests dr
+      LEFT JOIN document_types dt ON dr.document_type_id = dt.id
+      LEFT JOIN purpose_categories pc ON dr.purpose_category_id = pc.id
+      LEFT JOIN request_status rs ON dr.status_id = rs.id
+      LEFT JOIN client_accounts ca ON dr.client_id = ca.id
+      LEFT JOIN client_profiles cp ON ca.id = cp.account_id
+      ORDER BY dr.requested_at DESC
+      LIMIT 5
+    `;
+
+    const results = await executeQuery(testQuery);
+    console.log('✅ Document requests query successful, returned', results.length, 'rows');
+
+    res.json({
+      success: true,
+      data: {
+        query_executed: 'document_requests_with_joins',
+        results_count: results.length,
+        sample_data: results.length > 0 ? results[0] : null
+      }
+    });
+  } catch (error) {
+    console.error('❌ Document requests query failed:', error);
+    res.status(500).json({
+      success: false,
+      error: error.message,
+      code: error.code,
+      sqlMessage: error.sqlMessage,
+      query_type: 'document_requests_with_joins'
+    });
+  }
+});
+
+/**
  * @route   GET /api/diagnostic/test-simple
  * @desc    Test simple database queries without authentication
  * @access  Public (for debugging)

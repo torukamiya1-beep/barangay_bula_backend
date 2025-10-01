@@ -249,10 +249,10 @@ class AdminDocumentService {
 
       // Validate sort column
       const validSortColumns = [
-        'requested_at', 'created_at', 'request_number', 'client_name',
+        'created_at', 'request_number', 'client_name',
         'document_type', 'status_name', 'priority', 'total_fee'
       ];
-      const sortColumn = validSortColumns.includes(sort_by) ? sort_by : 'requested_at';
+      const sortColumn = validSortColumns.includes(sort_by) ? sort_by : 'created_at';
       const sortOrder = sort_order.toLowerCase() === 'asc' ? 'ASC' : 'DESC';
 
       // Main query
@@ -339,7 +339,6 @@ class AdminDocumentService {
                    sortColumn === 'document_type' ? 'dt.type_name' :
                    sortColumn === 'status_name' ? 'rs.status_name' :
                    sortColumn === 'total_fee' ? 'dr.total_document_fee' :
-                   sortColumn === 'requested_at' ? 'dr.created_at' :
                    sortColumn === 'created_at' ? 'dr.created_at' :
                    `dr.${sortColumn}`} ${sortOrder}
         LIMIT ? OFFSET ?

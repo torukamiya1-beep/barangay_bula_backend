@@ -190,7 +190,7 @@ class NotificationService {
 
       const query = `
         INSERT INTO notifications (
-          recipient_id, recipient_type, type, title, message, data, priority, created_at
+          user_id, user_type, type, title, message, data, priority, created_at
         ) VALUES (?, ?, ?, ?, ?, ?, ?, NOW())
       `;
 
@@ -212,8 +212,8 @@ class NotificationService {
 
       const notification = {
         id: result.insertId,
-        recipient_id: finalRecipientId,
-        recipient_type: finalRecipientType,
+        user_id: finalRecipientId,
+        user_type: finalRecipientType,
         type,
         title,
         message,

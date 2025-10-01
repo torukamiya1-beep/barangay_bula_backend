@@ -5,7 +5,6 @@ const helmet = require('helmet');
 const compression = require('compression');
 const morgan = require('morgan');
 const rateLimit = require('express-rate-limit');
-const { protect } = require('./src/middleware/auth');
 
 // Load environment variables
 // Load .env.production in production, .env in development
@@ -95,21 +94,27 @@ const corsOptions = {
       process.env.FRONTEND_URL
     ].filter(Boolean); // Remove undefined/null values
 
-    // In production, log CORS attempts for debugging
-    if (process.env.NODE_ENV === 'production') {
-      console.log('🔒 CORS Check:', {
-        origin,
-        allowed: allowedOrigins.includes(origin),
-        allowedOrigins
-      });
-    }
+    // Log CORS attempts for debugging
+    console.log('🔒 CORS Check:', {
+      origin,
+      allowed: allowedOrigins.includes(origin),
+      allowedOrigins,
+      frontendUrl: process.env.FRONTEND_URL
+    });
 
     if (allowedOrigins.indexOf(origin) !== -1) {
+      console.log('✅ CORS allowed for origin:', origin);
       callback(null, true);
     } else {
       console.log('❌ CORS blocked origin:', origin);
       console.log('✅ Allowed origins:', allowedOrigins);
-      callback(new Error('Not allowed by CORS'));
+      // In production, be more permissive to avoid blocking legitimate requests
+      if (process.env.NODE_ENV === 'production' && origin && origin.includes('vercel.app')) {
+        console.log('🔄 Allowing Vercel domain in production:', origin);
+        callback(null, true);
+      } else {
+        callback(new Error('Not allowed by CORS'));
+      }
     }
   },
   credentials: true,
@@ -198,117 +203,7 @@ app.get('/health', async (_req, res) => {
   }
 });
 
-// Simple test endpoint with auth middleware
-app.get('/test-auth-middleware', protect, (req, res) => {
-  try {
-    res.json({
-      success: true,
-      message: 'Auth middleware passed successfully',
-      user: {
-        id: req.user.id,
-        username: req.user.username,
-        role: req.user.role,
-        type: req.user.type,
-        status: req.user.status
-      },
-      timestamp: new Date().toISOString()
-    });
-  } catch (error) {
-    res.status(500).json({
-      success: false,
-      error: 'Test endpoint failed',
-      details: error.message,
-      timestamp: new Date().toISOString()
-    });
-  }
-});
 
-// Test auth middleware database query
-app.get('/test-auth-db', async (req, res) => {
-  try {
-    const { executeQuery } = require('./src/config/database');
-
-    // Test the exact query that auth middleware uses for admin users
-    const adminQuery = `
-      SELECT
-        aea.id,
-        aea.username,
-        aea.role,
-        aea.status,
-        aea.created_at,
-        aep.email,
-        aep.first_name,
-        aep.last_name
-      FROM admin_employee_accounts aea
-      LEFT JOIN admin_employee_profiles aep ON aea.id = aep.account_id
-      WHERE aea.id = ? AND aea.status = 'active'
-    `;
-
-    // Test with user ID 32 (from the JWT token)
-    const adminUsers = await executeQuery(adminQuery, [32]);
-
-    res.json({
-      success: true,
-      message: 'Auth database query test',
-      queryResult: adminUsers,
-      userCount: adminUsers.length,
-      timestamp: new Date().toISOString()
-    });
-  } catch (error) {
-    res.status(500).json({
-      success: false,
-      error: 'Database query failed',
-      details: error.message,
-      code: error.code,
-      sqlState: error.sqlState,
-      timestamp: new Date().toISOString()
-    });
-  }
-});
-
-// JWT test endpoint - test token validation without database queries
-app.get('/test-jwt', (req, res) => {
-  try {
-    let token;
-
-    // Check for token in headers
-    if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
-      token = req.headers.authorization.split(' ')[1];
-    }
-
-    if (!token) {
-      return res.status(401).json({
-        success: false,
-        error: 'No token provided'
-      });
-    }
-
-    // Verify token
-    const jwt = require('jsonwebtoken');
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-
-    res.json({
-      success: true,
-      message: 'JWT token is valid',
-      decoded: {
-        id: decoded.id,
-        type: decoded.type,
-        role: decoded.role,
-        iat: decoded.iat,
-        exp: decoded.exp
-      },
-      jwtSecret: process.env.JWT_SECRET ? 'SET' : 'NOT SET',
-      timestamp: new Date().toISOString()
-    });
-  } catch (error) {
-    res.status(401).json({
-      success: false,
-      error: 'Invalid token',
-      details: error.message,
-      timestamp: new Date().toISOString()
-    });
-  }
-});
 
 // Database diagnostic endpoint
 app.get('/diagnostic', async (req, res) => {

@@ -224,12 +224,37 @@ app.get('/diagnostic', async (req, res) => {
       }
     }
 
+    // Test the specific dashboard stats query that's failing
+    let dashboardStatsTest = null;
+    try {
+      const statsQuery = `
+        SELECT
+          COUNT(*) as total_requests,
+          COUNT(CASE WHEN status_id = 1 THEN 1 END) as pending_requests,
+          COUNT(CASE WHEN status_id = 7 THEN 1 END) as completed_requests
+        FROM document_requests
+      `;
+      dashboardStatsTest = await executeQuery(statsQuery);
+    } catch (error) {
+      dashboardStatsTest = { error: error.message, code: error.code };
+    }
+
+    // Check request_status table
+    let statusTableTest = null;
+    try {
+      statusTableTest = await executeQuery('SELECT id, status_name FROM request_status ORDER BY id');
+    } catch (error) {
+      statusTableTest = { error: error.message };
+    }
+
     res.json({
       status: 'OK',
       connectivity: connectTest,
       currentDatabase: dbNameTest[0].current_db,
       allTables: tablesTest.map(t => Object.values(t)[0]),
       keyTableChecks: tableChecks,
+      dashboardStatsTest,
+      statusTableTest,
       timestamp: new Date().toISOString()
     });
   } catch (error) {

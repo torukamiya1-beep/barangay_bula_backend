@@ -10,6 +10,7 @@ yarn-error.log*
 .env.development.local
 .env.test.local
 .env.production.local
+# Note: .env.production is NOT ignored - it's needed for Railway deployment
 
 # Railway configuration files with API keys (keep local only)
 RAILWAY_COPY_PASTE.txt

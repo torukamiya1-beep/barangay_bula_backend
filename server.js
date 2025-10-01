@@ -7,11 +7,9 @@ const morgan = require('morgan');
 const rateLimit = require('express-rate-limit');
 
 // Load environment variables
-// Railway automatically injects environment variables into process.env
-// dotenv.config() is only needed for local development
-if (process.env.NODE_ENV !== 'production') {
-  dotenv.config();
-}
+// Always load dotenv to ensure environment variables are available
+// Railway will override these with its own environment variables if they exist
+dotenv.config();
 
 // Debug: Log environment variable status (without exposing secrets)
 console.log('🔍 Environment Check:');

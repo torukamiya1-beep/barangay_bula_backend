@@ -26,13 +26,11 @@ const protect = async (req, res, next) => {
     try {
       // Verify token
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
-      console.log('🔐 JWT decoded successfully:', { id: decoded.id, type: decoded.type, role: decoded.role });
 
       let user = null;
 
       // Check if this is an admin token (has type field or role is admin/employee)
       if (decoded.type === 'admin' || decoded.role === 'admin' || decoded.role === 'employee') {
-        console.log('🔐 Admin token detected, querying admin_employee_accounts...');
         // Get admin user from admin_employee_accounts table
         const adminQuery = `
           SELECT
@@ -49,7 +47,6 @@ const protect = async (req, res, next) => {
           WHERE aea.id = ? AND aea.status = 'active'
         `;
         const adminUsers = await executeQuery(adminQuery, [decoded.id]);
-        console.log('🔐 Admin query result:', adminUsers.length, 'users found');
 
         if (adminUsers.length > 0) {
           user = {
@@ -65,7 +62,6 @@ const protect = async (req, res, next) => {
           };
         }
       } else {
-        console.log('🔐 Client token detected, querying client_accounts...');
         // Get client user from client_accounts table
         // Allow access for active clients - residency verification is managed separately
         const clientQuery = `
@@ -83,7 +79,6 @@ const protect = async (req, res, next) => {
           WHERE ca.id = ? AND ca.status IN ('active', 'pending_residency_verification', 'residency_rejected')
         `;
         const clients = await executeQuery(clientQuery, [decoded.id]);
-        console.log('🔐 Client query result:', clients.length, 'users found');
 
         if (clients.length > 0) {
           user = {
@@ -102,25 +97,21 @@ const protect = async (req, res, next) => {
       }
 
       if (!user) {
-        console.log('❌ User not found or inactive after database query');
         return res.status(401).json({
           success: false,
           error: 'User not found or inactive'
         });
       }
 
-      console.log('✅ User authenticated successfully:', { id: user.id, role: user.role, type: user.type });
       req.user = user;
       next();
     } catch (error) {
-      console.log('❌ JWT verification failed:', error.message);
       return res.status(401).json({
         success: false,
         error: 'Not authorized to access this route'
       });
     }
   } catch (error) {
-    console.log('❌ Auth middleware outer catch:', error.message);
     return res.status(401).json({
       success: false,
       error: 'Authentication failed'

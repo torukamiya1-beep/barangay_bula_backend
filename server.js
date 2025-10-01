@@ -60,6 +60,7 @@ const verificationDocumentRoutes = require('./src/routes/verificationDocumentRou
 const activityLogRoutes = require('./src/routes/activityLogRoutes');
 const enhancedActivityLogRoutes = require('./src/routes/enhancedActivityLogRoutes');
 const receiptRoutes = require('./src/routes/receiptRoutes');
+const diagnosticRoutes = require('./src/routes/diagnosticRoutes');
 
 const app = express();
 const PORT = process.env.PORT || 7000;
@@ -219,6 +220,7 @@ app.use('/api/residency', residencyRoutes);
 app.use('/api/address', addressRoutes);
 app.use('/api/verification-documents', verificationDocumentRoutes);
 app.use('/api/client/receipts', receiptRoutes);
+app.use('/api/diagnostic', diagnosticRoutes);
 
 // Handle deprecated payment intent URLs
 app.get('/payment/intent', (req, res) => {

@@ -197,6 +197,52 @@ app.get('/health', async (_req, res) => {
   }
 });
 
+// Database diagnostic endpoint
+app.get('/diagnostic', async (req, res) => {
+  try {
+    const { executeQuery } = require('./src/config/database');
+
+    // Test basic connectivity
+    const connectTest = await executeQuery('SELECT 1 as test');
+
+    // Check database name
+    const dbNameTest = await executeQuery('SELECT DATABASE() as current_db');
+
+    // List all tables
+    const tablesTest = await executeQuery('SHOW TABLES');
+
+    // Check if key tables exist
+    const keyTables = ['client_accounts', 'admin_employee_accounts', 'document_requests', 'notifications'];
+    const tableChecks = {};
+
+    for (const table of keyTables) {
+      try {
+        const result = await executeQuery(`SELECT COUNT(*) as count FROM \`${table}\``);
+        tableChecks[table] = { exists: true, count: result[0].count };
+      } catch (error) {
+        tableChecks[table] = { exists: false, error: error.message };
+      }
+    }
+
+    res.json({
+      status: 'OK',
+      connectivity: connectTest,
+      currentDatabase: dbNameTest[0].current_db,
+      allTables: tablesTest.map(t => Object.values(t)[0]),
+      keyTableChecks: tableChecks,
+      timestamp: new Date().toISOString()
+    });
+  } catch (error) {
+    res.status(500).json({
+      status: 'ERROR',
+      message: 'Diagnostic failed',
+      error: error.message,
+      stack: error.stack,
+      timestamp: new Date().toISOString()
+    });
+  }
+});
+
 // API routes - Order matters! More specific routes first
 app.use('/api/auth/unified', unifiedAuthRoutes);
 app.use('/api/auth', authRoutes);

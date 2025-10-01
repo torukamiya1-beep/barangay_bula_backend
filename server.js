@@ -197,6 +197,50 @@ app.get('/health', async (_req, res) => {
   }
 });
 
+// JWT test endpoint - test token validation without database queries
+app.get('/test-jwt', (req, res) => {
+  try {
+    let token;
+
+    // Check for token in headers
+    if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
+      token = req.headers.authorization.split(' ')[1];
+    }
+
+    if (!token) {
+      return res.status(401).json({
+        success: false,
+        error: 'No token provided'
+      });
+    }
+
+    // Verify token
+    const jwt = require('jsonwebtoken');
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+    res.json({
+      success: true,
+      message: 'JWT token is valid',
+      decoded: {
+        id: decoded.id,
+        type: decoded.type,
+        role: decoded.role,
+        iat: decoded.iat,
+        exp: decoded.exp
+      },
+      jwtSecret: process.env.JWT_SECRET ? 'SET' : 'NOT SET',
+      timestamp: new Date().toISOString()
+    });
+  } catch (error) {
+    res.status(401).json({
+      success: false,
+      error: 'Invalid token',
+      details: error.message,
+      timestamp: new Date().toISOString()
+    });
+  }
+});
+
 // Database diagnostic endpoint
 app.get('/diagnostic', async (req, res) => {
   try {

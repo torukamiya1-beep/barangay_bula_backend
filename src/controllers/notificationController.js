@@ -135,18 +135,26 @@ class NotificationController {
    */
   async getNotifications(req, res) {
     try {
+      console.log('🔍 NotificationController.getNotifications called');
+      console.log('🔍 req.user:', req.user);
+      console.log('🔍 req.query:', req.query);
+
       const userId = req.user.id;
       const userType = req.user.type || (req.user.role ? 'admin' : 'client');
       const { page = 1, limit = 20, unread_only = false } = req.query;
 
+      console.log('🔍 Extracted values:', { userId, userType, page, limit, unread_only });
+
       // Security validation: Ensure user type is valid
       if (!['admin', 'client'].includes(userType)) {
+        console.log('❌ Invalid user type:', userType);
         logger.warn('Invalid user type in notification request', { userId, userType });
         return errorResponse(res, 'Invalid user type', 400);
       }
 
       // Security validation: Ensure user ID exists
       if (!userId) {
+        console.log('❌ Missing user ID');
         logger.warn('Missing user ID in notification request', { userType });
         return errorResponse(res, 'User ID required', 400);
       }
@@ -159,6 +167,7 @@ class NotificationController {
         unread_only
       });
 
+      console.log('🔍 Calling notificationService.getUserNotifications...');
       const result = await notificationService.getUserNotifications(
         userId,
         userType,
@@ -167,6 +176,7 @@ class NotificationController {
         unread_only === 'true'
       );
 
+      console.log('✅ notificationService.getUserNotifications completed');
       logger.info('✅ NotificationController: notifications retrieved', {
         userId,
         userType,
@@ -176,6 +186,7 @@ class NotificationController {
 
       return successResponse(res, 'Notifications retrieved successfully', result);
     } catch (error) {
+      console.error('❌ NotificationController.getNotifications error:', error);
       logger.error('❌ NotificationController: Get notifications error:', error);
       return errorResponse(res, 'Failed to retrieve notifications', 500);
     }

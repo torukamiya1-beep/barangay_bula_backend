@@ -45,7 +45,10 @@ const connectDatabase = async () => {
 // Execute query with error handling
 const executeQuery = async (query, params = []) => {
   try {
+    console.log('🔍 Executing query:', query.substring(0, 200) + (query.length > 200 ? '...' : ''));
+    console.log('📋 Query params:', params);
     const [results] = await pool.execute(query, params);
+    console.log('✅ Query successful, returned', results.length, 'rows');
     return results;
   } catch (error) {
     console.error('❌ Database query error:');

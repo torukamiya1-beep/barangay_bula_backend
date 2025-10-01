@@ -41,6 +41,8 @@ class AdminDocumentController {
    */
   async getAllRequests(req, res) {
     try {
+      console.log('🔍 AdminDocumentController.getAllRequests called with query:', req.query);
+
       const {
         page = 1,
         limit = 20,
@@ -70,9 +72,12 @@ class AdminDocumentController {
         sort_order
       };
 
+      console.log('🔍 Calling adminDocumentService.getAllRequests with:', { filters, options });
       const result = await adminDocumentService.getAllRequests(filters, options);
+      console.log('✅ adminDocumentService.getAllRequests completed successfully');
       return successResponse(res, 'Document requests retrieved successfully', result);
     } catch (error) {
+      console.error('❌ AdminDocumentController.getAllRequests error:', error);
       logger.error('Get all requests error:', error);
       return errorResponse(res, 'Failed to retrieve document requests', 500);
     }

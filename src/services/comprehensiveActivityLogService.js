@@ -173,6 +173,27 @@ class ComprehensiveActivityLogService {
    */
   static async getActivityLogs(filters = {}, page = 1, limit = 50) {
     try {
+      // Check if audit_logs table exists
+      const tableCheckQuery = `
+        SELECT COUNT(*) as table_exists
+        FROM information_schema.tables
+        WHERE table_schema = DATABASE() AND table_name = 'audit_logs'
+      `;
+      const [tableCheck] = await executeQuery(tableCheckQuery);
+
+      if (tableCheck.table_exists === 0) {
+        // Return empty result if table doesn't exist
+        return {
+          activities: [],
+          pagination: {
+            page: parseInt(page),
+            limit: parseInt(limit),
+            total: 0,
+            pages: 0
+          }
+        };
+      }
+
       const offset = (page - 1) * limit;
       let whereConditions = [];
       let queryParams = [];

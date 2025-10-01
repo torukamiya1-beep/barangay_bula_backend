@@ -94,27 +94,21 @@ const corsOptions = {
       process.env.FRONTEND_URL
     ].filter(Boolean); // Remove undefined/null values
 
-    // Log CORS attempts for debugging
-    console.log('🔒 CORS Check:', {
-      origin,
-      allowed: allowedOrigins.includes(origin),
-      allowedOrigins,
-      frontendUrl: process.env.FRONTEND_URL
-    });
+    // In production, log CORS attempts for debugging
+    if (process.env.NODE_ENV === 'production') {
+      console.log('🔒 CORS Check:', {
+        origin,
+        allowed: allowedOrigins.includes(origin),
+        allowedOrigins
+      });
+    }
 
     if (allowedOrigins.indexOf(origin) !== -1) {
-      console.log('✅ CORS allowed for origin:', origin);
       callback(null, true);
     } else {
       console.log('❌ CORS blocked origin:', origin);
       console.log('✅ Allowed origins:', allowedOrigins);
-      // In production, be more permissive to avoid blocking legitimate requests
-      if (process.env.NODE_ENV === 'production' && origin && origin.includes('vercel.app')) {
-        console.log('🔄 Allowing Vercel domain in production:', origin);
-        callback(null, true);
-      } else {
-        callback(new Error('Not allowed by CORS'));
-      }
+      callback(new Error('Not allowed by CORS'));
     }
   },
   credentials: true,
@@ -198,79 +192,6 @@ app.get('/health', async (_req, res) => {
       status: 'ERROR',
       message: 'Health check failed',
       error: error.message,
-      timestamp: new Date().toISOString()
-    });
-  }
-});
-
-
-
-// Database diagnostic endpoint
-app.get('/diagnostic', async (req, res) => {
-  try {
-    const { executeQuery } = require('./src/config/database');
-
-    // Test basic connectivity
-    const connectTest = await executeQuery('SELECT 1 as test');
-
-    // Check database name
-    const dbNameTest = await executeQuery('SELECT DATABASE() as current_db');
-
-    // List all tables
-    const tablesTest = await executeQuery('SHOW TABLES');
-
-    // Check if key tables exist
-    const keyTables = ['client_accounts', 'admin_employee_accounts', 'document_requests', 'notifications'];
-    const tableChecks = {};
-
-    for (const table of keyTables) {
-      try {
-        const result = await executeQuery(`SELECT COUNT(*) as count FROM \`${table}\``);
-        tableChecks[table] = { exists: true, count: result[0].count };
-      } catch (error) {
-        tableChecks[table] = { exists: false, error: error.message };
-      }
-    }
-
-    // Test the specific dashboard stats query that's failing
-    let dashboardStatsTest = null;
-    try {
-      const statsQuery = `
-        SELECT
-          COUNT(*) as total_requests,
-          COUNT(CASE WHEN status_id = 1 THEN 1 END) as pending_requests,
-          COUNT(CASE WHEN status_id = 7 THEN 1 END) as completed_requests
-        FROM document_requests
-      `;
-      dashboardStatsTest = await executeQuery(statsQuery);
-    } catch (error) {
-      dashboardStatsTest = { error: error.message, code: error.code };
-    }
-
-    // Check request_status table
-    let statusTableTest = null;
-    try {
-      statusTableTest = await executeQuery('SELECT id, status_name FROM request_status ORDER BY id');
-    } catch (error) {
-      statusTableTest = { error: error.message };
-    }
-
-    res.json({
-      status: 'OK',
-      connectivity: connectTest,
-      currentDatabase: dbNameTest[0].current_db,
-      allTables: tablesTest.map(t => Object.values(t)[0]),
-      keyTableChecks: tableChecks,
-      dashboardStatsTest,
-      statusTableTest,
-      timestamp: new Date().toISOString()
-    });
-  } catch (error) {
-    res.status(500).json({
-      status: 'ERROR',
-      message: 'Diagnostic failed',
-      error: error.message,
-      stack: error.stack,
       timestamp: new Date().toISOString()
     });
   }

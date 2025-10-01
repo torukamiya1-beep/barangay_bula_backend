@@ -109,18 +109,10 @@ class UserServiceNew {
             'client' as user_type,
             ca.created_at,
             ca.last_login,
-            CASE
-              WHEN COUNT(rd.id) = 0 THEN NULL
-              WHEN COUNT(CASE WHEN rd.verification_status = 'approved' THEN 1 END) > 0 THEN 'approved'
-              WHEN COUNT(CASE WHEN rd.verification_status = 'rejected' THEN 1 END) > 0 THEN 'rejected'
-              ELSE 'pending'
-            END as residency_verification_status,
-            COUNT(rd.id) as residency_document_count
+            NULL as residency_verification_status,
+            0 as residency_document_count
           FROM client_accounts ca
           LEFT JOIN client_profiles cp ON ca.id = cp.account_id
-          LEFT JOIN residency_documents rd ON ca.id = rd.account_id
-          GROUP BY ca.id, ca.username, cp.first_name, cp.middle_name, cp.last_name,
-                   cp.suffix, cp.email, cp.phone_number, ca.status, ca.created_at, ca.last_login
         ) u
         ${whereClause}
         ORDER BY u.created_at DESC
@@ -134,53 +126,15 @@ class UserServiceNew {
       const countQuery = `
         SELECT COUNT(*) as total
         FROM (
-          SELECT
-            aea.id,
-            aea.id as original_id,
-            aea.username,
-            aep.first_name,
-            aep.middle_name,
-            aep.last_name,
-            aep.suffix,
-            aep.email,
-            aep.phone_number,
-            aea.status,
-            'admin' as user_type,
-            aea.created_at,
-            aea.last_login,
-            NULL as residency_verification_status,
-            0 as residency_document_count
-          FROM admin_employee_accounts aea
+          SELECT aea.id FROM admin_employee_accounts aea
           LEFT JOIN admin_employee_profiles aep ON aea.id = aep.account_id
 
           UNION ALL
 
-          SELECT
-            ca.id,
-            ca.id as original_id,
-            ca.username,
-            cp.first_name,
-            cp.middle_name,
-            cp.last_name,
-            cp.suffix,
-            cp.email,
-            cp.phone_number,
-            ca.status,
-            'client' as user_type,
-            ca.created_at,
-            ca.last_login,
-            CASE
-              WHEN COUNT(rd.id) = 0 THEN NULL
-              WHEN COUNT(CASE WHEN rd.verification_status = 'approved' THEN 1 END) > 0 THEN 'approved'
-              WHEN COUNT(CASE WHEN rd.verification_status = 'rejected' THEN 1 END) > 0 THEN 'rejected'
-              ELSE 'pending'
-            END as residency_verification_status,
-            COUNT(rd.id) as residency_document_count
-          FROM client_accounts ca
+          SELECT ca.id FROM client_accounts ca
           LEFT JOIN client_profiles cp ON ca.id = cp.account_id
           LEFT JOIN residency_documents rd ON ca.id = rd.account_id
-          GROUP BY ca.id, ca.username, cp.first_name, cp.middle_name, cp.last_name,
-                   cp.suffix, cp.email, cp.phone_number, ca.status, ca.created_at, ca.last_login
+          GROUP BY ca.id
         ) u
         ${whereClause}
       `;

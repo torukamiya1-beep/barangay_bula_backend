@@ -257,7 +257,7 @@ class AdminDocumentService {
 
       // Main query
       const query = `
-        SELECT DISTINCT
+        SELECT
           dr.id,
           dr.request_number,
           dr.client_id,
@@ -332,30 +332,8 @@ class AdminDocumentService {
         LEFT JOIN admin_employee_profiles processed_aep ON processed_aea.id = processed_aep.account_id
         LEFT JOIN admin_employee_accounts approved_aea ON dr.approved_by = approved_aea.id
         LEFT JOIN admin_employee_profiles approved_aep ON approved_aea.id = approved_aep.account_id
-        LEFT JOIN (
-          SELECT DISTINCT request_id,
-                 first_name, middle_name, last_name, suffix,
-                 relationship_to_requestor, verification_status, verification_image_path,
-                 id
-          FROM document_beneficiaries db1
-          WHERE db1.id = (
-            SELECT MIN(db2.id)
-            FROM document_beneficiaries db2
-            WHERE db2.request_id = db1.request_id
-          )
-        ) db ON dr.id = db.request_id
-        LEFT JOIN (
-          SELECT DISTINCT request_id,
-                 first_name, middle_name, last_name, suffix,
-                 relationship_to_beneficiary, is_verified, id_image_path, authorization_letter_path,
-                 id
-          FROM authorized_pickup_persons app1
-          WHERE app1.id = (
-            SELECT MIN(app2.id)
-            FROM authorized_pickup_persons app2
-            WHERE app2.request_id = app1.request_id
-          )
-        ) app ON dr.id = app.request_id
+        LEFT JOIN document_beneficiaries db ON dr.id = db.request_id
+        LEFT JOIN authorized_pickup_persons app ON dr.id = app.request_id
         ${whereClause}
         ORDER BY ${sortColumn === 'client_name' ? 'CONCAT(cp.first_name, " ", cp.last_name)' :
                    sortColumn === 'document_type' ? 'dt.type_name' :

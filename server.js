@@ -197,6 +197,49 @@ app.get('/health', async (_req, res) => {
   }
 });
 
+// Test auth middleware database query
+app.get('/test-auth-db', async (req, res) => {
+  try {
+    const { executeQuery } = require('./src/config/database');
+
+    // Test the exact query that auth middleware uses for admin users
+    const adminQuery = `
+      SELECT
+        aea.id,
+        aea.username,
+        aea.role,
+        aea.status,
+        aea.created_at,
+        aep.email,
+        aep.first_name,
+        aep.last_name
+      FROM admin_employee_accounts aea
+      LEFT JOIN admin_employee_profiles aep ON aea.id = aep.account_id
+      WHERE aea.id = ? AND aea.status = 'active'
+    `;
+
+    // Test with user ID 32 (from the JWT token)
+    const adminUsers = await executeQuery(adminQuery, [32]);
+
+    res.json({
+      success: true,
+      message: 'Auth database query test',
+      queryResult: adminUsers,
+      userCount: adminUsers.length,
+      timestamp: new Date().toISOString()
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      error: 'Database query failed',
+      details: error.message,
+      code: error.code,
+      sqlState: error.sqlState,
+      timestamp: new Date().toISOString()
+    });
+  }
+});
+
 // JWT test endpoint - test token validation without database queries
 app.get('/test-jwt', (req, res) => {
   try {

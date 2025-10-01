@@ -2,18 +2,8 @@ const errorHandler = (err, req, res, next) => {
   let error = { ...err };
   error.message = err.message;
 
-  // Enhanced error logging for production debugging
-  console.error('❌ Error Handler - Full Error Details:');
-  console.error('📍 Request URL:', req.originalUrl);
-  console.error('📍 Request Method:', req.method);
-  console.error('📍 Request Headers:', req.headers);
-  console.error('📍 Request Body:', req.body);
-  console.error('📍 Request User:', req.user ? { id: req.user.id, role: req.user.role } : 'Not authenticated');
-  console.error('🔍 Error Name:', err.name);
-  console.error('🔍 Error Message:', err.message);
-  console.error('🔍 Error Code:', err.code);
-  console.error('🔍 Error Stack:', err.stack);
-  console.error('🔍 Full Error Object:', err);
+  // Log error
+  console.error('Error:', err);
 
   // Mongoose bad ObjectId
   if (err.name === 'CastError') {
@@ -56,21 +46,10 @@ const errorHandler = (err, req, res, next) => {
     error = { message, statusCode: 401 };
   }
 
-  // Default error response with enhanced debugging info
+  // Default error response
   res.status(error.statusCode || 500).json({
     success: false,
     error: error.message || 'Server Error',
-    // Include more debugging info in production for troubleshooting
-    ...(process.env.NODE_ENV === 'production' && {
-      debug: {
-        errorCode: err.code,
-        errorName: err.name,
-        sqlState: err.sqlState,
-        sqlMessage: err.sqlMessage,
-        url: req.originalUrl,
-        method: req.method
-      }
-    }),
     ...(process.env.NODE_ENV === 'development' && { stack: err.stack })
   });
 };

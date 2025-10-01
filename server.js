@@ -5,6 +5,7 @@ const helmet = require('helmet');
 const compression = require('compression');
 const morgan = require('morgan');
 const rateLimit = require('express-rate-limit');
+const { protect } = require('./src/middleware/auth');
 
 // Load environment variables
 // Load .env.production in production, .env in development
@@ -192,6 +193,31 @@ app.get('/health', async (_req, res) => {
       status: 'ERROR',
       message: 'Health check failed',
       error: error.message,
+      timestamp: new Date().toISOString()
+    });
+  }
+});
+
+// Simple test endpoint with auth middleware
+app.get('/test-auth-middleware', protect, (req, res) => {
+  try {
+    res.json({
+      success: true,
+      message: 'Auth middleware passed successfully',
+      user: {
+        id: req.user.id,
+        username: req.user.username,
+        role: req.user.role,
+        type: req.user.type,
+        status: req.user.status
+      },
+      timestamp: new Date().toISOString()
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      error: 'Test endpoint failed',
+      details: error.message,
       timestamp: new Date().toISOString()
     });
   }

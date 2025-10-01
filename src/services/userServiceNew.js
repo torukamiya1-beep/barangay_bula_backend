@@ -109,18 +109,10 @@ class UserServiceNew {
             'client' as user_type,
             ca.created_at,
             ca.last_login,
-            CASE
-              WHEN COUNT(rd.id) = 0 THEN NULL
-              WHEN COUNT(CASE WHEN rd.verification_status = 'approved' THEN 1 END) > 0 THEN 'approved'
-              WHEN COUNT(CASE WHEN rd.verification_status = 'rejected' THEN 1 END) > 0 THEN 'rejected'
-              ELSE 'pending'
-            END as residency_verification_status,
-            COUNT(rd.id) as residency_document_count
+            NULL as residency_verification_status,
+            0 as residency_document_count
           FROM client_accounts ca
           LEFT JOIN client_profiles cp ON ca.id = cp.account_id
-          LEFT JOIN residency_documents rd ON ca.id = rd.account_id
-          GROUP BY ca.id, ca.username, cp.first_name, cp.middle_name, cp.last_name,
-                   cp.suffix, cp.email, cp.phone_number, ca.status, ca.created_at, ca.last_login
         ) u
         ${whereClause}
         ORDER BY u.created_at DESC
@@ -555,18 +547,11 @@ class UserServiceNew {
             'client' as user_type,
             ca.created_at,
             ca.updated_at,
-            CASE
-              WHEN COUNT(rd.id) = 0 THEN NULL
-              WHEN COUNT(CASE WHEN rd.verification_status = 'approved' THEN 1 END) > 0 THEN 'approved'
-              WHEN COUNT(CASE WHEN rd.verification_status = 'rejected' THEN 1 END) > 0 THEN 'rejected'
-              ELSE 'pending'
-            END as residency_verification_status,
-            COUNT(rd.id) as residency_document_count
+            NULL as residency_verification_status,
+            0 as residency_document_count
           FROM client_accounts ca
           LEFT JOIN client_profiles cp ON ca.id = cp.account_id
-          LEFT JOIN residency_documents rd ON ca.id = rd.account_id
           WHERE ca.status = 'inactive'
-          GROUP BY ca.id, ca.username, cp.first_name, cp.last_name, cp.email, ca.status, ca.created_at, ca.updated_at
         ) u
         WHERE 1=1 ${whereClause}
         ORDER BY u.updated_at DESC

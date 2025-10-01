@@ -19,9 +19,9 @@ class AdminDocumentService {
           COUNT(CASE WHEN status_id = 6 THEN 1 END) as ready_for_pickup_requests,
           COUNT(CASE WHEN status_id = 7 THEN 1 END) as completed_requests,
           COUNT(CASE WHEN status_id = 9 THEN 1 END) as rejected_requests,
-          COUNT(CASE WHEN DATE(requested_at) = CURDATE() THEN 1 END) as today_requests,
-          COUNT(CASE WHEN DATE(requested_at) >= DATE_SUB(CURDATE(), INTERVAL 7 DAY) THEN 1 END) as week_requests,
-          COUNT(CASE WHEN DATE(requested_at) >= DATE_SUB(CURDATE(), INTERVAL 30 DAY) THEN 1 END) as month_requests,
+          COUNT(CASE WHEN DATE(created_at) = CURDATE() THEN 1 END) as today_requests,
+          COUNT(CASE WHEN DATE(created_at) >= DATE_SUB(CURDATE(), INTERVAL 7 DAY) THEN 1 END) as week_requests,
+          COUNT(CASE WHEN DATE(created_at) >= DATE_SUB(CURDATE(), INTERVAL 30 DAY) THEN 1 END) as month_requests,
           SUM(COALESCE(total_document_fee, 0)) as total_revenue,
           SUM(CASE WHEN payment_status = 'paid' THEN COALESCE(total_document_fee, 0) ELSE 0 END) as paid_revenue,
           COUNT(CASE WHEN priority = 'urgent' THEN 1 END) as urgent_requests
@@ -249,10 +249,10 @@ class AdminDocumentService {
 
       // Validate sort column
       const validSortColumns = [
-        'requested_at', 'request_number', 'client_name', 
+        'created_at', 'request_number', 'client_name',
         'document_type', 'status_name', 'priority', 'total_fee'
       ];
-      const sortColumn = validSortColumns.includes(sort_by) ? sort_by : 'requested_at';
+      const sortColumn = validSortColumns.includes(sort_by) ? sort_by : 'created_at';
       const sortOrder = sort_order.toLowerCase() === 'asc' ? 'ASC' : 'DESC';
 
       // Main query
@@ -283,7 +283,7 @@ class AdminDocumentService {
           dr.payment_status,
           pm.method_name as payment_method,
           dr.delivery_method,
-          dr.requested_at,
+          dr.created_at as requested_at,
           dr.processed_at,
           dr.approved_at,
           COALESCE(
@@ -339,6 +339,7 @@ class AdminDocumentService {
                    sortColumn === 'document_type' ? 'dt.type_name' :
                    sortColumn === 'status_name' ? 'rs.status_name' :
                    sortColumn === 'total_fee' ? 'dr.total_document_fee' :
+                   sortColumn === 'created_at' ? 'dr.created_at' :
                    `dr.${sortColumn}`} ${sortOrder}
         LIMIT ? OFFSET ?
       `;
@@ -1294,7 +1295,7 @@ class AdminDocumentService {
           dr.payment_status,
           pm.method_name as payment_method,
           dr.delivery_method,
-          dr.requested_at,
+          dr.created_at as requested_at,
           dr.processed_at,
           dr.approved_at
         FROM document_requests dr
@@ -1346,17 +1347,17 @@ class AdminDocumentService {
 
       switch (period) {
         case 'day':
-          dateCondition = 'DATE(dr.requested_at) >= DATE_SUB(CURDATE(), INTERVAL 30 DAY)';
-          groupBy = 'DATE(dr.requested_at)';
+          dateCondition = 'DATE(dr.created_at) >= DATE_SUB(CURDATE(), INTERVAL 30 DAY)';
+          groupBy = 'DATE(dr.created_at)';
           break;
         case 'week':
-          dateCondition = 'YEARWEEK(dr.requested_at) >= YEARWEEK(DATE_SUB(CURDATE(), INTERVAL 12 WEEK))';
-          groupBy = 'YEARWEEK(dr.requested_at)';
+          dateCondition = 'YEARWEEK(dr.created_at) >= YEARWEEK(DATE_SUB(CURDATE(), INTERVAL 12 WEEK))';
+          groupBy = 'YEARWEEK(dr.created_at)';
           break;
         case 'month':
         default:
-          dateCondition = 'DATE(dr.requested_at) >= DATE_SUB(CURDATE(), INTERVAL 12 MONTH)';
-          groupBy = 'DATE_FORMAT(dr.requested_at, "%Y-%m")';
+          dateCondition = 'DATE(dr.created_at) >= DATE_SUB(CURDATE(), INTERVAL 12 MONTH)';
+          groupBy = 'DATE_FORMAT(dr.created_at, "%Y-%m")';
           break;
       }
 
@@ -1382,7 +1383,7 @@ class AdminDocumentService {
           SUM(COALESCE(dr.total_document_fee, 0)) as revenue
         FROM document_requests dr
         JOIN document_types dt ON dr.document_type_id = dt.id
-        WHERE DATE(dr.requested_at) >= DATE_SUB(CURDATE(), INTERVAL 30 DAY)
+        WHERE DATE(dr.created_at) >= DATE_SUB(CURDATE(), INTERVAL 30 DAY)
         GROUP BY dt.type_name
         ORDER BY count DESC
       `;
@@ -1392,10 +1393,10 @@ class AdminDocumentService {
         SELECT
           rs.status_name,
           COUNT(*) as count,
-          ROUND((COUNT(*) * 100.0 / (SELECT COUNT(*) FROM document_requests WHERE DATE(requested_at) >= DATE_SUB(CURDATE(), INTERVAL 30 DAY))), 2) as percentage
+          ROUND((COUNT(*) * 100.0 / (SELECT COUNT(*) FROM document_requests WHERE DATE(created_at) >= DATE_SUB(CURDATE(), INTERVAL 30 DAY))), 2) as percentage
         FROM document_requests dr
         JOIN request_status rs ON dr.status_id = rs.id
-        WHERE DATE(dr.requested_at) >= DATE_SUB(CURDATE(), INTERVAL 30 DAY)
+        WHERE DATE(dr.created_at) >= DATE_SUB(CURDATE(), INTERVAL 30 DAY)
         GROUP BY rs.status_name
         ORDER BY count DESC
       `;
@@ -1410,7 +1411,7 @@ class AdminDocumentService {
         FROM document_requests dr
         JOIN client_accounts ca ON dr.client_id = ca.id
         JOIN client_profiles cp ON ca.id = cp.account_id
-        WHERE DATE(dr.requested_at) >= DATE_SUB(CURDATE(), INTERVAL 30 DAY)
+        WHERE DATE(dr.created_at) >= DATE_SUB(CURDATE(), INTERVAL 30 DAY)
         GROUP BY dr.client_id
         ORDER BY request_count DESC
         LIMIT 10
@@ -1490,9 +1491,9 @@ class AdminDocumentService {
           rs.status_name,
           COALESCE(dr.total_document_fee, 0) as total_fee,
           dr.payment_status,
-          TIME(dr.requested_at) as request_time,
+          TIME(dr.created_at) as request_time,
           CASE
-            WHEN dr.approved_at IS NOT NULL THEN TIMESTAMPDIFF(HOUR, dr.requested_at, dr.approved_at)
+            WHEN dr.approved_at IS NOT NULL THEN TIMESTAMPDIFF(HOUR, dr.created_at, dr.approved_at)
             ELSE NULL
           END as processing_hours
         FROM document_requests dr
@@ -1500,7 +1501,7 @@ class AdminDocumentService {
         JOIN request_status rs ON dr.status_id = rs.id
         JOIN client_accounts ca ON dr.client_id = ca.id
         JOIN client_profiles cp ON ca.id = cp.account_id
-        WHERE DATE(dr.requested_at) = ?
+        WHERE DATE(dr.created_at) = ?
         ORDER BY dr.requested_at DESC
       `;
 
@@ -1513,9 +1514,9 @@ class AdminDocumentService {
           COUNT(CASE WHEN status_id = 7 THEN 1 END) as completed_requests,
           COUNT(CASE WHEN status_id = 9 THEN 1 END) as rejected_requests,
           SUM(COALESCE(total_document_fee, 0)) as total_revenue,
-          AVG(CASE WHEN approved_at IS NOT NULL THEN TIMESTAMPDIFF(HOUR, requested_at, approved_at) END) as avg_processing_hours
+          AVG(CASE WHEN approved_at IS NOT NULL THEN TIMESTAMPDIFF(HOUR, created_at, approved_at) END) as avg_processing_hours
         FROM document_requests
-        WHERE DATE(requested_at) = ?
+        WHERE DATE(created_at) = ?
       `;
 
       const [summary] = await executeQuery(summaryQuery, [date]);
@@ -1538,13 +1539,13 @@ class AdminDocumentService {
     try {
       const query = `
         SELECT
-          DATE(dr.requested_at) as request_date,
+          DATE(dr.created_at) as request_date,
           COUNT(*) as daily_requests,
           COUNT(CASE WHEN dr.status_id = 7 THEN 1 END) as daily_completed,
           SUM(COALESCE(dr.total_document_fee, 0)) as daily_revenue
         FROM document_requests dr
-        WHERE DATE_FORMAT(dr.requested_at, '%Y-%m') = ?
-        GROUP BY DATE(dr.requested_at)
+        WHERE DATE_FORMAT(dr.created_at, '%Y-%m') = ?
+        GROUP BY DATE(dr.created_at)
         ORDER BY request_date ASC
       `;
 
@@ -1557,9 +1558,9 @@ class AdminDocumentService {
           COUNT(CASE WHEN status_id = 7 THEN 1 END) as completed_requests,
           COUNT(CASE WHEN status_id = 9 THEN 1 END) as rejected_requests,
           SUM(COALESCE(total_document_fee, 0)) as total_revenue,
-          AVG(CASE WHEN approved_at IS NOT NULL THEN TIMESTAMPDIFF(HOUR, requested_at, approved_at) END) as avg_processing_hours
+          AVG(CASE WHEN approved_at IS NOT NULL THEN TIMESTAMPDIFF(HOUR, created_at, approved_at) END) as avg_processing_hours
         FROM document_requests
-        WHERE DATE_FORMAT(requested_at, '%Y-%m') = ?
+        WHERE DATE_FORMAT(created_at, '%Y-%m') = ?
       `;
 
       const [summary] = await executeQuery(summaryQuery, [yearMonth]);

@@ -50,7 +50,7 @@ class AdminDocumentController {
         search,
         date_from,
         date_to,
-        sort_by = 'requested_at',
+        sort_by = 'created_at',
         sort_order = 'desc'
       } = req.query;
 

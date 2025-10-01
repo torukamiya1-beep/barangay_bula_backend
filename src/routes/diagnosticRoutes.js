@@ -61,6 +61,50 @@ router.get('/table-structure/:tableName', protect, authorize('admin'), async (re
 });
 
 /**
+ * @route   GET /api/diagnostic/test-simple
+ * @desc    Test simple database queries without authentication
+ * @access  Public (for debugging)
+ */
+router.get('/test-simple', async (req, res) => {
+  try {
+    console.log('🔍 Starting simple diagnostic test...');
+
+    // Test 1: List all tables
+    console.log('📋 Step 1: Listing all tables...');
+    const tablesQuery = 'SHOW TABLES';
+    const tables = await executeQuery(tablesQuery);
+    console.log('✅ Found tables:', tables.map(t => Object.values(t)[0]));
+
+    // Test 2: Check document_requests table structure
+    console.log('📋 Step 2: Checking document_requests structure...');
+    const docRequestsStructure = await executeQuery('DESCRIBE document_requests');
+    console.log('✅ document_requests columns:', docRequestsStructure.map(c => c.Field));
+
+    // Test 3: Simple count query
+    console.log('📋 Step 3: Testing simple count...');
+    const countResult = await executeQuery('SELECT COUNT(*) as count FROM document_requests');
+    console.log('✅ document_requests count:', countResult[0].count);
+
+    res.json({
+      success: true,
+      data: {
+        tables: tables.map(t => Object.values(t)[0]),
+        document_requests_columns: docRequestsStructure.map(c => c.Field),
+        document_requests_count: countResult[0].count
+      }
+    });
+  } catch (error) {
+    console.error('❌ Simple diagnostic test failed:', error);
+    res.status(500).json({
+      success: false,
+      error: error.message,
+      code: error.code,
+      sqlMessage: error.sqlMessage
+    });
+  }
+});
+
+/**
  * @route   GET /api/diagnostic/test-query
  * @desc    Test a simple query to document_requests table
  * @access  Private (Admin only)
@@ -70,7 +114,7 @@ router.get('/test-query', protect, authorize('admin'), async (req, res) => {
     // Test simple query first
     const simpleQuery = 'SELECT COUNT(*) as count FROM document_requests';
     const simpleResult = await executeQuery(simpleQuery);
-    
+
     // Test query with JOIN
     const joinQuery = `
       SELECT dr.id, dr.request_number, rs.status_name

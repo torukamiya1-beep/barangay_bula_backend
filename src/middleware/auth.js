@@ -120,7 +120,11 @@ const protect = async (req, res, next) => {
       });
     }
   } catch (error) {
-    next(error);
+    console.log('❌ Auth middleware outer catch:', error.message);
+    return res.status(401).json({
+      success: false,
+      error: 'Authentication failed'
+    });
   }
 };
 

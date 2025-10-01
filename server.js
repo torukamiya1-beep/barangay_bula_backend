@@ -65,16 +65,24 @@ const diagnosticRoutes = require('./src/routes/diagnosticRoutes');
 const app = express();
 const PORT = process.env.PORT || 7000;
 
+// Trust proxy for Railway deployment and rate limiting
+// This is essential for Railway/Vercel/Heroku deployments behind proxies
+app.set('trust proxy', 1);
+
 // Security middleware
 app.use(helmet());
 
-// Rate limiting (TEMPORARILY DISABLED FOR TESTING)
+// Rate limiting configuration
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 10000, // Increased for testing
-  message: 'Too many requests from this IP, please try again later.'
+  max: 1000, // Reasonable limit for production
+  message: 'Too many requests from this IP, please try again later.',
+  standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
+  legacyHeaders: false, // Disable the `X-RateLimit-*` headers
+  // Skip rate limiting for health checks
+  skip: (req) => req.path === '/health'
 });
-// app.use(limiter); // DISABLED FOR TESTING
+app.use(limiter);
 
 // CORS configuration
 const corsOptions = {

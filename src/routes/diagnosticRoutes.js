@@ -61,6 +61,44 @@ router.get('/table-structure/:tableName', protect, authorize('admin'), async (re
 });
 
 /**
+ * @route   GET /api/diagnostic/test-request-status-table
+ * @desc    Check request_status table structure
+ * @access  Public (for debugging)
+ */
+router.get('/test-request-status-table', async (req, res) => {
+  try {
+    console.log('🔍 Checking request_status table structure...');
+
+    // Check table structure
+    const structureQuery = 'DESCRIBE request_status';
+    const structure = await executeQuery(structureQuery);
+    console.log('✅ request_status columns:', structure.map(c => c.Field));
+
+    // Get sample data
+    const dataQuery = 'SELECT * FROM request_status LIMIT 5';
+    const data = await executeQuery(dataQuery);
+    console.log('✅ request_status sample data:', data);
+
+    res.json({
+      success: true,
+      data: {
+        table_name: 'request_status',
+        columns: structure.map(c => c.Field),
+        sample_data: data
+      }
+    });
+  } catch (error) {
+    console.error('❌ request_status table check failed:', error);
+    res.status(500).json({
+      success: false,
+      error: error.message,
+      code: error.code,
+      sqlMessage: error.sqlMessage
+    });
+  }
+});
+
+/**
  * @route   GET /api/diagnostic/test-document-requests
  * @desc    Test document requests query specifically
  * @access  Public (for debugging)
@@ -69,7 +107,7 @@ router.get('/test-document-requests', async (req, res) => {
   try {
     console.log('🔍 Testing document requests query...');
 
-    // Test the exact query from adminDocumentService
+    // Test the exact query from adminDocumentService but without status_color
     const testQuery = `
       SELECT
         dr.id,
@@ -97,7 +135,6 @@ router.get('/test-document-requests', async (req, res) => {
         dt.type_name as document_type_name,
         pc.category_name as purpose_category_name,
         rs.status_name,
-        rs.status_color,
         cp.first_name as client_first_name,
         cp.last_name as client_last_name,
         cp.email as client_email,

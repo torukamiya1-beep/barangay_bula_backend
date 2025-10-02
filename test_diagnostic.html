@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Database Diagnostic Tool</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        h1 {
+            color: #333;
+        }
+        button {
+            background: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background: #45a049;
+        }
+        button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+        .result {
+            background: #f9f9f9;
+            padding: 15px;
+            border-radius: 4px;
+            margin-top: 10px;
+            white-space: pre-wrap;
+            font-family: monospace;
+            font-size: 12px;
+            max-height: 500px;
+            overflow-y: auto;
+        }
+        .error {
+            background: #ffebee;
+            color: #c62828;
+        }
+        .success {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+        input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        .login-section {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>🔍 Database Diagnostic Tool</h1>
+    
+    <div class="container login-section">
+        <h2>1. Login First</h2>
+        <input type="text" id="username" placeholder="Username (e.g., admin)" value="admin">
+        <input type="password" id="password" placeholder="Password" value="admin123">
+        <button onclick="login()">Login</button>
+        <div id="loginResult" class="result" style="display:none;"></div>
+    </div>
+
+    <div class="container">
+        <h2>2. Run Diagnostics</h2>
+        <button onclick="checkTables()" id="tablesBtn" disabled>Check Tables</button>
+        <button onclick="checkColumns()" id="columnsBtn" disabled>Check Columns</button>
+        <button onclick="testQuery()" id="queryBtn" disabled>Test Query</button>
+        <button onclick="checkTableStructure('document_requests')" id="structureBtn" disabled>Check document_requests Structure</button>
+        <div id="diagnosticResult" class="result" style="display:none;"></div>
+    </div>
+
+    <script>
+        const API_URL = 'https://brgybulabackend-production.up.railway.app/api';
+        let token = null;
+
+        async function login() {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const resultDiv = document.getElementById('loginResult');
+            
+            try {
+                resultDiv.style.display = 'block';
+                resultDiv.className = 'result';
+                resultDiv.textContent = 'Logging in...';
+                
+                const response = await fetch(`${API_URL}/auth/unified/login`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ username, password })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success && data.token) {
+                    token = data.token;
+                    resultDiv.className = 'result success';
+                    resultDiv.textContent = `✅ Login successful!\n\nToken: ${token.substring(0, 50)}...\nUser: ${data.user.username}\nRole: ${data.user.role}`;
+                    
+                    // Enable diagnostic buttons
+                    document.getElementById('tablesBtn').disabled = false;
+                    document.getElementById('columnsBtn').disabled = false;
+                    document.getElementById('queryBtn').disabled = false;
+                    document.getElementById('structureBtn').disabled = false;
+                } else {
+                    resultDiv.className = 'result error';
+                    resultDiv.textContent = `❌ Login failed: ${data.message || 'Unknown error'}`;
+                }
+            } catch (error) {
+                resultDiv.className = 'result error';
+                resultDiv.textContent = `❌ Error: ${error.message}`;
+            }
+        }
+
+        async function checkTables() {
+            await runDiagnostic('/diagnostic/tables', 'Checking tables...');
+        }
+
+        async function checkColumns() {
+            await runDiagnostic('/diagnostic/check-columns', 'Checking columns...');
+        }
+
+        async function testQuery() {
+            await runDiagnostic('/diagnostic/test-query', 'Testing query...');
+        }
+
+        async function checkTableStructure(tableName) {
+            await runDiagnostic(`/diagnostic/table-structure/${tableName}`, `Checking structure of ${tableName}...`);
+        }
+
+        async function runDiagnostic(endpoint, loadingMessage) {
+            const resultDiv = document.getElementById('diagnosticResult');
+            
+            if (!token) {
+                resultDiv.style.display = 'block';
+                resultDiv.className = 'result error';
+                resultDiv.textContent = '❌ Please login first!';
+                return;
+            }
+            
+            try {
+                resultDiv.style.display = 'block';
+                resultDiv.className = 'result';
+                resultDiv.textContent = loadingMessage;
+                
+                const response = await fetch(`${API_URL}${endpoint}`, {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    resultDiv.className = 'result success';
+                    resultDiv.textContent = `✅ Success!\n\n${JSON.stringify(data, null, 2)}`;
+                } else {
+                    resultDiv.className = 'result error';
+                    resultDiv.textContent = `❌ Failed!\n\n${JSON.stringify(data, null, 2)}`;
+                }
+            } catch (error) {
+                resultDiv.className = 'result error';
+                resultDiv.textContent = `❌ Error: ${error.message}`;
+            }
+        }
+    </script>
+</body>
+</html>
+

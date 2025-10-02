@@ -1,910 +1,3135 @@
-  id: 49,
-  username: 'floy1414',
-  type: 'client',
-  iat: 1757998243,
-  exp: 1760590243
-}
-Token decoded successfully: {
-  id: 49,
-  username: 'floy1414',
-  type: 'client',
-  iat: 1757998243,
-  exp: 1760590243
-}
-Client query result: [
-  {
-    id: 49,
-    username: 'floy1414',
-    status: 'active',
-    created_at: 2025-09-16T04:48:41.000Z,
-    email: 'floyfloyy21@gmail.com',
-    first_name: 'Floy',
-    last_name: 'Areliano',
-    phone_number: '09955921218'
-  }
-]
-Client query result: [
-  {
-    id: 49,
-    username: 'floy1414',
-    status: 'active',
-    created_at: 2025-09-16T04:48:41.000Z,
-    email: 'floyfloyy21@gmail.com',
-    first_name: 'Floy',
-    last_name: 'Areliano',
-    phone_number: '09955921218'
-  }
-]
-ℹ️  Purpose categories retrieved successfully
-ℹ️  Payment methods retrieved successfully
-::1 - - [16/Sep/2025:10:44:43 +0000] "GET /api/client/document-requests/payment-methods HTTP/1.1" 200 - "http://localhost:8081/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0"
-::1 - - [16/Sep/2025:10:44:43 +0000] "GET /api/client/document-requests/purpose-categories HTTP/1.1" 200 - "http://localhost:8081/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0"
-GET /api/admin/documents/requests - Origin: http://localhost:8081
-::1 - - [16/Sep/2025:10:45:10 +0000] "GET /api/admin/documents/requests?page=1&limit=10&status=&document_type=&priority=&search=&date_from=&date_to= HTTP/1.1" 200 245 "http://localhost:8081/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0"
-GET /api/admin/documents/dashboard/stats - Origin: http://localhost:8081
-::1 - - [16/Sep/2025:10:45:10 +0000] "GET /api/admin/documents/dashboard/stats HTTP/1.1" 200 - "http://localhost:8081/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0"
-GET /api/admin/documents/requests - Origin: http://localhost:8081
-::1 - - [16/Sep/2025:10:45:40 +0000] "GET /api/admin/documents/requests?page=1&limit=10&status=&document_type=&priority=&search=&date_from=&date_to= HTTP/1.1" 200 245 "http://localhost:8081/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0"
-GET /api/admin/documents/dashboard/stats - Origin: http://localhost:8081
-::1 - - [16/Sep/2025:10:45:40 +0000] "GET /api/admin/documents/dashboard/stats HTTP/1.1" 200 - "http://localhost:8081/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0"
-GET /api/admin/documents/requests - Origin: http://localhost:8081
-::1 - - [16/Sep/2025:10:46:10 +0000] "GET /api/admin/documents/requests?page=1&limit=10&status=&document_type=&priority=&search=&date_from=&date_to= HTTP/1.1" 200 245 "http://localhost:8081/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0"
-GET /api/admin/documents/dashboard/stats - Origin: http://localhost:8081
-::1 - - [16/Sep/2025:10:46:10 +0000] "GET /api/admin/documents/dashboard/stats HTTP/1.1" 200 - "http://localhost:8081/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0"
-POST /api/client/document-requests - Origin: http://localhost:8081
-Token decoded successfully: {
-  id: 49,
-  username: 'floy1414',
-  type: 'client',
-  iat: 1757998243,
-  exp: 1760590243
-}
-Client query result: [
-  {
-    id: 49,
-    username: 'floy1414',
-    status: 'active',
-    created_at: 2025-09-16T04:48:41.000Z,
-    email: 'floyfloyy21@gmail.com',
-    first_name: 'Floy',
-    last_name: 'Areliano',
-    phone_number: '09955921218'
-  }
-]
-🎯 DocumentRequestController.submitRequest called
-👤 Client ID: 49
-📋 Request data: {
-  document_type_id: 2,
-  purpose_category_id: 1,
-  purpose_details: null,
-  payment_method_id: 1,
-  delivery_method: 'pickup',
-  priority: 'normal',
-  is_third_party_request: true,
-  requestor_notes: null,
-  beneficiary: {
-    first_name: 'floy1414',
-    middle_name: null,
-    last_name: 'Stone',
-    suffix: 'Jr',
-    birth_date: '2000-12-12',
-    gender: 'male',
-    civil_status_id: 1,
-    nationality: 'Filipino',
-    phone_number: '09022295558',
-    email: 'floyyyrec21@gmail.com',
-    house_number: '21',
-    street: 'Bayavas',
-    subdivision: null,
-    barangay: 'Bula',
-    city_municipality: 'General Santos City (Dadiangas)',
-    province: 'South Cotabato',
-    postal_code: null,
-    years_of_residency: null,
-    months_of_residency: null,
-    relationship_to_requestor: 'child',
-    region: 'Region XII (SOCCSKSARGEN)',
-    region_code: '12',
-    province_code: '1263',
-    city_code: '126303',
-    barangay_code: '126303005'
-  },
-  authorized_pickup: {
-    first_name: 'Ashley',
-    middle_name: null,
-    last_name: 'Stone',
-    suffix: null,
-    phone_number: '09068283334',
-    email: null,
-    relationship_to_beneficiary: 'friend'
-  },
-  has_pending_cases: true,
-  pending_cases_details: 'Test Pending case sept16 6:45',
-  voter_registration_status: true,
-  total_fee: 150,
-  total_document_fee: 150
-}
-🔄 Calling DocumentRequestService.submitRequest...
-Service: submitRequest called with: {
-  requestData: {
-    document_type_id: 2,
-    purpose_category_id: 1,
-    purpose_details: null,
-    payment_method_id: 1,
-    delivery_method: 'pickup',
-    priority: 'normal',
-    is_third_party_request: true,
-    requestor_notes: null,
-    beneficiary: {
-      first_name: 'floy1414',
-      middle_name: null,
-      last_name: 'Stone',
-      suffix: 'Jr',
-      birth_date: '2000-12-12',
-      gender: 'male',
-      civil_status_id: 1,
-      nationality: 'Filipino',
-      phone_number: '09022295558',
-      email: 'floyyyrec21@gmail.com',
-      house_number: '21',
-      street: 'Bayavas',
-      subdivision: null,
-      barangay: 'Bula',
-      city_municipality: 'General Santos City (Dadiangas)',
-      province: 'South Cotabato',
-      postal_code: null,
-      years_of_residency: null,
-      months_of_residency: null,
-      relationship_to_requestor: 'child',
-      region: 'Region XII (SOCCSKSARGEN)',
-      region_code: '12',
-      province_code: '1263',
-      city_code: '126303',
-      barangay_code: '126303005'
-    },
-    authorized_pickup: {
-      first_name: 'Ashley',
-      middle_name: null,
-      last_name: 'Stone',
-      suffix: null,
-      phone_number: '09068283334',
-      email: null,
-      relationship_to_beneficiary: 'friend'
-    },
-    has_pending_cases: true,
-    pending_cases_details: 'Test Pending case sept16 6:45',
-    voter_registration_status: true,
-    total_fee: 150,
-    total_document_fee: 150
-  },
-  clientId: 49
-}
-Service: Fixed undefined parameters issue
-Service: Sanitized request data: {
-  document_type_id: 2,
-  purpose_category_id: 1,
-  purpose_details: null,
-  payment_method_id: 1,
-  delivery_method: 'pickup',
-  priority: 'normal',
-  is_third_party_request: true,
-  requestor_notes: null,
-  beneficiary: {
-    first_name: 'floy1414',
-    middle_name: null,
-    last_name: 'Stone',
-    suffix: 'Jr',
-    birth_date: '2000-12-12',
-    gender: 'male',
-    civil_status_id: 1,
-    nationality: 'Filipino',
-    phone_number: '09022295558',
-    email: 'floyyyrec21@gmail.com',
-    house_number: '21',
-    street: 'Bayavas',
-    subdivision: null,
-    barangay: 'Bula',
-    city_municipality: 'General Santos City (Dadiangas)',
-    province: 'South Cotabato',
-    postal_code: null,
-    years_of_residency: null,
-    months_of_residency: null,
-    relationship_to_requestor: 'child',
-    region: 'Region XII (SOCCSKSARGEN)',
-    region_code: '12',
-    province_code: '1263',
-    city_code: '126303',
-    barangay_code: '126303005'
-  },
-  authorized_pickup: {
-    first_name: 'Ashley',
-    middle_name: null,
-    last_name: 'Stone',
-    suffix: null,
-    phone_number: '09068283334',
-    email: null,
-    relationship_to_beneficiary: 'friend'
-  },
-  has_pending_cases: true,
-  pending_cases_details: 'Test Pending case sept16 6:45',
-  voter_registration_status: true,
-  total_fee: 150,
-  total_document_fee: 150
-}
-Service: Getting document type for ID: 2
-Service: Document type query result: [ { type_name: 'Barangay Clearance' } ]
-Service: Document type found: { type_name: 'Barangay Clearance' }
-Service: Total document fee from frontend: 150
-Service: Creating document request with params: {
-  client_id: 49,
-  document_type_id: 2,
-  purpose_category_id: 1,
-  purpose_details: null,
-  is_third_party_request: true,
-  requestor_notes: null,
-  beneficiary: {
-    first_name: 'floy1414',
-    middle_name: null,
-    last_name: 'Stone',
-    suffix: 'Jr',
-    birth_date: '2000-12-12',
-    gender: 'male',
-    civil_status_id: 1,
-    nationality: 'Filipino',
-    phone_number: '09022295558',
-    email: 'floyyyrec21@gmail.com',
-    house_number: '21',
-    street: 'Bayavas',
-    subdivision: null,
-    barangay: 'Bula',
-    city_municipality: 'General Santos City (Dadiangas)',
-    province: 'South Cotabato',
-    postal_code: null,
-    years_of_residency: null,
-    months_of_residency: null,
-    relationship_to_requestor: 'child',
-    region: 'Region XII (SOCCSKSARGEN)',
-    region_code: '12',
-    province_code: '1263',
-    city_code: '126303',
-    barangay_code: '126303005'
-  },
-  authorized_pickup: {
-    first_name: 'Ashley',
-    middle_name: null,
-    last_name: 'Stone',
-    suffix: null,
-    phone_number: '09068283334',
-    email: null,
-    relationship_to_beneficiary: 'friend'
-  },
-  total_document_fee: 150,
-  payment_method_id: 1,
-  delivery_method: 'pickup',
-  delivery_address: null,
-  priority: 'normal'
-}
-🔍 DocumentRequest.findById query: 
-      SELECT dr.*, rs.status_name as status
-      FROM document_requests dr
-      JOIN request_status rs ON dr.status_id = rs.id
-      WHERE dr.id = ?
-     with ID: 182
-📋 DocumentRequest.findById results: [
-  {
-    id: 182,
-    request_number: 'BC-2025-000001',
-    client_id: 49,
-    is_third_party_request: 1,
-    document_type_id: 2,
-    purpose_category_id: 1,
-    purpose_details: null,
-    requestor_notes: null,
-    status_id: 1,
-    priority: 'normal',
-    processed_by: null,
-    approved_by: null,
-    processed_at: null,
-    approved_at: null,
-    payment_method_id: 1,
-    payment_status: 'pending',
-    payment_reference: null,
-    payment_provider_reference: null,
-    paid_at: null,
-    delivery_method: 'pickup',
-    delivery_address: null,
-    total_document_fee: '150.00',
-    requested_at: 2025-09-16T10:46:18.000Z,
-    target_completion_date: null,
-    completed_at: null,
-    created_at: 2025-09-16T10:46:18.000Z,
-    updated_at: 2025-09-16T10:46:18.000Z,
-    status: 'pending'
-  }
-]
-✅ DocumentRequest created: { id: 182, status_id: 1, status: 'pending', client_id: 49 }
-🔔 DocumentRequest model: Calling notifyNewRequest for request ID 182
-🔔 NotificationService.notifyNewRequest called with requestId: 182
-📋 Getting request details for ID: 182
-📋 Executing request query:
-        SELECT dr.*, c.first_name, c.last_name, dt.type_name
-        FROM document_requests dr
-        JOIN client_profiles c ON dr.client_id = c.account_id
-        JOIN document_types dt ON dr.document_type_id = dt.id
-        WHERE dr.id = ?
+710.f316af27.js:1 📝 Event listener registered for admin : error
+chunk-vendors.3af4b5c5.js:20   GET https://brgybulabackend-production.up.railway.app/api/notifications/unread-count 500 (Internal Server Error)
+(anonymous) @ chunk-vendors.3af4b5c5.js:20
+xhr @ chunk-vendors.3af4b5c5.js:20
+ce @ chunk-vendors.3af4b5c5.js:20
+_request @ chunk-vendors.3af4b5c5.js:20
+request @ chunk-vendors.3af4b5c5.js:20
+(anonymous) @ chunk-vendors.3af4b5c5.js:20
+(anonymous) @ chunk-vendors.3af4b5c5.js:20
+getUnreadCount @ 710.f316af27.js:1
+loadUnreadCount @ 996.5e2777c1.js:1
+initializeNotifications @ 996.5e2777c1.js:1
+await in initializeNotifications
+mounted @ 996.5e2777c1.js:1
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+n @ chunk-vendors.3af4b5c5.js:28
+r @ chunk-vendors.3af4b5c5.js:28
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+b @ chunk-vendors.3af4b5c5.js:28
+w @ chunk-vendors.3af4b5c5.js:28
+Promise.then
+C @ chunk-vendors.3af4b5c5.js:28
+g @ chunk-vendors.3af4b5c5.js:28
+jl @ chunk-vendors.3af4b5c5.js:30
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+(anonymous) @ chunk-vendors.3af4b5c5.js:1
+trigger @ chunk-vendors.3af4b5c5.js:1
+L @ chunk-vendors.3af4b5c5.js:1
+notify @ chunk-vendors.3af4b5c5.js:1
+trigger @ chunk-vendors.3af4b5c5.js:1
+set value @ chunk-vendors.3af4b5c5.js:1
+q @ chunk-vendors.3af4b5c5.js:7
+(anonymous) @ chunk-vendors.3af4b5c5.js:7
+Promise.then
+O @ chunk-vendors.3af4b5c5.js:7
+A @ chunk-vendors.3af4b5c5.js:7
+install @ chunk-vendors.3af4b5c5.js:7
+use @ chunk-vendors.3af4b5c5.js:30
+9363 @ app.f38e14ca.js:1
+r @ app.f38e14ca.js:1
+(anonymous) @ app.f38e14ca.js:1
+(anonymous) @ app.f38e14ca.js:1
+(anonymous) @ app.f38e14ca.js:1
+(anonymous) @ app.f38e14ca.js:1
+710.f316af27.js:1  ❌ NotificationService: Failed to get unread count: uc {message: 'Request failed with status code 500', name: 'AxiosError', code: 'ERR_BAD_RESPONSE', config: {…}, request: XMLHttpRequest, …}
+getUnreadCount @ 710.f316af27.js:1
+await in getUnreadCount
+loadUnreadCount @ 996.5e2777c1.js:1
+initializeNotifications @ 996.5e2777c1.js:1
+await in initializeNotifications
+mounted @ 996.5e2777c1.js:1
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+n @ chunk-vendors.3af4b5c5.js:28
+r @ chunk-vendors.3af4b5c5.js:28
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+b @ chunk-vendors.3af4b5c5.js:28
+w @ chunk-vendors.3af4b5c5.js:28
+Promise.then
+C @ chunk-vendors.3af4b5c5.js:28
+g @ chunk-vendors.3af4b5c5.js:28
+jl @ chunk-vendors.3af4b5c5.js:30
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+(anonymous) @ chunk-vendors.3af4b5c5.js:1
+trigger @ chunk-vendors.3af4b5c5.js:1
+L @ chunk-vendors.3af4b5c5.js:1
+notify @ chunk-vendors.3af4b5c5.js:1
+trigger @ chunk-vendors.3af4b5c5.js:1
+set value @ chunk-vendors.3af4b5c5.js:1
+q @ chunk-vendors.3af4b5c5.js:7
+(anonymous) @ chunk-vendors.3af4b5c5.js:7
+Promise.then
+O @ chunk-vendors.3af4b5c5.js:7
+A @ chunk-vendors.3af4b5c5.js:7
+install @ chunk-vendors.3af4b5c5.js:7
+use @ chunk-vendors.3af4b5c5.js:30
+9363 @ app.f38e14ca.js:1
+r @ app.f38e14ca.js:1
+(anonymous) @ app.f38e14ca.js:1
+(anonymous) @ app.f38e14ca.js:1
+(anonymous) @ app.f38e14ca.js:1
+(anonymous) @ app.f38e14ca.js:1
+710.f316af27.js:1  📊 NotificationService: Error response status: 500
+getUnreadCount @ 710.f316af27.js:1
+await in getUnreadCount
+loadUnreadCount @ 996.5e2777c1.js:1
+initializeNotifications @ 996.5e2777c1.js:1
+await in initializeNotifications
+mounted @ 996.5e2777c1.js:1
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+n @ chunk-vendors.3af4b5c5.js:28
+r @ chunk-vendors.3af4b5c5.js:28
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+b @ chunk-vendors.3af4b5c5.js:28
+w @ chunk-vendors.3af4b5c5.js:28
+Promise.then
+C @ chunk-vendors.3af4b5c5.js:28
+g @ chunk-vendors.3af4b5c5.js:28
+jl @ chunk-vendors.3af4b5c5.js:30
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+(anonymous) @ chunk-vendors.3af4b5c5.js:1
+trigger @ chunk-vendors.3af4b5c5.js:1
+L @ chunk-vendors.3af4b5c5.js:1
+notify @ chunk-vendors.3af4b5c5.js:1
+trigger @ chunk-vendors.3af4b5c5.js:1
+set value @ chunk-vendors.3af4b5c5.js:1
+q @ chunk-vendors.3af4b5c5.js:7
+(anonymous) @ chunk-vendors.3af4b5c5.js:7
+Promise.then
+O @ chunk-vendors.3af4b5c5.js:7
+A @ chunk-vendors.3af4b5c5.js:7
+install @ chunk-vendors.3af4b5c5.js:7
+use @ chunk-vendors.3af4b5c5.js:30
+9363 @ app.f38e14ca.js:1
+r @ app.f38e14ca.js:1
+(anonymous) @ app.f38e14ca.js:1
+(anonymous) @ app.f38e14ca.js:1
+(anonymous) @ app.f38e14ca.js:1
+(anonymous) @ app.f38e14ca.js:1
+710.f316af27.js:1  📊 NotificationService: Error response data: {success: false, message: 'Failed to retrieve unread count', timestamp: '2025-10-01T23:20:46.303Z'}
+getUnreadCount @ 710.f316af27.js:1
+await in getUnreadCount
+loadUnreadCount @ 996.5e2777c1.js:1
+initializeNotifications @ 996.5e2777c1.js:1
+await in initializeNotifications
+mounted @ 996.5e2777c1.js:1
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+n @ chunk-vendors.3af4b5c5.js:28
+r @ chunk-vendors.3af4b5c5.js:28
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+b @ chunk-vendors.3af4b5c5.js:28
+w @ chunk-vendors.3af4b5c5.js:28
+Promise.then
+C @ chunk-vendors.3af4b5c5.js:28
+g @ chunk-vendors.3af4b5c5.js:28
+jl @ chunk-vendors.3af4b5c5.js:30
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+(anonymous) @ chunk-vendors.3af4b5c5.js:1
+trigger @ chunk-vendors.3af4b5c5.js:1
+L @ chunk-vendors.3af4b5c5.js:1
+notify @ chunk-vendors.3af4b5c5.js:1
+trigger @ chunk-vendors.3af4b5c5.js:1
+set value @ chunk-vendors.3af4b5c5.js:1
+q @ chunk-vendors.3af4b5c5.js:7
+(anonymous) @ chunk-vendors.3af4b5c5.js:7
+Promise.then
+O @ chunk-vendors.3af4b5c5.js:7
+A @ chunk-vendors.3af4b5c5.js:7
+install @ chunk-vendors.3af4b5c5.js:7
+use @ chunk-vendors.3af4b5c5.js:30
+9363 @ app.f38e14ca.js:1
+r @ app.f38e14ca.js:1
+(anonymous) @ app.f38e14ca.js:1
+(anonymous) @ app.f38e14ca.js:1
+(anonymous) @ app.f38e14ca.js:1
+(anonymous) @ app.f38e14ca.js:1
+996.5e2777c1.js:1  Failed to load unread count: uc {message: 'Request failed with status code 500', name: 'AxiosError', code: 'ERR_BAD_RESPONSE', config: {…}, request: XMLHttpRequest, …}
+loadUnreadCount @ 996.5e2777c1.js:1
+await in loadUnreadCount
+initializeNotifications @ 996.5e2777c1.js:1
+await in initializeNotifications
+mounted @ 996.5e2777c1.js:1
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+n @ chunk-vendors.3af4b5c5.js:28
+r @ chunk-vendors.3af4b5c5.js:28
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+b @ chunk-vendors.3af4b5c5.js:28
+w @ chunk-vendors.3af4b5c5.js:28
+Promise.then
+C @ chunk-vendors.3af4b5c5.js:28
+g @ chunk-vendors.3af4b5c5.js:28
+jl @ chunk-vendors.3af4b5c5.js:30
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+(anonymous) @ chunk-vendors.3af4b5c5.js:1
+trigger @ chunk-vendors.3af4b5c5.js:1
+L @ chunk-vendors.3af4b5c5.js:1
+notify @ chunk-vendors.3af4b5c5.js:1
+trigger @ chunk-vendors.3af4b5c5.js:1
+set value @ chunk-vendors.3af4b5c5.js:1
+q @ chunk-vendors.3af4b5c5.js:7
+(anonymous) @ chunk-vendors.3af4b5c5.js:7
+Promise.then
+O @ chunk-vendors.3af4b5c5.js:7
+A @ chunk-vendors.3af4b5c5.js:7
+install @ chunk-vendors.3af4b5c5.js:7
+use @ chunk-vendors.3af4b5c5.js:30
+9363 @ app.f38e14ca.js:1
+r @ app.f38e14ca.js:1
+(anonymous) @ app.f38e14ca.js:1
+(anonymous) @ app.f38e14ca.js:1
+(anonymous) @ app.f38e14ca.js:1
+(anonymous) @ app.f38e14ca.js:1
+[NEW] Explain Console errors by using Copilot in Edge: click
+         
+         to explain an error. 
+        Learn more
+        Don't show again
+chunk-vendors.3af4b5c5.js:20   GET https://brgybulabackend-production.up.railway.app/api/admin/documents/requests?page=1&limit=10&status=&document_type=&priority=&search=&date_from=&date_to= 500 (Internal Server Error)
+(anonymous) @ chunk-vendors.3af4b5c5.js:20
+xhr @ chunk-vendors.3af4b5c5.js:20
+ce @ chunk-vendors.3af4b5c5.js:20
+Promise.then
+_request @ chunk-vendors.3af4b5c5.js:20
+request @ chunk-vendors.3af4b5c5.js:20
+(anonymous) @ chunk-vendors.3af4b5c5.js:20
+(anonymous) @ chunk-vendors.3af4b5c5.js:20
+getAllRequests @ 431.818716fd.js:1
+loadRequests @ 699.6143ff6b.js:1
+loadComponentData @ 699.6143ff6b.js:1
+mounted @ 699.6143ff6b.js:1
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+n @ chunk-vendors.3af4b5c5.js:28
+r @ chunk-vendors.3af4b5c5.js:28
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+b @ chunk-vendors.3af4b5c5.js:28
+w @ chunk-vendors.3af4b5c5.js:28
+Promise.then
+C @ chunk-vendors.3af4b5c5.js:28
+g @ chunk-vendors.3af4b5c5.js:28
+jl @ chunk-vendors.3af4b5c5.js:30
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+(anonymous) @ chunk-vendors.3af4b5c5.js:1
+trigger @ chunk-vendors.3af4b5c5.js:1
+L @ chunk-vendors.3af4b5c5.js:1
+notify @ chunk-vendors.3af4b5c5.js:1
+trigger @ chunk-vendors.3af4b5c5.js:1
+set value @ chunk-vendors.3af4b5c5.js:1
+q @ chunk-vendors.3af4b5c5.js:7
+(anonymous) @ chunk-vendors.3af4b5c5.js:7
+Promise.then
+O @ chunk-vendors.3af4b5c5.js:7
+A @ chunk-vendors.3af4b5c5.js:7
+install @ chunk-vendors.3af4b5c5.js:7
+use @ chunk-vendors.3af4b5c5.js:30
+9363 @ app.f38e14ca.js:1
+r @ app.f38e14ca.js:1
+(anonymous) @ app.f38e14ca.js:1
+(anonymous) @ app.f38e14ca.js:1
+(anonymous) @ app.f38e14ca.js:1
+(anonymous) @ app.f38e14ca.js:1
+app.f38e14ca.js:1  API Error Details: {url: '/admin/documents/requests?page=1&limit=10&status=&…ument_type=&priority=&search=&date_from=&date_to=', method: 'GET', status: 500, statusText: '', message: 'Failed to retrieve document requests', …}
+(anonymous) @ app.f38e14ca.js:1
+Promise.then
+_request @ chunk-vendors.3af4b5c5.js:20
+request @ chunk-vendors.3af4b5c5.js:20
+(anonymous) @ chunk-vendors.3af4b5c5.js:20
+(anonymous) @ chunk-vendors.3af4b5c5.js:20
+getAllRequests @ 431.818716fd.js:1
+loadRequests @ 699.6143ff6b.js:1
+loadComponentData @ 699.6143ff6b.js:1
+mounted @ 699.6143ff6b.js:1
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+n @ chunk-vendors.3af4b5c5.js:28
+r @ chunk-vendors.3af4b5c5.js:28
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+b @ chunk-vendors.3af4b5c5.js:28
+w @ chunk-vendors.3af4b5c5.js:28
+Promise.then
+C @ chunk-vendors.3af4b5c5.js:28
+g @ chunk-vendors.3af4b5c5.js:28
+jl @ chunk-vendors.3af4b5c5.js:30
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+(anonymous) @ chunk-vendors.3af4b5c5.js:1
+trigger @ chunk-vendors.3af4b5c5.js:1
+L @ chunk-vendors.3af4b5c5.js:1
+notify @ chunk-vendors.3af4b5c5.js:1
+trigger @ chunk-vendors.3af4b5c5.js:1
+set value @ chunk-vendors.3af4b5c5.js:1
+q @ chunk-vendors.3af4b5c5.js:7
+(anonymous) @ chunk-vendors.3af4b5c5.js:7
+Promise.then
+O @ chunk-vendors.3af4b5c5.js:7
+A @ chunk-vendors.3af4b5c5.js:7
+install @ chunk-vendors.3af4b5c5.js:7
+use @ chunk-vendors.3af4b5c5.js:30
+9363 @ app.f38e14ca.js:1
+r @ app.f38e14ca.js:1
+(anonymous) @ app.f38e14ca.js:1
+(anonymous) @ app.f38e14ca.js:1
+(anonymous) @ app.f38e14ca.js:1
+(anonymous) @ app.f38e14ca.js:1
+app.f38e14ca.js:1  Full Error Object: uc {message: 'Request failed with status code 500', name: 'AxiosError', code: 'ERR_BAD_RESPONSE', config: {…}, request: XMLHttpRequest, …}
+(anonymous) @ app.f38e14ca.js:1
+Promise.then
+_request @ chunk-vendors.3af4b5c5.js:20
+request @ chunk-vendors.3af4b5c5.js:20
+(anonymous) @ chunk-vendors.3af4b5c5.js:20
+(anonymous) @ chunk-vendors.3af4b5c5.js:20
+getAllRequests @ 431.818716fd.js:1
+loadRequests @ 699.6143ff6b.js:1
+loadComponentData @ 699.6143ff6b.js:1
+mounted @ 699.6143ff6b.js:1
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+n @ chunk-vendors.3af4b5c5.js:28
+r @ chunk-vendors.3af4b5c5.js:28
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+b @ chunk-vendors.3af4b5c5.js:28
+w @ chunk-vendors.3af4b5c5.js:28
+Promise.then
+C @ chunk-vendors.3af4b5c5.js:28
+g @ chunk-vendors.3af4b5c5.js:28
+jl @ chunk-vendors.3af4b5c5.js:30
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+(anonymous) @ chunk-vendors.3af4b5c5.js:1
+trigger @ chunk-vendors.3af4b5c5.js:1
+L @ chunk-vendors.3af4b5c5.js:1
+notify @ chunk-vendors.3af4b5c5.js:1
+trigger @ chunk-vendors.3af4b5c5.js:1
+set value @ chunk-vendors.3af4b5c5.js:1
+q @ chunk-vendors.3af4b5c5.js:7
+(anonymous) @ chunk-vendors.3af4b5c5.js:7
+Promise.then
+O @ chunk-vendors.3af4b5c5.js:7
+A @ chunk-vendors.3af4b5c5.js:7
+install @ chunk-vendors.3af4b5c5.js:7
+use @ chunk-vendors.3af4b5c5.js:30
+9363 @ app.f38e14ca.js:1
+r @ app.f38e14ca.js:1
+(anonymous) @ app.f38e14ca.js:1
+(anonymous) @ app.f38e14ca.js:1
+(anonymous) @ app.f38e14ca.js:1
+(anonymous) @ app.f38e14ca.js:1
 
-📋 Request query result: [
-  {
-    id: 182,
-    request_number: 'BC-2025-000001',
-    client_id: 49,
-    is_third_party_request: 1,
-    document_type_id: 2,
-    purpose_category_id: 1,
-    purpose_details: null,
-    requestor_notes: null,
-    status_id: 1,
-    priority: 'normal',
-    processed_by: null,
-    approved_by: null,
-    processed_at: null,
-    approved_at: null,
-    payment_method_id: 1,
-    payment_status: 'pending',
-    payment_reference: null,
-    payment_provider_reference: null,
-    paid_at: null,
-    delivery_method: 'pickup',
-    delivery_address: null,
-    total_document_fee: '150.00',
-    requested_at: 2025-09-16T10:46:18.000Z,
-    target_completion_date: null,
-    completed_at: null,
-    created_at: 2025-09-16T10:46:18.000Z,
-    updated_at: 2025-09-16T10:46:18.000Z,
-    first_name: 'Floy',
-    last_name: 'Areliano',
-    type_name: 'Barangay Clearance'
-  }
-]
-ℹ️  Creating new request notifications for individual admins
-ℹ️  Creating notification for admin 32 (admin12345)
-ℹ️  Creating notification with data:
-ℹ️  Final notification parameters:
-ℹ️  Executing notification INSERT query with params:
-ℹ️  Notification INSERT result:
-ℹ️  Notification created successfully:
-ℹ️  Notification created successfully for admin 32:
-ℹ️  Creating notification for admin 34 (mark12345)
-ℹ️  Creating notification with data:
-ℹ️  Final notification parameters:
-ℹ️  Executing notification INSERT query with params:
-ℹ️  Notification INSERT result:
-ℹ️  Notification created successfully:
-ℹ️  Notification created successfully for admin 34:
-GET /api/admin/documents/requests - Origin: http://localhost:8081
-::1 - - [16/Sep/2025:10:46:18 +0000] "GET /api/admin/documents/requests?page=1&limit=10&status=&document_type=&priority=&search=&date_from=&date_to= HTTP/1.1" 200 - "http://localhost:8081/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0" 
-GET /api/admin/documents/requests - Origin: http://localhost:8081
-GET /api/admin/documents/dashboard/stats - Origin: http://localhost:8081
-::1 - - [16/Sep/2025:10:46:18 +0000] "GET /api/admin/documents/requests?page=1&limit=10&status=&document_type=&priority=&search=&date_from=&date_to= HTTP/1.1" 200 - "http://localhost:8081/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0" 
-GET /api/admin/documents/requests - Origin: http://localhost:8081
-::1 - - [16/Sep/2025:10:46:18 +0000] "GET /api/admin/documents/requests?page=1&limit=10&status=&document_type=&priority=&search=&date_from=&date_to= HTTP/1.1" 200 - "http://localhost:8081/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0" 
-GET /api/admin/documents/requests - Origin: http://localhost:8081
-::1 - - [16/Sep/2025:10:46:18 +0000] "GET /api/admin/documents/dashboard/stats HTTP/1.1" 200 - "http://localhost:8081/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0"
-GET /api/admin/documents/dashboard/stats - Origin: http://localhost:8081
-::1 - - [16/Sep/2025:10:46:18 +0000] "GET /api/admin/documents/dashboard/stats HTTP/1.1" 200 - "http://localhost:8081/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0"
-::1 - - [16/Sep/2025:10:46:18 +0000] "GET /api/admin/documents/requests?page=1&limit=10&status=&document_type=&priority=&search=&date_from=&date_to= HTTP/1.1" 200 - "http://localhost:8081/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0" 
-GET /api/admin/documents/dashboard/stats - Origin: http://localhost:8081
-::1 - - [16/Sep/2025:10:46:18 +0000] "GET /api/admin/documents/dashboard/stats HTTP/1.1" 200 - "http://localhost:8081/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0"
-GET /api/admin/documents/dashboard/stats - Origin: http://localhost:8081
-::1 - - [16/Sep/2025:10:46:18 +0000] "GET /api/admin/documents/dashboard/stats HTTP/1.1" 200 - "http://localhost:8081/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0"
-ℹ️  Email sent successfully
-ℹ️  Email sent successfully
-ℹ️  New request emails sent to admins
-ℹ️  New request email notifications sent to admins for request 182
-ℹ️  New request notification sent for request 182
-✅ DocumentRequest model: Notification sent successfully for request ID 182
-Service: Creating Barangay Clearance application (Legal Compliance)
-Service: createBarangayClearanceApplicationInTransaction called with: {
-  request_id: 182,
-  has_pending_cases: true,
-  pending_cases_details: 'Test Pending case sept16 6:45',
-  voter_registration_status: true
-}
-Service: Executing Barangay Clearance INSERT with params: [ 182, true, 'Test Pending case sept16 6:45', true ]
-Service: Barangay Clearance application created successfully (Essential Data + Voter Status)
-Service: Creating beneficiary record
-Service: createBeneficiaryInTransaction called with: {
-  request_id: 182,
-  first_name: 'floy1414',
-  middle_name: null,
-  last_name: 'Stone',
-  suffix: 'Jr',
-  birth_date: '2000-12-12',
-  gender: 'male',
-  civil_status_id: 1,
-  nationality: 'Filipino',
-  phone_number: '09022295558',
-  email: 'floyyyrec21@gmail.com',
-  house_number: '21',
-  street: 'Bayavas',
-  subdivision: null,
-  barangay: 'Bula',
-  city_municipality: 'General Santos City (Dadiangas)',
-  province: 'South Cotabato',
-  postal_code: null,
-  years_of_residency: null,
-  months_of_residency: null,
-  relationship_to_requestor: 'child',
-  region: 'Region XII (SOCCSKSARGEN)',
-  region_code: '12',
-  province_code: '1263',
-  city_code: '126303',
-  barangay_code: '126303005'
-}
-Service: Executing beneficiary INSERT with params: [
-  182,
-  'floy1414',
-  null,
-  'Stone',
-  'Jr',
-  '2000-12-12',
-  'male',
-  1,
-  'Filipino',
-  'floyyyrec21@gmail.com',
-  '09022295558',
-  '21',
-  'Bayavas',
-  null,
-  'Bula',
-  'General Santos City (Dadiangas)',
-  'South Cotabato',
-  'Region XII (SOCCSKSARGEN)',
-  '12',
-  '1263',
-  '126303',
-  '126303005',
-  null,
-  null,
-  null,
-  'child'
-]
-Service: Beneficiary created successfully
-ℹ️  Document request submitted successfully
-✅ DocumentRequestService.submitRequest completed: {
-  success: true,
-  data: DocumentRequest {
-    id: 182,
-    request_number: 'BC-2025-000001',
-    client_id: 49,
-    is_third_party_request: 1,
-    document_type_id: 2,
-    purpose_category_id: 1,
-    purpose_details: null,
-    requestor_notes: null,
-    status_id: 1,
-    status: 'pending',
-    priority: 'normal',
-    processed_by: null,
-    approved_by: null,
-    processed_at: null,
-    approved_at: null,
-    total_document_fee: '150.00',
-    payment_method_id: 1,
-    payment_status: 'pending',
-    payment_reference: null,
-    payment_provider_reference: null,
-    paid_at: null,
-    delivery_method: 'pickup',
-    delivery_address: null,
-    requested_at: 2025-09-16T10:46:18.000Z,
-    target_completion_date: null,
-    completed_at: null,
-    created_at: 2025-09-16T10:46:18.000Z,
-    updated_at: 2025-09-16T10:46:18.000Z
-  },
-  message: 'Document request submitted successfully'
-}
-✅ Activity logged: document_request_submit by client user 49 from IP ::1
-::1 - - [16/Sep/2025:10:46:21 +0000] "POST /api/client/document-requests HTTP/1.1" 201 799 "http://localhost:8081/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0"
-POST /api/client/document-requests/182/documents - Origin: http://localhost:8081
-Token decoded successfully: {
-  id: 49,
-  username: 'floy1414',
-  type: 'client',
-  iat: 1757998243,
-  exp: 1760590243
-}
-Client query result: [
-  {
-    id: 49,
-    username: 'floy1414',
-    status: 'active',
-    created_at: 2025-09-16T04:48:41.000Z,
-    email: 'floyfloyy21@gmail.com',
-    first_name: 'Floy',
-    last_name: 'Areliano',
-    phone_number: '09955921218'
-  }
-]
-::1 - - [16/Sep/2025:10:46:21 +0000] "POST /api/client/document-requests/182/documents HTTP/1.1" 400 58 "http://localhost:8081/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0"
-GET /api/client/document-requests/182 - Origin: http://localhost:8081
-Token decoded successfully: {
-  id: 49,
-  username: 'floy1414',
-  type: 'client',
-  iat: 1757998243,
-  exp: 1760590243
-}
-Client query result: [
-  {
-    id: 49,
-    username: 'floy1414',
-    status: 'active',
-    created_at: 2025-09-16T04:48:41.000Z,
-    email: 'floyfloyy21@gmail.com',
-    first_name: 'Floy',
-    last_name: 'Areliano',
-    phone_number: '09955921218'
-  }
-]
-🔍 Request data retrieved: {
-  id: 182,
-  requestor_nationality: 'Filipino',
-  requestor_months_of_residency: 3,
-  requestor_years_of_residency: 5,
-  has_requestor_data: true
-}
-🔍 Requestor object constructed: {
-  nationality: 'Filipino',
-  months_of_residency: 3,
-  years_of_residency: 5
-}
-ℹ️  Request details retrieved successfully
-::1 - - [16/Sep/2025:10:46:21 +0000] "GET /api/client/document-requests/182 HTTP/1.1" 200 - "http://localhost:8081/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0"
-POST /api/verification-documents/beneficiary/12/verification-image - Origin: http://localhost:8081
-📁 Multer destination called for file: valid-id-sample.jpg
-📄 Multer filename generated: temp-1758019581265-356506293.jpg
-ℹ️  Beneficiary verification image uploaded
-::1 - - [16/Sep/2025:10:46:21 +0000] "POST /api/verification-documents/beneficiary/12/verification-image HTTP/1.1" 200 264 "http://localhost:8081/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0"
-GET /api/client/document-requests/182/authorization-status - Origin: http://localhost:8081
-Token decoded successfully: {
-  id: 49,
-  username: 'floy1414',
-  type: 'client',
-  iat: 1757998243,
-  exp: 1760590243
-}
-Client query result: [
-  {
-    id: 49,
-    username: 'floy1414',
-    status: 'active',
-    created_at: 2025-09-16T04:48:41.000Z,
-    email: 'floyfloyy21@gmail.com',
-    first_name: 'Floy',
-    last_name: 'Areliano',
-    phone_number: '09955921218'
-  }
-]
-🔍 getAuthorizationStatus called
-📋 Request ID: 182
-👤 Client ID: 49
-🔍 Request data retrieved: {
-  id: 182,
-  requestor_nationality: 'Filipino',
-  requestor_months_of_residency: 3,
-  requestor_years_of_residency: 5,
-  has_requestor_data: true
-}
-🔍 Requestor object constructed: {
-  nationality: 'Filipino',
-  months_of_residency: 3,
-  years_of_residency: 5
-}
-ℹ️  Request details retrieved successfully
-🔍 Looking for authorized pickup person for request: 182
-📋 Found authorized pickup: YES
-✅ Authorized pickup person found: { id: 26, name: 'Ashley Stone' }
-📤 Returning authorization status: {
-  has_authorized_pickup: true,
-  pickup_person: {
-    id: 26,
-    name: 'Ashley Stone',
-    relationship: 'friend',
-    id_type: null,
-    id_number: null
-  },
-  verification_status: 'pending',
-  documents_uploaded: [],
-  admin_notes: null
-}
-::1 - - [16/Sep/2025:10:46:21 +0000] "GET /api/client/document-requests/182/authorization-status HTTP/1.1" 200 328 "http://localhost:8081/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0"
-POST /api/verification-documents/pickup-person/26/id-image - Origin: http://localhost:8081
-📁 Multer destination called for file: valid-id-sample.jpg
-📄 Multer filename generated: temp-1758019581391-991742230.jpg
-🔍 uploadPickupPersonId called
-📋 Request params: { pickupPersonId: '26' }
-📁 File info: {
-  originalname: 'valid-id-sample.jpg',
-  mimetype: 'image/jpeg',
-  size: 17858,
-  path: 'uploads\\temp\\temp-1758019581391-991742230.jpg'
-}
-🔄 Calling VerificationDocumentService.uploadPickupPersonIdImage...
-🔍 VerificationDocumentService.uploadPickupPersonIdImage called
-📋 Pickup Person ID: 26
-📁 File: {
-  fieldname: 'id_image',
-  originalname: 'valid-id-sample.jpg',
-  encoding: '7bit',
-  mimetype: 'image/jpeg',
-  destination: 'uploads/temp',
-  filename: 'temp-1758019581391-991742230.jpg',
-  path: 'uploads\\temp\\temp-1758019581391-991742230.jpg',
-  size: 17858
-}
-✅ File validation passed
-📂 Upload directory: uploads/verification/pickup_ids
-📄 Generated file path: uploads\verification\pickup_ids\pickup_id_26_1758019581410.jpg
-📤 Moving file from: uploads\temp\temp-1758019581391-991742230.jpg to: uploads\verification\pickup_ids\pickup_id_26_1758019581410.jpg
-✅ File moved successfully
-💾 Updating database with file information...
-📋 Database update params: [
-  'uploads\\verification\\pickup_ids\\pickup_id_26_1758019581410.jpg',
-  'valid-id-sample.jpg',
-  17858,
-  'image/jpeg',
-  26
-]
-✅ Database updated successfully
-ℹ️  Pickup person ID image uploaded
-📋 Service result: {
-  success: true,
-  message: 'ID image uploaded successfully',
-  data: {
-    fileName: 'pickup_id_26_1758019581410.jpg',
-    filePath: 'uploads\\verification\\pickup_ids\\pickup_id_26_1758019581410.jpg',
-    fileSize: 17858
-  }
-}
-✅ Upload successful, returning success response
-::1 - - [16/Sep/2025:10:46:21 +0000] "POST /api/verification-documents/pickup-person/26/id-image HTTP/1.1" 200 247 "http://localhost:8081/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0"
-POST /api/verification-documents/pickup-person/26/authorization-document - Origin: http://localhost:8081
-📁 Multer destination called for file: authorization_letter_sample.png
-📄 Multer filename generated: temp-1758019581458-235867453.png
-🔍 uploadPickupAuthorization called
-📋 Request params: { pickupPersonId: '26' }
-📁 File info: {
-  originalname: 'authorization_letter_sample.png',
-  mimetype: 'image/png',
-  size: 50385,
-  path: 'uploads\\temp\\temp-1758019581458-235867453.png'
-}
-🔄 Calling VerificationDocumentService.uploadPickupAuthorizationDocument...
-💾 Updating database with authorization document information...
-📋 Database update params: [
-  'uploads\\verification\\pickup_authorization\\pickup_auth_26_1758019581465.png',
-  26
-]
-✅ Database updated successfully
-ℹ️  Pickup authorization document uploaded
-📋 Service result: {
-  success: true,
-  message: 'Authorization document uploaded successfully',
-  data: {
-    fileName: 'pickup_auth_26_1758019581465.png',
-    filePath: 'uploads\\verification\\pickup_authorization\\pickup_auth_26_1758019581465.png',
-    fileSize: 50385
-  }
-}
-✅ Upload successful, returning success response
-::1 - - [16/Sep/2025:10:46:21 +0000] "POST /api/verification-documents/pickup-person/26/authorization-document HTTP/1.1" 200 275 "http://localhost:8081/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0"
-GET /api/client/document-requests/182 - Origin: http://localhost:8081
-Token decoded successfully: {
-  id: 49,
-  username: 'floy1414',
-  type: 'client',
-  iat: 1757998243,
-  exp: 1760590243
-}
-Client query result: [
-  {
-    id: 49,
-    username: 'floy1414',
-    status: 'active',
-    created_at: 2025-09-16T04:48:41.000Z,
-    email: 'floyfloyy21@gmail.com',
-    first_name: 'Floy',
-    last_name: 'Areliano',
-    phone_number: '09955921218'
-  }
-]
-🔍 Request data retrieved: {
-  id: 182,
-  requestor_nationality: 'Filipino',
-  requestor_months_of_residency: 3,
-  requestor_years_of_residency: 5,
-  has_requestor_data: true
-}
-🔍 Requestor object constructed: {
-  nationality: 'Filipino',
-  months_of_residency: 3,
-  years_of_residency: 5
-}
-ℹ️  Request details retrieved successfully
-::1 - - [16/Sep/2025:10:46:21 +0000] "GET /api/client/document-requests/182 HTTP/1.1" 200 - "http://localhost:8081/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0"
-GET /api/client/document-requests/182/verification-image/beneficiary/beneficiary_12_1758019581275.jpg - Origin: http://localhost:8081
-Token decoded successfully: {
-  id: 49,
-  username: 'floy1414',
-  type: 'client',
-  iat: 1757998243,
-  exp: 1760590243
-}
-Client query result: [
-  {
-    id: 49,
-    username: 'floy1414',
-    status: 'active',
-    created_at: 2025-09-16T04:48:41.000Z,
-    email: 'floyfloyy21@gmail.com',
-    first_name: 'Floy',
-    last_name: 'Areliano',
-    phone_number: '09955921218'
-  }
-]
-serveVerificationImage called: {
-  id: '182',
-  type: 'beneficiary',
-  filename: 'beneficiary_12_1758019581275.jpg',
-  userId: 49,
-  userRole: 'client'
-}
-🔍 Backend debug - Image serving: {
-  requestId: '182',
-  imageType: 'beneficiary',
-  filename: 'beneficiary_12_1758019581275.jpg',
-  baseDir: 'D:\\cap2_rhai_front_and_back\\rhai_backend\\uploads\\verification',
-  resolvedPath: 'D:\\cap2_rhai_front_and_back\\rhai_backend\\uploads\\verification\\beneficiaries\\beneficiary_12_1758019581275.jpg',
-  pathExists: true
-}
-✅ File exists, attempting to serve: D:\cap2_rhai_front_and_back\rhai_backend\uploads\verification\beneficiaries\beneficiary_12_1758019581275.jpg
-📄 Setting Content-Type: image/jpeg for file: beneficiary_12_1758019581275.jpg
-✅ File sent successfully: {
-  filename: 'beneficiary_12_1758019581275.jpg',
-  type: 'beneficiary',
-  mimeType: 'image/jpeg',
-  path: 'D:\\cap2_rhai_front_and_back\\rhai_backend\\uploads\\verification\\beneficiaries\\beneficiary_12_1758019581275.jpg'
-}
-::1 - - [16/Sep/2025:10:46:21 +0000] "GET /api/client/document-requests/182/verification-image/beneficiary/beneficiary_12_1758019581275.jpg HTTP/1.1" 200 17858 "http://localhost:8081/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0"      
-GET /api/client/document-requests/182/verification-image/pickup-id/pickup_id_26_1758019581410.jpg - Origin: http://localhost:8081
-Token decoded successfully: {
-  id: 49,
-  username: 'floy1414',
-  type: 'client',
-  iat: 1757998243,
-  exp: 1760590243
-}
-Client query result: [
-  {
-    id: 49,
-    username: 'floy1414',
-    status: 'active',
-    created_at: 2025-09-16T04:48:41.000Z,
-    email: 'floyfloyy21@gmail.com',
-    first_name: 'Floy',
-    last_name: 'Areliano',
-    phone_number: '09955921218'
-  }
-]
-serveVerificationImage called: {
-  id: '182',
-  type: 'pickup-id',
-  filename: 'pickup_id_26_1758019581410.jpg',
-  userId: 49,
-  userRole: 'client'
-}
-🔍 Backend debug - Image serving: {
-  requestId: '182',
-  imageType: 'pickup-id',
-  filename: 'pickup_id_26_1758019581410.jpg',
-  baseDir: 'D:\\cap2_rhai_front_and_back\\rhai_backend\\uploads\\verification',
-  resolvedPath: 'D:\\cap2_rhai_front_and_back\\rhai_backend\\uploads\\verification\\pickup_ids\\pickup_id_26_1758019581410.jpg',
-  pathExists: true
-}
-✅ File exists, attempting to serve: D:\cap2_rhai_front_and_back\rhai_backend\uploads\verification\pickup_ids\pickup_id_26_1758019581410.jpg
-📄 Setting Content-Type: image/jpeg for file: pickup_id_26_1758019581410.jpg
-✅ File sent successfully: {
-  filename: 'pickup_id_26_1758019581410.jpg',
-  type: 'pickup-id',
-  mimeType: 'image/jpeg',
-  path: 'D:\\cap2_rhai_front_and_back\\rhai_backend\\uploads\\verification\\pickup_ids\\pickup_id_26_1758019581410.jpg'
-}
-::1 - - [16/Sep/2025:10:46:22 +0000] "GET /api/client/document-requests/182/verification-image/pickup-id/pickup_id_26_1758019581410.jpg HTTP/1.1" 200 17858 "http://localhost:8081/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0"
-GET /api/client/document-requests/182/verification-image/pickup-auth/pickup_auth_26_1758019581465.png - Origin: http://localhost:8081
-Token decoded successfully: {
-  id: 49,
-  username: 'floy1414',
-  type: 'client',
-  iat: 1757998243,
-  exp: 1760590243
-}
-Client query result: [
-  {
-    id: 49,
-    username: 'floy1414',
-    status: 'active',
-    created_at: 2025-09-16T04:48:41.000Z,
-    email: 'floyfloyy21@gmail.com',
-    first_name: 'Floy',
-    last_name: 'Areliano',
-    phone_number: '09955921218'
-  }
-]
-serveVerificationImage called: {
-  id: '182',
-  type: 'pickup-auth',
-  filename: 'pickup_auth_26_1758019581465.png',
-  userId: 49,
-  userRole: 'client'
-}
-🔍 Backend debug - Image serving: {
-  requestId: '182',
-  imageType: 'pickup-auth',
-  filename: 'pickup_auth_26_1758019581465.png',
-  baseDir: 'D:\\cap2_rhai_front_and_back\\rhai_backend\\uploads\\verification',
-  resolvedPath: 'D:\\cap2_rhai_front_and_back\\rhai_backend\\uploads\\verification\\pickup_authorization\\pickup_auth_26_1758019581465.png',
-  pathExists: true
-}
-✅ File exists, attempting to serve: D:\cap2_rhai_front_and_back\rhai_backend\uploads\verification\pickup_authorization\pickup_auth_26_1758019581465.png
-📄 Setting Content-Type: image/png for file: pickup_auth_26_1758019581465.png
-✅ File sent successfully: {
-  filename: 'pickup_auth_26_1758019581465.png',
-  type: 'pickup-auth',
-  mimeType: 'image/png',
-  path: 'D:\\cap2_rhai_front_and_back\\rhai_backend\\uploads\\verification\\pickup_authorization\\pickup_auth_26_1758019581465.png'
-}
-::1 - - [16/Sep/2025:10:46:22 +0000] "GET /api/client/document-requests/182/verification-image/pickup-auth/pickup_auth_26_1758019581465.png HTTP/1.1" 200 50385 "http://localhost:8081/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0"      
-GET /api/admin/documents/requests/182 - Origin: http://localhost:8081
-::1 - - [16/Sep/2025:10:46:31 +0000] "GET /api/admin/documents/requests/182 HTTP/1.1" 200 - "http://localhost:8081/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0"
-GET /api/admin/documents/requests - Origin: http://localhost:8081
-::1 - - [16/Sep/2025:10:46:40 +0000] "GET /api/admin/documents/requests?page=1&limit=10&status=&document_type=&priority=&search=&date_from=&date_to= HTTP/1.1" 200 - "http://localhost:8081/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0" 
-GET /api/admin/documents/dashboard/stats - Origin: http://localhost:8081
-::1 - - [16/Sep/2025:10:46:40 +0000] "GET /api/admin/documents/dashboard/stats HTTP/1.1" 200 - "http://localhost:8081/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0"
-GET /api/admin/documents/requests/182 - Origin: http://localhost:8081
-::1 - - [16/Sep/2025:10:46:40 +0000] "GET /api/admin/documents/requests/182 HTTP/1.1" 200 - "http://localhost:8081/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0"
-GET /api/client/document-requests - Origin: http://localhost:8081
-Token decoded successfully: {
-  id: 49,
-  username: 'floy1414',
-  type: 'client',
-  iat: 1757998243,
-  exp: 1760590243
-}
-Client query result: [
-  {
-    id: 49,
-    username: 'floy1414',
-    status: 'active',
-    created_at: 2025-09-16T04:48:41.000Z,
-    email: 'floyfloyy21@gmail.com',
-    first_name: 'Floy',
-    last_name: 'Areliano',
-    phone_number: '09955921218'
-  }
-]
-ℹ️  Client requests retrieved successfully
-::1 - - [16/Sep/2025:10:46:54 +0000] "GET /api/client/document-requests? HTTP/1.1" 200 - "http://localhost:8081/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0"
-GET /uploads/verification/pickup_ids/pickup_id_26_1758019581410.jpg - Origin: http://localhost:8081
-::1 - - [16/Sep/2025:10:47:02 +0000] "GET /uploads/verification/pickup_ids/pickup_id_26_1758019581410.jpg HTTP/1.1" 200 17858 "http://localhost:8081/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0"
-GET /uploads/verification/pickup_authorization/pickup_auth_26_1758019581465.png - Origin: http://localhost:8081
-::1 - - [16/Sep/2025:10:47:02 +0000] "GET /uploads/verification/pickup_authorization/pickup_auth_26_1758019581465.png HTTP/1.1" 200 50385 "http://localhost:8081/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0"
-GET /api/admin/documents/requests - Origin: http://localhost:8081
-::1 - - [16/Sep/2025:10:47:10 +0000] "GET /api/admin/documents/requests?page=1&limit=10&status=&document_type=&priority=&search=&date_from=&date_to= HTTP/1.1" 200 - "http://localhost:8081/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0" 
-GET /api/admin/documents/dashboard/stats - Origin: http://localhost:8081
-::1 - - [16/Sep/2025:10:47:10 +0000] "GET /api/admin/documents/dashboard/stats HTTP/1.1" 200 - "http://localhost:8081/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0"
-GET /api/admin/documents/requests/182 - Origin: http://localhost:8081
-::1 - - [16/Sep/2025:10:47:10 +0000] "GET /api/admin/documents/requests/182 HTTP/1.1" 200 - "http://localhost:8081/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0"
-GET /
+chunk-vendors.3af4b5c5.js:20   GET https://brgybulabackend-production.up.railway.app/api/admin/documents/requests?page=1&limit=10&status=&document_type=&priority=&search=&date_from=&date_to= 500 (Internal Server Error)
+(anonymous) @ chunk-vendors.3af4b5c5.js:20
+xhr @ chunk-vendors.3af4b5c5.js:20
+ce @ chunk-vendors.3af4b5c5.js:20
+Promise.then
+_request @ chunk-vendors.3af4b5c5.js:20
+request @ chunk-vendors.3af4b5c5.js:20
+(anonymous) @ chunk-vendors.3af4b5c5.js:20
+(anonymous) @ chunk-vendors.3af4b5c5.js:20
+getAllRequests @ 431.818716fd.js:1
+loadRequests @ 699.6143ff6b.js:1
+refreshRequestsData @ 699.6143ff6b.js:1
+(anonymous) @ 699.6143ff6b.js:1
+setInterval
+startAutoRefresh @ 699.6143ff6b.js:1
+initializeRealTimeFeatures @ 699.6143ff6b.js:1
+await in initializeRealTimeFeatures
+mounted @ 699.6143ff6b.js:1
+await in mounted
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+n @ chunk-vendors.3af4b5c5.js:28
+r @ chunk-vendors.3af4b5c5.js:28
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+b @ chunk-vendors.3af4b5c5.js:28
+w @ chunk-vendors.3af4b5c5.js:28
+Promise.then
+C @ chunk-vendors.3af4b5c5.js:28
+g @ chunk-vendors.3af4b5c5.js:28
+jl @ chunk-vendors.3af4b5c5.js:30
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+(anonymous) @ chunk-vendors.3af4b5c5.js:1
+trigger @ chunk-vendors.3af4b5c5.js:1
+L @ chunk-vendors.3af4b5c5.js:1
+notify @ chunk-vendors.3af4b5c5.js:1
+trigger @ chunk-vendors.3af4b5c5.js:1
+set value @ chunk-vendors.3af4b5c5.js:1
+q @ chunk-vendors.3af4b5c5.js:7
+(anonymous) @ chunk-vendors.3af4b5c5.js:7
+Promise.then
+O @ chunk-vendors.3af4b5c5.js:7
+A @ chunk-vendors.3af4b5c5.js:7
+install @ chunk-vendors.3af4b5c5.js:7
+use @ chunk-vendors.3af4b5c5.js:30
+9363 @ app.f38e14ca.js:1
+r @ app.f38e14ca.js:1
+(anonymous) @ app.f38e14ca.js:1
+(anonymous) @ app.f38e14ca.js:1
+(anonymous) @ app.f38e14ca.js:1
+(anonymous) @ app.f38e14ca.js:1
+app.f38e14ca.js:1  API Error Details: {url: '/admin/documents/requests?page=1&limit=10&status=&…ument_type=&priority=&search=&date_from=&date_to=', method: 'GET', status: 500, statusText: '', message: 'Failed to retrieve document requests', …}
+(anonymous) @ app.f38e14ca.js:1
+Promise.then
+_request @ chunk-vendors.3af4b5c5.js:20
+request @ chunk-vendors.3af4b5c5.js:20
+(anonymous) @ chunk-vendors.3af4b5c5.js:20
+(anonymous) @ chunk-vendors.3af4b5c5.js:20
+getAllRequests @ 431.818716fd.js:1
+loadRequests @ 699.6143ff6b.js:1
+refreshRequestsData @ 699.6143ff6b.js:1
+(anonymous) @ 699.6143ff6b.js:1
+setInterval
+startAutoRefresh @ 699.6143ff6b.js:1
+initializeRealTimeFeatures @ 699.6143ff6b.js:1
+await in initializeRealTimeFeatures
+mounted @ 699.6143ff6b.js:1
+await in mounted
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+n @ chunk-vendors.3af4b5c5.js:28
+r @ chunk-vendors.3af4b5c5.js:28
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+b @ chunk-vendors.3af4b5c5.js:28
+w @ chunk-vendors.3af4b5c5.js:28
+Promise.then
+C @ chunk-vendors.3af4b5c5.js:28
+g @ chunk-vendors.3af4b5c5.js:28
+jl @ chunk-vendors.3af4b5c5.js:30
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+(anonymous) @ chunk-vendors.3af4b5c5.js:1
+trigger @ chunk-vendors.3af4b5c5.js:1
+L @ chunk-vendors.3af4b5c5.js:1
+notify @ chunk-vendors.3af4b5c5.js:1
+trigger @ chunk-vendors.3af4b5c5.js:1
+set value @ chunk-vendors.3af4b5c5.js:1
+q @ chunk-vendors.3af4b5c5.js:7
+(anonymous) @ chunk-vendors.3af4b5c5.js:7
+Promise.then
+O @ chunk-vendors.3af4b5c5.js:7
+A @ chunk-vendors.3af4b5c5.js:7
+install @ chunk-vendors.3af4b5c5.js:7
+use @ chunk-vendors.3af4b5c5.js:30
+9363 @ app.f38e14ca.js:1
+r @ app.f38e14ca.js:1
+(anonymous) @ app.f38e14ca.js:1
+(anonymous) @ app.f38e14ca.js:1
+(anonymous) @ app.f38e14ca.js:1
+(anonymous) @ app.f38e14ca.js:1
+app.f38e14ca.js:1  Full Error Object: uc {message: 'Request failed with status code 500', name: 'AxiosError', code: 'ERR_BAD_RESPONSE', config: {…}, request: XMLHttpRequest, …}
+(anonymous) @ app.f38e14ca.js:1
+Promise.then
+_request @ chunk-vendors.3af4b5c5.js:20
+request @ chunk-vendors.3af4b5c5.js:20
+(anonymous) @ chunk-vendors.3af4b5c5.js:20
+(anonymous) @ chunk-vendors.3af4b5c5.js:20
+getAllRequests @ 431.818716fd.js:1
+loadRequests @ 699.6143ff6b.js:1
+refreshRequestsData @ 699.6143ff6b.js:1
+(anonymous) @ 699.6143ff6b.js:1
+setInterval
+startAutoRefresh @ 699.6143ff6b.js:1
+initializeRealTimeFeatures @ 699.6143ff6b.js:1
+await in initializeRealTimeFeatures
+mounted @ 699.6143ff6b.js:1
+await in mounted
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+n @ chunk-vendors.3af4b5c5.js:28
+r @ chunk-vendors.3af4b5c5.js:28
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+b @ chunk-vendors.3af4b5c5.js:28
+w @ chunk-vendors.3af4b5c5.js:28
+Promise.then
+C @ chunk-vendors.3af4b5c5.js:28
+g @ chunk-vendors.3af4b5c5.js:28
+jl @ chunk-vendors.3af4b5c5.js:30
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+(anonymous) @ chunk-vendors.3af4b5c5.js:1
+trigger @ chunk-vendors.3af4b5c5.js:1
+L @ chunk-vendors.3af4b5c5.js:1
+notify @ chunk-vendors.3af4b5c5.js:1
+trigger @ chunk-vendors.3af4b5c5.js:1
+set value @ chunk-vendors.3af4b5c5.js:1
+q @ chunk-vendors.3af4b5c5.js:7
+(anonymous) @ chunk-vendors.3af4b5c5.js:7
+Promise.then
+O @ chunk-vendors.3af4b5c5.js:7
+A @ chunk-vendors.3af4b5c5.js:7
+install @ chunk-vendors.3af4b5c5.js:7
+use @ chunk-vendors.3af4b5c5.js:30
+9363 @ app.f38e14ca.js:1
+r @ app.f38e14ca.js:1
+(anonymous) @ app.f38e14ca.js:1
+(anonymous) @ app.f38e14ca.js:1
+(anonymous) @ app.f38e14ca.js:1
+(anonymous) @ app.f38e14ca.js:1
+[NEW] Explain Console errors by using Copilot in Edge: click
+         
+         to explain an error. 
+        Learn more
+        Don't show again
+710.f316af27.js:1 🗑️ Event listener removed for admin : error
+710.f316af27.js:1 📝 Event listener registered for admin : error
+chunk-vendors.3af4b5c5.js:20   GET https://brgybulabackend-production.up.railway.app/api/notifications/unread-count 500 (Internal Server Error)
+(anonymous) @ chunk-vendors.3af4b5c5.js:20
+xhr @ chunk-vendors.3af4b5c5.js:20
+ce @ chunk-vendors.3af4b5c5.js:20
+_request @ chunk-vendors.3af4b5c5.js:20
+request @ chunk-vendors.3af4b5c5.js:20
+(anonymous) @ chunk-vendors.3af4b5c5.js:20
+(anonymous) @ chunk-vendors.3af4b5c5.js:20
+getUnreadCount @ 710.f316af27.js:1
+loadUnreadCount @ 996.5e2777c1.js:1
+initializeNotifications @ 996.5e2777c1.js:1
+await in initializeNotifications
+mounted @ 996.5e2777c1.js:1
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+n @ chunk-vendors.3af4b5c5.js:28
+r @ chunk-vendors.3af4b5c5.js:28
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+b @ chunk-vendors.3af4b5c5.js:28
+w @ chunk-vendors.3af4b5c5.js:28
+Promise.then
+C @ chunk-vendors.3af4b5c5.js:28
+g @ chunk-vendors.3af4b5c5.js:28
+jl @ chunk-vendors.3af4b5c5.js:30
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+(anonymous) @ chunk-vendors.3af4b5c5.js:1
+trigger @ chunk-vendors.3af4b5c5.js:1
+L @ chunk-vendors.3af4b5c5.js:1
+notify @ chunk-vendors.3af4b5c5.js:1
+trigger @ chunk-vendors.3af4b5c5.js:1
+set value @ chunk-vendors.3af4b5c5.js:1
+q @ chunk-vendors.3af4b5c5.js:7
+(anonymous) @ chunk-vendors.3af4b5c5.js:7
+Promise.then
+O @ chunk-vendors.3af4b5c5.js:7
+A @ chunk-vendors.3af4b5c5.js:7
+handleMenuClick @ 996.5e2777c1.js:1
+push.2944.onClick.t.<computed>.t.<computed> @ 996.5e2777c1.js:1
+n @ chunk-vendors.3af4b5c5.js:28
+r @ chunk-vendors.3af4b5c5.js:28
+e @ chunk-vendors.3af4b5c5.js:26
+710.f316af27.js:1  ❌ NotificationService: Failed to get unread count: uc {message: 'Request failed with status code 500', name: 'AxiosError', code: 'ERR_BAD_RESPONSE', config: {…}, request: XMLHttpRequest, …}
+getUnreadCount @ 710.f316af27.js:1
+await in getUnreadCount
+loadUnreadCount @ 996.5e2777c1.js:1
+initializeNotifications @ 996.5e2777c1.js:1
+await in initializeNotifications
+mounted @ 996.5e2777c1.js:1
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+n @ chunk-vendors.3af4b5c5.js:28
+r @ chunk-vendors.3af4b5c5.js:28
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+b @ chunk-vendors.3af4b5c5.js:28
+w @ chunk-vendors.3af4b5c5.js:28
+Promise.then
+C @ chunk-vendors.3af4b5c5.js:28
+g @ chunk-vendors.3af4b5c5.js:28
+jl @ chunk-vendors.3af4b5c5.js:30
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+(anonymous) @ chunk-vendors.3af4b5c5.js:1
+trigger @ chunk-vendors.3af4b5c5.js:1
+L @ chunk-vendors.3af4b5c5.js:1
+notify @ chunk-vendors.3af4b5c5.js:1
+trigger @ chunk-vendors.3af4b5c5.js:1
+set value @ chunk-vendors.3af4b5c5.js:1
+q @ chunk-vendors.3af4b5c5.js:7
+(anonymous) @ chunk-vendors.3af4b5c5.js:7
+Promise.then
+O @ chunk-vendors.3af4b5c5.js:7
+A @ chunk-vendors.3af4b5c5.js:7
+handleMenuClick @ 996.5e2777c1.js:1
+push.2944.onClick.t.<computed>.t.<computed> @ 996.5e2777c1.js:1
+n @ chunk-vendors.3af4b5c5.js:28
+r @ chunk-vendors.3af4b5c5.js:28
+e @ chunk-vendors.3af4b5c5.js:26
+710.f316af27.js:1  📊 NotificationService: Error response status: 500
+getUnreadCount @ 710.f316af27.js:1
+await in getUnreadCount
+loadUnreadCount @ 996.5e2777c1.js:1
+initializeNotifications @ 996.5e2777c1.js:1
+await in initializeNotifications
+mounted @ 996.5e2777c1.js:1
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+n @ chunk-vendors.3af4b5c5.js:28
+r @ chunk-vendors.3af4b5c5.js:28
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+b @ chunk-vendors.3af4b5c5.js:28
+w @ chunk-vendors.3af4b5c5.js:28
+Promise.then
+C @ chunk-vendors.3af4b5c5.js:28
+g @ chunk-vendors.3af4b5c5.js:28
+jl @ chunk-vendors.3af4b5c5.js:30
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+(anonymous) @ chunk-vendors.3af4b5c5.js:1
+trigger @ chunk-vendors.3af4b5c5.js:1
+L @ chunk-vendors.3af4b5c5.js:1
+notify @ chunk-vendors.3af4b5c5.js:1
+trigger @ chunk-vendors.3af4b5c5.js:1
+set value @ chunk-vendors.3af4b5c5.js:1
+q @ chunk-vendors.3af4b5c5.js:7
+(anonymous) @ chunk-vendors.3af4b5c5.js:7
+Promise.then
+O @ chunk-vendors.3af4b5c5.js:7
+A @ chunk-vendors.3af4b5c5.js:7
+handleMenuClick @ 996.5e2777c1.js:1
+push.2944.onClick.t.<computed>.t.<computed> @ 996.5e2777c1.js:1
+n @ chunk-vendors.3af4b5c5.js:28
+r @ chunk-vendors.3af4b5c5.js:28
+e @ chunk-vendors.3af4b5c5.js:26
+710.f316af27.js:1  📊 NotificationService: Error response data: {success: false, message: 'Failed to retrieve unread count', timestamp: '2025-10-01T23:21:18.349Z'}
+getUnreadCount @ 710.f316af27.js:1
+await in getUnreadCount
+loadUnreadCount @ 996.5e2777c1.js:1
+initializeNotifications @ 996.5e2777c1.js:1
+await in initializeNotifications
+mounted @ 996.5e2777c1.js:1
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+n @ chunk-vendors.3af4b5c5.js:28
+r @ chunk-vendors.3af4b5c5.js:28
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+b @ chunk-vendors.3af4b5c5.js:28
+w @ chunk-vendors.3af4b5c5.js:28
+Promise.then
+C @ chunk-vendors.3af4b5c5.js:28
+g @ chunk-vendors.3af4b5c5.js:28
+jl @ chunk-vendors.3af4b5c5.js:30
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+(anonymous) @ chunk-vendors.3af4b5c5.js:1
+trigger @ chunk-vendors.3af4b5c5.js:1
+L @ chunk-vendors.3af4b5c5.js:1
+notify @ chunk-vendors.3af4b5c5.js:1
+trigger @ chunk-vendors.3af4b5c5.js:1
+set value @ chunk-vendors.3af4b5c5.js:1
+q @ chunk-vendors.3af4b5c5.js:7
+(anonymous) @ chunk-vendors.3af4b5c5.js:7
+Promise.then
+O @ chunk-vendors.3af4b5c5.js:7
+A @ chunk-vendors.3af4b5c5.js:7
+handleMenuClick @ 996.5e2777c1.js:1
+push.2944.onClick.t.<computed>.t.<computed> @ 996.5e2777c1.js:1
+n @ chunk-vendors.3af4b5c5.js:28
+r @ chunk-vendors.3af4b5c5.js:28
+e @ chunk-vendors.3af4b5c5.js:26
+996.5e2777c1.js:1  Failed to load unread count: uc {message: 'Request failed with status code 500', name: 'AxiosError', code: 'ERR_BAD_RESPONSE', config: {…}, request: XMLHttpRequest, …}
+loadUnreadCount @ 996.5e2777c1.js:1
+await in loadUnreadCount
+initializeNotifications @ 996.5e2777c1.js:1
+await in initializeNotifications
+mounted @ 996.5e2777c1.js:1
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+n @ chunk-vendors.3af4b5c5.js:28
+r @ chunk-vendors.3af4b5c5.js:28
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+b @ chunk-vendors.3af4b5c5.js:28
+w @ chunk-vendors.3af4b5c5.js:28
+Promise.then
+C @ chunk-vendors.3af4b5c5.js:28
+g @ chunk-vendors.3af4b5c5.js:28
+jl @ chunk-vendors.3af4b5c5.js:30
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+(anonymous) @ chunk-vendors.3af4b5c5.js:1
+trigger @ chunk-vendors.3af4b5c5.js:1
+L @ chunk-vendors.3af4b5c5.js:1
+notify @ chunk-vendors.3af4b5c5.js:1
+trigger @ chunk-vendors.3af4b5c5.js:1
+set value @ chunk-vendors.3af4b5c5.js:1
+q @ chunk-vendors.3af4b5c5.js:7
+(anonymous) @ chunk-vendors.3af4b5c5.js:7
+Promise.then
+O @ chunk-vendors.3af4b5c5.js:7
+A @ chunk-vendors.3af4b5c5.js:7
+handleMenuClick @ 996.5e2777c1.js:1
+push.2944.onClick.t.<computed>.t.<computed> @ 996.5e2777c1.js:1
+n @ chunk-vendors.3af4b5c5.js:28
+r @ chunk-vendors.3af4b5c5.js:28
+e @ chunk-vendors.3af4b5c5.js:26
+chunk-vendors.3af4b5c5.js:20   GET https://brgybulabackend-production.up.railway.app/api/users?page=1&limit=50 500 (Internal Server Error)
+(anonymous) @ chunk-vendors.3af4b5c5.js:20
+xhr @ chunk-vendors.3af4b5c5.js:20
+ce @ chunk-vendors.3af4b5c5.js:20
+Promise.then
+_request @ chunk-vendors.3af4b5c5.js:20
+request @ chunk-vendors.3af4b5c5.js:20
+(anonymous) @ chunk-vendors.3af4b5c5.js:20
+(anonymous) @ chunk-vendors.3af4b5c5.js:20
+getUsers @ 680.911fa420.js:1
+loadUsers @ 680.911fa420.js:1
+mounted @ 680.911fa420.js:1
+await in mounted
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+n @ chunk-vendors.3af4b5c5.js:28
+r @ chunk-vendors.3af4b5c5.js:28
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+b @ chunk-vendors.3af4b5c5.js:28
+w @ chunk-vendors.3af4b5c5.js:28
+Promise.then
+C @ chunk-vendors.3af4b5c5.js:28
+g @ chunk-vendors.3af4b5c5.js:28
+jl @ chunk-vendors.3af4b5c5.js:30
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+(anonymous) @ chunk-vendors.3af4b5c5.js:1
+trigger @ chunk-vendors.3af4b5c5.js:1
+L @ chunk-vendors.3af4b5c5.js:1
+notify @ chunk-vendors.3af4b5c5.js:1
+trigger @ chunk-vendors.3af4b5c5.js:1
+set value @ chunk-vendors.3af4b5c5.js:1
+q @ chunk-vendors.3af4b5c5.js:7
+(anonymous) @ chunk-vendors.3af4b5c5.js:7
+Promise.then
+O @ chunk-vendors.3af4b5c5.js:7
+A @ chunk-vendors.3af4b5c5.js:7
+handleMenuClick @ 996.5e2777c1.js:1
+push.2944.onClick.t.<computed>.t.<computed> @ 996.5e2777c1.js:1
+n @ chunk-vendors.3af4b5c5.js:28
+r @ chunk-vendors.3af4b5c5.js:28
+e @ chunk-vendors.3af4b5c5.js:26
+app.f38e14ca.js:1  API Error Details: {url: '/users', method: 'GET', status: 500, statusText: '', message: 'Request failed with status code 500', …}
+(anonymous) @ app.f38e14ca.js:1
+Promise.then
+_request @ chunk-vendors.3af4b5c5.js:20
+request @ chunk-vendors.3af4b5c5.js:20
+(anonymous) @ chunk-vendors.3af4b5c5.js:20
+(anonymous) @ chunk-vendors.3af4b5c5.js:20
+getUsers @ 680.911fa420.js:1
+loadUsers @ 680.911fa420.js:1
+mounted @ 680.911fa420.js:1
+await in mounted
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+n @ chunk-vendors.3af4b5c5.js:28
+r @ chunk-vendors.3af4b5c5.js:28
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+b @ chunk-vendors.3af4b5c5.js:28
+w @ chunk-vendors.3af4b5c5.js:28
+Promise.then
+C @ chunk-vendors.3af4b5c5.js:28
+g @ chunk-vendors.3af4b5c5.js:28
+jl @ chunk-vendors.3af4b5c5.js:30
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+(anonymous) @ chunk-vendors.3af4b5c5.js:1
+trigger @ chunk-vendors.3af4b5c5.js:1
+L @ chunk-vendors.3af4b5c5.js:1
+notify @ chunk-vendors.3af4b5c5.js:1
+trigger @ chunk-vendors.3af4b5c5.js:1
+set value @ chunk-vendors.3af4b5c5.js:1
+q @ chunk-vendors.3af4b5c5.js:7
+(anonymous) @ chunk-vendors.3af4b5c5.js:7
+Promise.then
+O @ chunk-vendors.3af4b5c5.js:7
+A @ chunk-vendors.3af4b5c5.js:7
+handleMenuClick @ 996.5e2777c1.js:1
+push.2944.onClick.t.<computed>.t.<computed> @ 996.5e2777c1.js:1
+n @ chunk-vendors.3af4b5c5.js:28
+r @ chunk-vendors.3af4b5c5.js:28
+e @ chunk-vendors.3af4b5c5.js:26
+app.f38e14ca.js:1  Full Error Object: uc {message: 'Request failed with status code 500', name: 'AxiosError', code: 'ERR_BAD_RESPONSE', config: {…}, request: XMLHttpRequest, …}
+(anonymous) @ app.f38e14ca.js:1
+Promise.then
+_request @ chunk-vendors.3af4b5c5.js:20
+request @ chunk-vendors.3af4b5c5.js:20
+(anonymous) @ chunk-vendors.3af4b5c5.js:20
+(anonymous) @ chunk-vendors.3af4b5c5.js:20
+getUsers @ 680.911fa420.js:1
+loadUsers @ 680.911fa420.js:1
+mounted @ 680.911fa420.js:1
+await in mounted
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+n @ chunk-vendors.3af4b5c5.js:28
+r @ chunk-vendors.3af4b5c5.js:28
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+b @ chunk-vendors.3af4b5c5.js:28
+w @ chunk-vendors.3af4b5c5.js:28
+Promise.then
+C @ chunk-vendors.3af4b5c5.js:28
+g @ chunk-vendors.3af4b5c5.js:28
+jl @ chunk-vendors.3af4b5c5.js:30
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+(anonymous) @ chunk-vendors.3af4b5c5.js:1
+trigger @ chunk-vendors.3af4b5c5.js:1
+L @ chunk-vendors.3af4b5c5.js:1
+notify @ chunk-vendors.3af4b5c5.js:1
+trigger @ chunk-vendors.3af4b5c5.js:1
+set value @ chunk-vendors.3af4b5c5.js:1
+q @ chunk-vendors.3af4b5c5.js:7
+(anonymous) @ chunk-vendors.3af4b5c5.js:7
+Promise.then
+O @ chunk-vendors.3af4b5c5.js:7
+A @ chunk-vendors.3af4b5c5.js:7
+handleMenuClick @ 996.5e2777c1.js:1
+push.2944.onClick.t.<computed>.t.<computed> @ 996.5e2777c1.js:1
+n @ chunk-vendors.3af4b5c5.js:28
+r @ chunk-vendors.3af4b5c5.js:28
+e @ chunk-vendors.3af4b5c5.js:26
+680.911fa420.js:1  User Management Service Error: uc {message: 'Server error - please check the backend logs for details', name: 'AxiosError', code: 'ERR_BAD_RESPONSE', config: {…}, request: XMLHttpRequest, …}
+handleError @ 680.911fa420.js:1
+getUsers @ 680.911fa420.js:1
+await in getUsers
+loadUsers @ 680.911fa420.js:1
+mounted @ 680.911fa420.js:1
+await in mounted
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+n @ chunk-vendors.3af4b5c5.js:28
+r @ chunk-vendors.3af4b5c5.js:28
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+b @ chunk-vendors.3af4b5c5.js:28
+w @ chunk-vendors.3af4b5c5.js:28
+Promise.then
+C @ chunk-vendors.3af4b5c5.js:28
+g @ chunk-vendors.3af4b5c5.js:28
+jl @ chunk-vendors.3af4b5c5.js:30
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+(anonymous) @ chunk-vendors.3af4b5c5.js:1
+trigger @ chunk-vendors.3af4b5c5.js:1
+L @ chunk-vendors.3af4b5c5.js:1
+notify @ chunk-vendors.3af4b5c5.js:1
+trigger @ chunk-vendors.3af4b5c5.js:1
+set value @ chunk-vendors.3af4b5c5.js:1
+q @ chunk-vendors.3af4b5c5.js:7
+(anonymous) @ chunk-vendors.3af4b5c5.js:7
+Promise.then
+O @ chunk-vendors.3af4b5c5.js:7
+A @ chunk-vendors.3af4b5c5.js:7
+handleMenuClick @ 996.5e2777c1.js:1
+push.2944.onClick.t.<computed>.t.<computed> @ 996.5e2777c1.js:1
+n @ chunk-vendors.3af4b5c5.js:28
+r @ chunk-vendors.3af4b5c5.js:28
+e @ chunk-vendors.3af4b5c5.js:26
+680.911fa420.js:1 ERROR: Server error. Please try again later.
+710.f316af27.js:1 🗑️ Event listener removed for admin : error
+710.f316af27.js:1 📝 Event listener registered for admin : error
+chunk-vendors.3af4b5c5.js:20   GET https://brgybulabackend-production.up.railway.app/api/notifications/unread-count 500 (Internal Server Error)
+(anonymous) @ chunk-vendors.3af4b5c5.js:20
+xhr @ chunk-vendors.3af4b5c5.js:20
+ce @ chunk-vendors.3af4b5c5.js:20
+_request @ chunk-vendors.3af4b5c5.js:20
+request @ chunk-vendors.3af4b5c5.js:20
+(anonymous) @ chunk-vendors.3af4b5c5.js:20
+(anonymous) @ chunk-vendors.3af4b5c5.js:20
+getUnreadCount @ 710.f316af27.js:1
+loadUnreadCount @ 996.5e2777c1.js:1
+initializeNotifications @ 996.5e2777c1.js:1
+await in initializeNotifications
+mounted @ 996.5e2777c1.js:1
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+n @ chunk-vendors.3af4b5c5.js:28
+r @ chunk-vendors.3af4b5c5.js:28
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+b @ chunk-vendors.3af4b5c5.js:28
+w @ chunk-vendors.3af4b5c5.js:28
+Promise.then
+C @ chunk-vendors.3af4b5c5.js:28
+g @ chunk-vendors.3af4b5c5.js:28
+jl @ chunk-vendors.3af4b5c5.js:30
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+(anonymous) @ chunk-vendors.3af4b5c5.js:1
+trigger @ chunk-vendors.3af4b5c5.js:1
+L @ chunk-vendors.3af4b5c5.js:1
+notify @ chunk-vendors.3af4b5c5.js:1
+trigger @ chunk-vendors.3af4b5c5.js:1
+set value @ chunk-vendors.3af4b5c5.js:1
+q @ chunk-vendors.3af4b5c5.js:7
+(anonymous) @ chunk-vendors.3af4b5c5.js:7
+Promise.then
+O @ chunk-vendors.3af4b5c5.js:7
+A @ chunk-vendors.3af4b5c5.js:7
+handleMenuClick @ 996.5e2777c1.js:1
+push.2944.onClick.t.<computed>.t.<computed> @ 996.5e2777c1.js:1
+n @ chunk-vendors.3af4b5c5.js:28
+r @ chunk-vendors.3af4b5c5.js:28
+e @ chunk-vendors.3af4b5c5.js:26
+710.f316af27.js:1  ❌ NotificationService: Failed to get unread count: uc {message: 'Request failed with status code 500', name: 'AxiosError', code: 'ERR_BAD_RESPONSE', config: {…}, request: XMLHttpRequest, …}
+getUnreadCount @ 710.f316af27.js:1
+await in getUnreadCount
+loadUnreadCount @ 996.5e2777c1.js:1
+initializeNotifications @ 996.5e2777c1.js:1
+await in initializeNotifications
+mounted @ 996.5e2777c1.js:1
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+n @ chunk-vendors.3af4b5c5.js:28
+r @ chunk-vendors.3af4b5c5.js:28
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+b @ chunk-vendors.3af4b5c5.js:28
+w @ chunk-vendors.3af4b5c5.js:28
+Promise.then
+C @ chunk-vendors.3af4b5c5.js:28
+g @ chunk-vendors.3af4b5c5.js:28
+jl @ chunk-vendors.3af4b5c5.js:30
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+(anonymous) @ chunk-vendors.3af4b5c5.js:1
+trigger @ chunk-vendors.3af4b5c5.js:1
+L @ chunk-vendors.3af4b5c5.js:1
+notify @ chunk-vendors.3af4b5c5.js:1
+trigger @ chunk-vendors.3af4b5c5.js:1
+set value @ chunk-vendors.3af4b5c5.js:1
+q @ chunk-vendors.3af4b5c5.js:7
+(anonymous) @ chunk-vendors.3af4b5c5.js:7
+Promise.then
+O @ chunk-vendors.3af4b5c5.js:7
+A @ chunk-vendors.3af4b5c5.js:7
+handleMenuClick @ 996.5e2777c1.js:1
+push.2944.onClick.t.<computed>.t.<computed> @ 996.5e2777c1.js:1
+n @ chunk-vendors.3af4b5c5.js:28
+r @ chunk-vendors.3af4b5c5.js:28
+e @ chunk-vendors.3af4b5c5.js:26
+710.f316af27.js:1  📊 NotificationService: Error response status: 500
+getUnreadCount @ 710.f316af27.js:1
+await in getUnreadCount
+loadUnreadCount @ 996.5e2777c1.js:1
+initializeNotifications @ 996.5e2777c1.js:1
+await in initializeNotifications
+mounted @ 996.5e2777c1.js:1
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+n @ chunk-vendors.3af4b5c5.js:28
+r @ chunk-vendors.3af4b5c5.js:28
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+b @ chunk-vendors.3af4b5c5.js:28
+w @ chunk-vendors.3af4b5c5.js:28
+Promise.then
+C @ chunk-vendors.3af4b5c5.js:28
+g @ chunk-vendors.3af4b5c5.js:28
+jl @ chunk-vendors.3af4b5c5.js:30
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+(anonymous) @ chunk-vendors.3af4b5c5.js:1
+trigger @ chunk-vendors.3af4b5c5.js:1
+L @ chunk-vendors.3af4b5c5.js:1
+notify @ chunk-vendors.3af4b5c5.js:1
+trigger @ chunk-vendors.3af4b5c5.js:1
+set value @ chunk-vendors.3af4b5c5.js:1
+q @ chunk-vendors.3af4b5c5.js:7
+(anonymous) @ chunk-vendors.3af4b5c5.js:7
+Promise.then
+O @ chunk-vendors.3af4b5c5.js:7
+A @ chunk-vendors.3af4b5c5.js:7
+handleMenuClick @ 996.5e2777c1.js:1
+push.2944.onClick.t.<computed>.t.<computed> @ 996.5e2777c1.js:1
+n @ chunk-vendors.3af4b5c5.js:28
+r @ chunk-vendors.3af4b5c5.js:28
+e @ chunk-vendors.3af4b5c5.js:26
+710.f316af27.js:1  📊 NotificationService: Error response data: {success: false, message: 'Failed to retrieve unread count', timestamp: '2025-10-01T23:21:40.902Z'}
+getUnreadCount @ 710.f316af27.js:1
+await in getUnreadCount
+loadUnreadCount @ 996.5e2777c1.js:1
+initializeNotifications @ 996.5e2777c1.js:1
+await in initializeNotifications
+mounted @ 996.5e2777c1.js:1
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+n @ chunk-vendors.3af4b5c5.js:28
+r @ chunk-vendors.3af4b5c5.js:28
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+b @ chunk-vendors.3af4b5c5.js:28
+w @ chunk-vendors.3af4b5c5.js:28
+Promise.then
+C @ chunk-vendors.3af4b5c5.js:28
+g @ chunk-vendors.3af4b5c5.js:28
+jl @ chunk-vendors.3af4b5c5.js:30
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+(anonymous) @ chunk-vendors.3af4b5c5.js:1
+trigger @ chunk-vendors.3af4b5c5.js:1
+L @ chunk-vendors.3af4b5c5.js:1
+notify @ chunk-vendors.3af4b5c5.js:1
+trigger @ chunk-vendors.3af4b5c5.js:1
+set value @ chunk-vendors.3af4b5c5.js:1
+q @ chunk-vendors.3af4b5c5.js:7
+(anonymous) @ chunk-vendors.3af4b5c5.js:7
+Promise.then
+O @ chunk-vendors.3af4b5c5.js:7
+A @ chunk-vendors.3af4b5c5.js:7
+handleMenuClick @ 996.5e2777c1.js:1
+push.2944.onClick.t.<computed>.t.<computed> @ 996.5e2777c1.js:1
+n @ chunk-vendors.3af4b5c5.js:28
+r @ chunk-vendors.3af4b5c5.js:28
+e @ chunk-vendors.3af4b5c5.js:26
+996.5e2777c1.js:1  Failed to load unread count: uc {message: 'Request failed with status code 500', name: 'AxiosError', code: 'ERR_BAD_RESPONSE', config: {…}, request: XMLHttpRequest, …}
+loadUnreadCount @ 996.5e2777c1.js:1
+await in loadUnreadCount
+initializeNotifications @ 996.5e2777c1.js:1
+await in initializeNotifications
+mounted @ 996.5e2777c1.js:1
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+n @ chunk-vendors.3af4b5c5.js:28
+r @ chunk-vendors.3af4b5c5.js:28
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+b @ chunk-vendors.3af4b5c5.js:28
+w @ chunk-vendors.3af4b5c5.js:28
+Promise.then
+C @ chunk-vendors.3af4b5c5.js:28
+g @ chunk-vendors.3af4b5c5.js:28
+jl @ chunk-vendors.3af4b5c5.js:30
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+(anonymous) @ chunk-vendors.3af4b5c5.js:1
+trigger @ chunk-vendors.3af4b5c5.js:1
+L @ chunk-vendors.3af4b5c5.js:1
+notify @ chunk-vendors.3af4b5c5.js:1
+trigger @ chunk-vendors.3af4b5c5.js:1
+set value @ chunk-vendors.3af4b5c5.js:1
+q @ chunk-vendors.3af4b5c5.js:7
+(anonymous) @ chunk-vendors.3af4b5c5.js:7
+Promise.then
+O @ chunk-vendors.3af4b5c5.js:7
+A @ chunk-vendors.3af4b5c5.js:7
+handleMenuClick @ 996.5e2777c1.js:1
+push.2944.onClick.t.<computed>.t.<computed> @ 996.5e2777c1.js:1
+n @ chunk-vendors.3af4b5c5.js:28
+r @ chunk-vendors.3af4b5c5.js:28
+e @ chunk-vendors.3af4b5c5.js:26
+[NEW] Explain Console errors by using Copilot in Edge: click
+         
+         to explain an error. 
+        Learn more
+        Don't show again
+chunk-vendors.3af4b5c5.js:20   GET https://brgybulabackend-production.up.railway.app/api/users/get-archived-users?page=1&limit=100 500 (Internal Server Error)
+(anonymous) @ chunk-vendors.3af4b5c5.js:20
+xhr @ chunk-vendors.3af4b5c5.js:20
+ce @ chunk-vendors.3af4b5c5.js:20
+Promise.then
+_request @ chunk-vendors.3af4b5c5.js:20
+request @ chunk-vendors.3af4b5c5.js:20
+(anonymous) @ chunk-vendors.3af4b5c5.js:20
+(anonymous) @ chunk-vendors.3af4b5c5.js:20
+getArchivedUsers @ 680.911fa420.js:1
+loadArchivedUsers @ 245.20ce21b7.js:1
+mounted @ 245.20ce21b7.js:1
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+n @ chunk-vendors.3af4b5c5.js:28
+r @ chunk-vendors.3af4b5c5.js:28
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+b @ chunk-vendors.3af4b5c5.js:28
+w @ chunk-vendors.3af4b5c5.js:28
+Promise.then
+C @ chunk-vendors.3af4b5c5.js:28
+g @ chunk-vendors.3af4b5c5.js:28
+jl @ chunk-vendors.3af4b5c5.js:30
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+(anonymous) @ chunk-vendors.3af4b5c5.js:1
+trigger @ chunk-vendors.3af4b5c5.js:1
+L @ chunk-vendors.3af4b5c5.js:1
+notify @ chunk-vendors.3af4b5c5.js:1
+trigger @ chunk-vendors.3af4b5c5.js:1
+set value @ chunk-vendors.3af4b5c5.js:1
+q @ chunk-vendors.3af4b5c5.js:7
+(anonymous) @ chunk-vendors.3af4b5c5.js:7
+Promise.then
+O @ chunk-vendors.3af4b5c5.js:7
+A @ chunk-vendors.3af4b5c5.js:7
+handleMenuClick @ 996.5e2777c1.js:1
+push.2944.onClick.t.<computed>.t.<computed> @ 996.5e2777c1.js:1
+n @ chunk-vendors.3af4b5c5.js:28
+r @ chunk-vendors.3af4b5c5.js:28
+e @ chunk-vendors.3af4b5c5.js:26
+app.f38e14ca.js:1  API Error Details: {url: '/users/get-archived-users', method: 'GET', status: 500, statusText: '', message: 'Request failed with status code 500', …}
+(anonymous) @ app.f38e14ca.js:1
+Promise.then
+_request @ chunk-vendors.3af4b5c5.js:20
+request @ chunk-vendors.3af4b5c5.js:20
+(anonymous) @ chunk-vendors.3af4b5c5.js:20
+(anonymous) @ chunk-vendors.3af4b5c5.js:20
+getArchivedUsers @ 680.911fa420.js:1
+loadArchivedUsers @ 245.20ce21b7.js:1
+mounted @ 245.20ce21b7.js:1
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+n @ chunk-vendors.3af4b5c5.js:28
+r @ chunk-vendors.3af4b5c5.js:28
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+b @ chunk-vendors.3af4b5c5.js:28
+w @ chunk-vendors.3af4b5c5.js:28
+Promise.then
+C @ chunk-vendors.3af4b5c5.js:28
+g @ chunk-vendors.3af4b5c5.js:28
+jl @ chunk-vendors.3af4b5c5.js:30
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+(anonymous) @ chunk-vendors.3af4b5c5.js:1
+trigger @ chunk-vendors.3af4b5c5.js:1
+L @ chunk-vendors.3af4b5c5.js:1
+notify @ chunk-vendors.3af4b5c5.js:1
+trigger @ chunk-vendors.3af4b5c5.js:1
+set value @ chunk-vendors.3af4b5c5.js:1
+q @ chunk-vendors.3af4b5c5.js:7
+(anonymous) @ chunk-vendors.3af4b5c5.js:7
+Promise.then
+O @ chunk-vendors.3af4b5c5.js:7
+A @ chunk-vendors.3af4b5c5.js:7
+handleMenuClick @ 996.5e2777c1.js:1
+push.2944.onClick.t.<computed>.t.<computed> @ 996.5e2777c1.js:1
+n @ chunk-vendors.3af4b5c5.js:28
+r @ chunk-vendors.3af4b5c5.js:28
+e @ chunk-vendors.3af4b5c5.js:26
+app.f38e14ca.js:1  Full Error Object: uc {message: 'Request failed with status code 500', name: 'AxiosError', code: 'ERR_BAD_RESPONSE', config: {…}, request: XMLHttpRequest, …}
+(anonymous) @ app.f38e14ca.js:1
+Promise.then
+_request @ chunk-vendors.3af4b5c5.js:20
+request @ chunk-vendors.3af4b5c5.js:20
+(anonymous) @ chunk-vendors.3af4b5c5.js:20
+(anonymous) @ chunk-vendors.3af4b5c5.js:20
+getArchivedUsers @ 680.911fa420.js:1
+loadArchivedUsers @ 245.20ce21b7.js:1
+mounted @ 245.20ce21b7.js:1
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+n @ chunk-vendors.3af4b5c5.js:28
+r @ chunk-vendors.3af4b5c5.js:28
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+b @ chunk-vendors.3af4b5c5.js:28
+w @ chunk-vendors.3af4b5c5.js:28
+Promise.then
+C @ chunk-vendors.3af4b5c5.js:28
+g @ chunk-vendors.3af4b5c5.js:28
+jl @ chunk-vendors.3af4b5c5.js:30
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+(anonymous) @ chunk-vendors.3af4b5c5.js:1
+trigger @ chunk-vendors.3af4b5c5.js:1
+L @ chunk-vendors.3af4b5c5.js:1
+notify @ chunk-vendors.3af4b5c5.js:1
+trigger @ chunk-vendors.3af4b5c5.js:1
+set value @ chunk-vendors.3af4b5c5.js:1
+q @ chunk-vendors.3af4b5c5.js:7
+(anonymous) @ chunk-vendors.3af4b5c5.js:7
+Promise.then
+O @ chunk-vendors.3af4b5c5.js:7
+A @ chunk-vendors.3af4b5c5.js:7
+handleMenuClick @ 996.5e2777c1.js:1
+push.2944.onClick.t.<computed>.t.<computed> @ 996.5e2777c1.js:1
+n @ chunk-vendors.3af4b5c5.js:28
+r @ chunk-vendors.3af4b5c5.js:28
+e @ chunk-vendors.3af4b5c5.js:26
+680.911fa420.js:1  User Management Service Error: uc {message: 'Server error - please check the backend logs for details', name: 'AxiosError', code: 'ERR_BAD_RESPONSE', config: {…}, request: XMLHttpRequest, …}
+handleError @ 680.911fa420.js:1
+getArchivedUsers @ 680.911fa420.js:1
+await in getArchivedUsers
+loadArchivedUsers @ 245.20ce21b7.js:1
+mounted @ 245.20ce21b7.js:1
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+n @ chunk-vendors.3af4b5c5.js:28
+r @ chunk-vendors.3af4b5c5.js:28
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+b @ chunk-vendors.3af4b5c5.js:28
+w @ chunk-vendors.3af4b5c5.js:28
+Promise.then
+C @ chunk-vendors.3af4b5c5.js:28
+g @ chunk-vendors.3af4b5c5.js:28
+jl @ chunk-vendors.3af4b5c5.js:30
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+(anonymous) @ chunk-vendors.3af4b5c5.js:1
+trigger @ chunk-vendors.3af4b5c5.js:1
+L @ chunk-vendors.3af4b5c5.js:1
+notify @ chunk-vendors.3af4b5c5.js:1
+trigger @ chunk-vendors.3af4b5c5.js:1
+set value @ chunk-vendors.3af4b5c5.js:1
+q @ chunk-vendors.3af4b5c5.js:7
+(anonymous) @ chunk-vendors.3af4b5c5.js:7
+Promise.then
+O @ chunk-vendors.3af4b5c5.js:7
+A @ chunk-vendors.3af4b5c5.js:7
+handleMenuClick @ 996.5e2777c1.js:1
+push.2944.onClick.t.<computed>.t.<computed> @ 996.5e2777c1.js:1
+n @ chunk-vendors.3af4b5c5.js:28
+r @ chunk-vendors.3af4b5c5.js:28
+e @ chunk-vendors.3af4b5c5.js:26
+
+710.f316af27.js:1 🗑️ Event listener removed for admin : error
+710.f316af27.js:1 📝 Event listener registered for admin : error
+chunk-vendors.3af4b5c5.js:20   GET https://brgybulabackend-production.up.railway.app/api/notifications/unread-count 500 (Internal Server Error)
+(anonymous) @ chunk-vendors.3af4b5c5.js:20
+xhr @ chunk-vendors.3af4b5c5.js:20
+ce @ chunk-vendors.3af4b5c5.js:20
+_request @ chunk-vendors.3af4b5c5.js:20
+request @ chunk-vendors.3af4b5c5.js:20
+(anonymous) @ chunk-vendors.3af4b5c5.js:20
+(anonymous) @ chunk-vendors.3af4b5c5.js:20
+getUnreadCount @ 710.f316af27.js:1
+loadUnreadCount @ 996.5e2777c1.js:1
+initializeNotifications @ 996.5e2777c1.js:1
+await in initializeNotifications
+mounted @ 996.5e2777c1.js:1
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+n @ chunk-vendors.3af4b5c5.js:28
+r @ chunk-vendors.3af4b5c5.js:28
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+b @ chunk-vendors.3af4b5c5.js:28
+w @ chunk-vendors.3af4b5c5.js:28
+Promise.then
+C @ chunk-vendors.3af4b5c5.js:28
+g @ chunk-vendors.3af4b5c5.js:28
+jl @ chunk-vendors.3af4b5c5.js:30
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+(anonymous) @ chunk-vendors.3af4b5c5.js:1
+trigger @ chunk-vendors.3af4b5c5.js:1
+L @ chunk-vendors.3af4b5c5.js:1
+notify @ chunk-vendors.3af4b5c5.js:1
+trigger @ chunk-vendors.3af4b5c5.js:1
+set value @ chunk-vendors.3af4b5c5.js:1
+q @ chunk-vendors.3af4b5c5.js:7
+(anonymous) @ chunk-vendors.3af4b5c5.js:7
+Promise.then
+O @ chunk-vendors.3af4b5c5.js:7
+A @ chunk-vendors.3af4b5c5.js:7
+handleMenuClick @ 996.5e2777c1.js:1
+push.2944.onClick.t.<computed>.t.<computed> @ 996.5e2777c1.js:1
+n @ chunk-vendors.3af4b5c5.js:28
+r @ chunk-vendors.3af4b5c5.js:28
+e @ chunk-vendors.3af4b5c5.js:26
+710.f316af27.js:1  ❌ NotificationService: Failed to get unread count: uc {message: 'Request failed with status code 500', name: 'AxiosError', code: 'ERR_BAD_RESPONSE', config: {…}, request: XMLHttpRequest, …}
+getUnreadCount @ 710.f316af27.js:1
+await in getUnreadCount
+loadUnreadCount @ 996.5e2777c1.js:1
+initializeNotifications @ 996.5e2777c1.js:1
+await in initializeNotifications
+mounted @ 996.5e2777c1.js:1
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+n @ chunk-vendors.3af4b5c5.js:28
+r @ chunk-vendors.3af4b5c5.js:28
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+b @ chunk-vendors.3af4b5c5.js:28
+w @ chunk-vendors.3af4b5c5.js:28
+Promise.then
+C @ chunk-vendors.3af4b5c5.js:28
+g @ chunk-vendors.3af4b5c5.js:28
+jl @ chunk-vendors.3af4b5c5.js:30
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+(anonymous) @ chunk-vendors.3af4b5c5.js:1
+trigger @ chunk-vendors.3af4b5c5.js:1
+L @ chunk-vendors.3af4b5c5.js:1
+notify @ chunk-vendors.3af4b5c5.js:1
+trigger @ chunk-vendors.3af4b5c5.js:1
+set value @ chunk-vendors.3af4b5c5.js:1
+q @ chunk-vendors.3af4b5c5.js:7
+(anonymous) @ chunk-vendors.3af4b5c5.js:7
+Promise.then
+O @ chunk-vendors.3af4b5c5.js:7
+A @ chunk-vendors.3af4b5c5.js:7
+handleMenuClick @ 996.5e2777c1.js:1
+push.2944.onClick.t.<computed>.t.<computed> @ 996.5e2777c1.js:1
+n @ chunk-vendors.3af4b5c5.js:28
+r @ chunk-vendors.3af4b5c5.js:28
+e @ chunk-vendors.3af4b5c5.js:26
+710.f316af27.js:1  📊 NotificationService: Error response status: 500
+getUnreadCount @ 710.f316af27.js:1
+await in getUnreadCount
+loadUnreadCount @ 996.5e2777c1.js:1
+initializeNotifications @ 996.5e2777c1.js:1
+await in initializeNotifications
+mounted @ 996.5e2777c1.js:1
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+n @ chunk-vendors.3af4b5c5.js:28
+r @ chunk-vendors.3af4b5c5.js:28
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+b @ chunk-vendors.3af4b5c5.js:28
+w @ chunk-vendors.3af4b5c5.js:28
+Promise.then
+C @ chunk-vendors.3af4b5c5.js:28
+g @ chunk-vendors.3af4b5c5.js:28
+jl @ chunk-vendors.3af4b5c5.js:30
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+(anonymous) @ chunk-vendors.3af4b5c5.js:1
+trigger @ chunk-vendors.3af4b5c5.js:1
+L @ chunk-vendors.3af4b5c5.js:1
+notify @ chunk-vendors.3af4b5c5.js:1
+trigger @ chunk-vendors.3af4b5c5.js:1
+set value @ chunk-vendors.3af4b5c5.js:1
+q @ chunk-vendors.3af4b5c5.js:7
+(anonymous) @ chunk-vendors.3af4b5c5.js:7
+Promise.then
+O @ chunk-vendors.3af4b5c5.js:7
+A @ chunk-vendors.3af4b5c5.js:7
+handleMenuClick @ 996.5e2777c1.js:1
+push.2944.onClick.t.<computed>.t.<computed> @ 996.5e2777c1.js:1
+n @ chunk-vendors.3af4b5c5.js:28
+r @ chunk-vendors.3af4b5c5.js:28
+e @ chunk-vendors.3af4b5c5.js:26
+710.f316af27.js:1  📊 NotificationService: Error response data: {success: false, message: 'Failed to retrieve unread count', timestamp: '2025-10-01T23:22:00.936Z'}
+getUnreadCount @ 710.f316af27.js:1
+await in getUnreadCount
+loadUnreadCount @ 996.5e2777c1.js:1
+initializeNotifications @ 996.5e2777c1.js:1
+await in initializeNotifications
+mounted @ 996.5e2777c1.js:1
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+n @ chunk-vendors.3af4b5c5.js:28
+r @ chunk-vendors.3af4b5c5.js:28
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+b @ chunk-vendors.3af4b5c5.js:28
+w @ chunk-vendors.3af4b5c5.js:28
+Promise.then
+C @ chunk-vendors.3af4b5c5.js:28
+g @ chunk-vendors.3af4b5c5.js:28
+jl @ chunk-vendors.3af4b5c5.js:30
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+(anonymous) @ chunk-vendors.3af4b5c5.js:1
+trigger @ chunk-vendors.3af4b5c5.js:1
+L @ chunk-vendors.3af4b5c5.js:1
+notify @ chunk-vendors.3af4b5c5.js:1
+trigger @ chunk-vendors.3af4b5c5.js:1
+set value @ chunk-vendors.3af4b5c5.js:1
+q @ chunk-vendors.3af4b5c5.js:7
+(anonymous) @ chunk-vendors.3af4b5c5.js:7
+Promise.then
+O @ chunk-vendors.3af4b5c5.js:7
+A @ chunk-vendors.3af4b5c5.js:7
+handleMenuClick @ 996.5e2777c1.js:1
+push.2944.onClick.t.<computed>.t.<computed> @ 996.5e2777c1.js:1
+n @ chunk-vendors.3af4b5c5.js:28
+r @ chunk-vendors.3af4b5c5.js:28
+e @ chunk-vendors.3af4b5c5.js:26
+996.5e2777c1.js:1  Failed to load unread count: uc {message: 'Request failed with status code 500', name: 'AxiosError', code: 'ERR_BAD_RESPONSE', config: {…}, request: XMLHttpRequest, …}
+loadUnreadCount @ 996.5e2777c1.js:1
+await in loadUnreadCount
+initializeNotifications @ 996.5e2777c1.js:1
+await in initializeNotifications
+mounted @ 996.5e2777c1.js:1
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+n @ chunk-vendors.3af4b5c5.js:28
+r @ chunk-vendors.3af4b5c5.js:28
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+b @ chunk-vendors.3af4b5c5.js:28
+w @ chunk-vendors.3af4b5c5.js:28
+Promise.then
+C @ chunk-vendors.3af4b5c5.js:28
+g @ chunk-vendors.3af4b5c5.js:28
+jl @ chunk-vendors.3af4b5c5.js:30
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+(anonymous) @ chunk-vendors.3af4b5c5.js:1
+trigger @ chunk-vendors.3af4b5c5.js:1
+L @ chunk-vendors.3af4b5c5.js:1
+notify @ chunk-vendors.3af4b5c5.js:1
+trigger @ chunk-vendors.3af4b5c5.js:1
+set value @ chunk-vendors.3af4b5c5.js:1
+q @ chunk-vendors.3af4b5c5.js:7
+(anonymous) @ chunk-vendors.3af4b5c5.js:7
+Promise.then
+O @ chunk-vendors.3af4b5c5.js:7
+A @ chunk-vendors.3af4b5c5.js:7
+handleMenuClick @ 996.5e2777c1.js:1
+push.2944.onClick.t.<computed>.t.<computed> @ 996.5e2777c1.js:1
+n @ chunk-vendors.3af4b5c5.js:28
+r @ chunk-vendors.3af4b5c5.js:28
+e @ chunk-vendors.3af4b5c5.js:26
+[NEW] Explain Console errors by using Copilot in Edge: click
+         
+         to explain an error. 
+        Learn more
+        Don't show again
+chunk-vendors.3af4b5c5.js:20   GET https://brgybulabackend-production.up.railway.app/api/admin/documents/requests?page=1&limit=10&priority=&search=&date_from=&date_to= 500 (Internal Server Error)
+(anonymous) @ chunk-vendors.3af4b5c5.js:20
+xhr @ chunk-vendors.3af4b5c5.js:20
+ce @ chunk-vendors.3af4b5c5.js:20
+Promise.then
+_request @ chunk-vendors.3af4b5c5.js:20
+request @ chunk-vendors.3af4b5c5.js:20
+(anonymous) @ chunk-vendors.3af4b5c5.js:20
+(anonymous) @ chunk-vendors.3af4b5c5.js:20
+getAllRequests @ 431.818716fd.js:1
+loadRequests @ 566.cd9cad6b.js:1
+loadComponentData @ 566.cd9cad6b.js:1
+mounted @ 566.cd9cad6b.js:1
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+n @ chunk-vendors.3af4b5c5.js:28
+r @ chunk-vendors.3af4b5c5.js:28
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+b @ chunk-vendors.3af4b5c5.js:28
+w @ chunk-vendors.3af4b5c5.js:28
+Promise.then
+C @ chunk-vendors.3af4b5c5.js:28
+g @ chunk-vendors.3af4b5c5.js:28
+jl @ chunk-vendors.3af4b5c5.js:30
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+(anonymous) @ chunk-vendors.3af4b5c5.js:1
+trigger @ chunk-vendors.3af4b5c5.js:1
+L @ chunk-vendors.3af4b5c5.js:1
+notify @ chunk-vendors.3af4b5c5.js:1
+trigger @ chunk-vendors.3af4b5c5.js:1
+set value @ chunk-vendors.3af4b5c5.js:1
+q @ chunk-vendors.3af4b5c5.js:7
+(anonymous) @ chunk-vendors.3af4b5c5.js:7
+Promise.then
+O @ chunk-vendors.3af4b5c5.js:7
+A @ chunk-vendors.3af4b5c5.js:7
+handleMenuClick @ 996.5e2777c1.js:1
+push.2944.onClick.t.<computed>.t.<computed> @ 996.5e2777c1.js:1
+n @ chunk-vendors.3af4b5c5.js:28
+r @ chunk-vendors.3af4b5c5.js:28
+e @ chunk-vendors.3af4b5c5.js:26
+app.f38e14ca.js:1  API Error Details: {url: '/admin/documents/requests?page=1&limit=10&priority=&search=&date_from=&date_to=', method: 'GET', status: 500, statusText: '', message: 'Failed to retrieve document requests', …}
+(anonymous) @ app.f38e14ca.js:1
+Promise.then
+_request @ chunk-vendors.3af4b5c5.js:20
+request @ chunk-vendors.3af4b5c5.js:20
+(anonymous) @ chunk-vendors.3af4b5c5.js:20
+(anonymous) @ chunk-vendors.3af4b5c5.js:20
+getAllRequests @ 431.818716fd.js:1
+loadRequests @ 566.cd9cad6b.js:1
+loadComponentData @ 566.cd9cad6b.js:1
+mounted @ 566.cd9cad6b.js:1
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+n @ chunk-vendors.3af4b5c5.js:28
+r @ chunk-vendors.3af4b5c5.js:28
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+b @ chunk-vendors.3af4b5c5.js:28
+w @ chunk-vendors.3af4b5c5.js:28
+Promise.then
+C @ chunk-vendors.3af4b5c5.js:28
+g @ chunk-vendors.3af4b5c5.js:28
+jl @ chunk-vendors.3af4b5c5.js:30
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+(anonymous) @ chunk-vendors.3af4b5c5.js:1
+trigger @ chunk-vendors.3af4b5c5.js:1
+L @ chunk-vendors.3af4b5c5.js:1
+notify @ chunk-vendors.3af4b5c5.js:1
+trigger @ chunk-vendors.3af4b5c5.js:1
+set value @ chunk-vendors.3af4b5c5.js:1
+q @ chunk-vendors.3af4b5c5.js:7
+(anonymous) @ chunk-vendors.3af4b5c5.js:7
+Promise.then
+O @ chunk-vendors.3af4b5c5.js:7
+A @ chunk-vendors.3af4b5c5.js:7
+handleMenuClick @ 996.5e2777c1.js:1
+push.2944.onClick.t.<computed>.t.<computed> @ 996.5e2777c1.js:1
+n @ chunk-vendors.3af4b5c5.js:28
+r @ chunk-vendors.3af4b5c5.js:28
+e @ chunk-vendors.3af4b5c5.js:26
+app.f38e14ca.js:1  Full Error Object: uc {message: 'Request failed with status code 500', name: 'AxiosError', code: 'ERR_BAD_RESPONSE', config: {…}, request: XMLHttpRequest, …}
+(anonymous) @ app.f38e14ca.js:1
+Promise.then
+_request @ chunk-vendors.3af4b5c5.js:20
+request @ chunk-vendors.3af4b5c5.js:20
+(anonymous) @ chunk-vendors.3af4b5c5.js:20
+(anonymous) @ chunk-vendors.3af4b5c5.js:20
+getAllRequests @ 431.818716fd.js:1
+loadRequests @ 566.cd9cad6b.js:1
+loadComponentData @ 566.cd9cad6b.js:1
+mounted @ 566.cd9cad6b.js:1
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+n @ chunk-vendors.3af4b5c5.js:28
+r @ chunk-vendors.3af4b5c5.js:28
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+b @ chunk-vendors.3af4b5c5.js:28
+w @ chunk-vendors.3af4b5c5.js:28
+Promise.then
+C @ chunk-vendors.3af4b5c5.js:28
+g @ chunk-vendors.3af4b5c5.js:28
+jl @ chunk-vendors.3af4b5c5.js:30
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+(anonymous) @ chunk-vendors.3af4b5c5.js:1
+trigger @ chunk-vendors.3af4b5c5.js:1
+L @ chunk-vendors.3af4b5c5.js:1
+notify @ chunk-vendors.3af4b5c5.js:1
+trigger @ chunk-vendors.3af4b5c5.js:1
+set value @ chunk-vendors.3af4b5c5.js:1
+q @ chunk-vendors.3af4b5c5.js:7
+(anonymous) @ chunk-vendors.3af4b5c5.js:7
+Promise.then
+O @ chunk-vendors.3af4b5c5.js:7
+A @ chunk-vendors.3af4b5c5.js:7
+handleMenuClick @ 996.5e2777c1.js:1
+push.2944.onClick.t.<computed>.t.<computed> @ 996.5e2777c1.js:1
+n @ chunk-vendors.3af4b5c5.js:28
+r @ chunk-vendors.3af4b5c5.js:28
+e @ chunk-vendors.3af4b5c5.js:26
+
+710.f316af27.js:1 🗑️ Event listener removed for admin : error
+710.f316af27.js:1 📝 Event listener registered for admin : error
+chunk-vendors.3af4b5c5.js:20   GET https://brgybulabackend-production.up.railway.app/api/notifications/unread-count 500 (Internal Server Error)
+(anonymous) @ chunk-vendors.3af4b5c5.js:20
+xhr @ chunk-vendors.3af4b5c5.js:20
+ce @ chunk-vendors.3af4b5c5.js:20
+_request @ chunk-vendors.3af4b5c5.js:20
+request @ chunk-vendors.3af4b5c5.js:20
+(anonymous) @ chunk-vendors.3af4b5c5.js:20
+(anonymous) @ chunk-vendors.3af4b5c5.js:20
+getUnreadCount @ 710.f316af27.js:1
+loadUnreadCount @ 996.5e2777c1.js:1
+initializeNotifications @ 996.5e2777c1.js:1
+await in initializeNotifications
+mounted @ 996.5e2777c1.js:1
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+n @ chunk-vendors.3af4b5c5.js:28
+r @ chunk-vendors.3af4b5c5.js:28
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+b @ chunk-vendors.3af4b5c5.js:28
+w @ chunk-vendors.3af4b5c5.js:28
+Promise.then
+C @ chunk-vendors.3af4b5c5.js:28
+g @ chunk-vendors.3af4b5c5.js:28
+jl @ chunk-vendors.3af4b5c5.js:30
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+(anonymous) @ chunk-vendors.3af4b5c5.js:1
+trigger @ chunk-vendors.3af4b5c5.js:1
+L @ chunk-vendors.3af4b5c5.js:1
+notify @ chunk-vendors.3af4b5c5.js:1
+trigger @ chunk-vendors.3af4b5c5.js:1
+set value @ chunk-vendors.3af4b5c5.js:1
+q @ chunk-vendors.3af4b5c5.js:7
+(anonymous) @ chunk-vendors.3af4b5c5.js:7
+Promise.then
+O @ chunk-vendors.3af4b5c5.js:7
+A @ chunk-vendors.3af4b5c5.js:7
+handleMenuClick @ 996.5e2777c1.js:1
+push.2944.onClick.t.<computed>.t.<computed> @ 996.5e2777c1.js:1
+n @ chunk-vendors.3af4b5c5.js:28
+r @ chunk-vendors.3af4b5c5.js:28
+e @ chunk-vendors.3af4b5c5.js:26
+710.f316af27.js:1  ❌ NotificationService: Failed to get unread count: uc {message: 'Request failed with status code 500', name: 'AxiosError', code: 'ERR_BAD_RESPONSE', config: {…}, request: XMLHttpRequest, …}
+getUnreadCount @ 710.f316af27.js:1
+await in getUnreadCount
+loadUnreadCount @ 996.5e2777c1.js:1
+initializeNotifications @ 996.5e2777c1.js:1
+await in initializeNotifications
+mounted @ 996.5e2777c1.js:1
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+n @ chunk-vendors.3af4b5c5.js:28
+r @ chunk-vendors.3af4b5c5.js:28
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+b @ chunk-vendors.3af4b5c5.js:28
+w @ chunk-vendors.3af4b5c5.js:28
+Promise.then
+C @ chunk-vendors.3af4b5c5.js:28
+g @ chunk-vendors.3af4b5c5.js:28
+jl @ chunk-vendors.3af4b5c5.js:30
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+(anonymous) @ chunk-vendors.3af4b5c5.js:1
+trigger @ chunk-vendors.3af4b5c5.js:1
+L @ chunk-vendors.3af4b5c5.js:1
+notify @ chunk-vendors.3af4b5c5.js:1
+trigger @ chunk-vendors.3af4b5c5.js:1
+set value @ chunk-vendors.3af4b5c5.js:1
+q @ chunk-vendors.3af4b5c5.js:7
+(anonymous) @ chunk-vendors.3af4b5c5.js:7
+Promise.then
+O @ chunk-vendors.3af4b5c5.js:7
+A @ chunk-vendors.3af4b5c5.js:7
+handleMenuClick @ 996.5e2777c1.js:1
+push.2944.onClick.t.<computed>.t.<computed> @ 996.5e2777c1.js:1
+n @ chunk-vendors.3af4b5c5.js:28
+r @ chunk-vendors.3af4b5c5.js:28
+e @ chunk-vendors.3af4b5c5.js:26
+710.f316af27.js:1  📊 NotificationService: Error response status: 500
+getUnreadCount @ 710.f316af27.js:1
+await in getUnreadCount
+loadUnreadCount @ 996.5e2777c1.js:1
+initializeNotifications @ 996.5e2777c1.js:1
+await in initializeNotifications
+mounted @ 996.5e2777c1.js:1
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+n @ chunk-vendors.3af4b5c5.js:28
+r @ chunk-vendors.3af4b5c5.js:28
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+b @ chunk-vendors.3af4b5c5.js:28
+w @ chunk-vendors.3af4b5c5.js:28
+Promise.then
+C @ chunk-vendors.3af4b5c5.js:28
+g @ chunk-vendors.3af4b5c5.js:28
+jl @ chunk-vendors.3af4b5c5.js:30
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+(anonymous) @ chunk-vendors.3af4b5c5.js:1
+trigger @ chunk-vendors.3af4b5c5.js:1
+L @ chunk-vendors.3af4b5c5.js:1
+notify @ chunk-vendors.3af4b5c5.js:1
+trigger @ chunk-vendors.3af4b5c5.js:1
+set value @ chunk-vendors.3af4b5c5.js:1
+q @ chunk-vendors.3af4b5c5.js:7
+(anonymous) @ chunk-vendors.3af4b5c5.js:7
+Promise.then
+O @ chunk-vendors.3af4b5c5.js:7
+A @ chunk-vendors.3af4b5c5.js:7
+handleMenuClick @ 996.5e2777c1.js:1
+push.2944.onClick.t.<computed>.t.<computed> @ 996.5e2777c1.js:1
+n @ chunk-vendors.3af4b5c5.js:28
+r @ chunk-vendors.3af4b5c5.js:28
+e @ chunk-vendors.3af4b5c5.js:26
+710.f316af27.js:1  📊 NotificationService: Error response data: {success: false, message: 'Failed to retrieve unread count', timestamp: '2025-10-01T23:22:19.141Z'}
+getUnreadCount @ 710.f316af27.js:1
+await in getUnreadCount
+loadUnreadCount @ 996.5e2777c1.js:1
+initializeNotifications @ 996.5e2777c1.js:1
+await in initializeNotifications
+mounted @ 996.5e2777c1.js:1
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+n @ chunk-vendors.3af4b5c5.js:28
+r @ chunk-vendors.3af4b5c5.js:28
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+b @ chunk-vendors.3af4b5c5.js:28
+w @ chunk-vendors.3af4b5c5.js:28
+Promise.then
+C @ chunk-vendors.3af4b5c5.js:28
+g @ chunk-vendors.3af4b5c5.js:28
+jl @ chunk-vendors.3af4b5c5.js:30
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+(anonymous) @ chunk-vendors.3af4b5c5.js:1
+trigger @ chunk-vendors.3af4b5c5.js:1
+L @ chunk-vendors.3af4b5c5.js:1
+notify @ chunk-vendors.3af4b5c5.js:1
+trigger @ chunk-vendors.3af4b5c5.js:1
+set value @ chunk-vendors.3af4b5c5.js:1
+q @ chunk-vendors.3af4b5c5.js:7
+(anonymous) @ chunk-vendors.3af4b5c5.js:7
+Promise.then
+O @ chunk-vendors.3af4b5c5.js:7
+A @ chunk-vendors.3af4b5c5.js:7
+handleMenuClick @ 996.5e2777c1.js:1
+push.2944.onClick.t.<computed>.t.<computed> @ 996.5e2777c1.js:1
+n @ chunk-vendors.3af4b5c5.js:28
+r @ chunk-vendors.3af4b5c5.js:28
+e @ chunk-vendors.3af4b5c5.js:26
+996.5e2777c1.js:1  Failed to load unread count: uc {message: 'Request failed with status code 500', name: 'AxiosError', code: 'ERR_BAD_RESPONSE', config: {…}, request: XMLHttpRequest, …}
+loadUnreadCount @ 996.5e2777c1.js:1
+await in loadUnreadCount
+initializeNotifications @ 996.5e2777c1.js:1
+await in initializeNotifications
+mounted @ 996.5e2777c1.js:1
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+n @ chunk-vendors.3af4b5c5.js:28
+r @ chunk-vendors.3af4b5c5.js:28
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+b @ chunk-vendors.3af4b5c5.js:28
+w @ chunk-vendors.3af4b5c5.js:28
+Promise.then
+C @ chunk-vendors.3af4b5c5.js:28
+g @ chunk-vendors.3af4b5c5.js:28
+jl @ chunk-vendors.3af4b5c5.js:30
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+(anonymous) @ chunk-vendors.3af4b5c5.js:1
+trigger @ chunk-vendors.3af4b5c5.js:1
+L @ chunk-vendors.3af4b5c5.js:1
+notify @ chunk-vendors.3af4b5c5.js:1
+trigger @ chunk-vendors.3af4b5c5.js:1
+set value @ chunk-vendors.3af4b5c5.js:1
+q @ chunk-vendors.3af4b5c5.js:7
+(anonymous) @ chunk-vendors.3af4b5c5.js:7
+Promise.then
+O @ chunk-vendors.3af4b5c5.js:7
+A @ chunk-vendors.3af4b5c5.js:7
+handleMenuClick @ 996.5e2777c1.js:1
+push.2944.onClick.t.<computed>.t.<computed> @ 996.5e2777c1.js:1
+n @ chunk-vendors.3af4b5c5.js:28
+r @ chunk-vendors.3af4b5c5.js:28
+e @ chunk-vendors.3af4b5c5.js:26
+[NEW] Explain Console errors by using Copilot in Edge: click
+         
+         to explain an error. 
+        Learn more
+        Don't show again
+chunk-vendors.3af4b5c5.js:20   GET https://brgybulabackend-production.up.railway.app/api/admin/documents/analytics?period=month 500 (Internal Server Error)
+(anonymous) @ chunk-vendors.3af4b5c5.js:20
+xhr @ chunk-vendors.3af4b5c5.js:20
+ce @ chunk-vendors.3af4b5c5.js:20
+Promise.then
+_request @ chunk-vendors.3af4b5c5.js:20
+request @ chunk-vendors.3af4b5c5.js:20
+(anonymous) @ chunk-vendors.3af4b5c5.js:20
+(anonymous) @ chunk-vendors.3af4b5c5.js:20
+getAnalyticsData @ 431.818716fd.js:1
+loadAnalyticsData @ 691.0aa1c999.js:22
+mounted @ 691.0aa1c999.js:22
+await in mounted
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+n @ chunk-vendors.3af4b5c5.js:28
+r @ chunk-vendors.3af4b5c5.js:28
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+b @ chunk-vendors.3af4b5c5.js:28
+w @ chunk-vendors.3af4b5c5.js:28
+Promise.then
+C @ chunk-vendors.3af4b5c5.js:28
+g @ chunk-vendors.3af4b5c5.js:28
+jl @ chunk-vendors.3af4b5c5.js:30
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+(anonymous) @ chunk-vendors.3af4b5c5.js:1
+trigger @ chunk-vendors.3af4b5c5.js:1
+L @ chunk-vendors.3af4b5c5.js:1
+notify @ chunk-vendors.3af4b5c5.js:1
+trigger @ chunk-vendors.3af4b5c5.js:1
+set value @ chunk-vendors.3af4b5c5.js:1
+q @ chunk-vendors.3af4b5c5.js:7
+(anonymous) @ chunk-vendors.3af4b5c5.js:7
+Promise.then
+O @ chunk-vendors.3af4b5c5.js:7
+A @ chunk-vendors.3af4b5c5.js:7
+handleMenuClick @ 996.5e2777c1.js:1
+push.2944.onClick.t.<computed>.t.<computed> @ 996.5e2777c1.js:1
+n @ chunk-vendors.3af4b5c5.js:28
+r @ chunk-vendors.3af4b5c5.js:28
+e @ chunk-vendors.3af4b5c5.js:26
+app.f38e14ca.js:1  API Error Details: {url: '/admin/documents/analytics?period=month', method: 'GET', status: 500, statusText: '', message: 'Failed to retrieve analytics data', …}
+(anonymous) @ app.f38e14ca.js:1
+Promise.then
+_request @ chunk-vendors.3af4b5c5.js:20
+request @ chunk-vendors.3af4b5c5.js:20
+(anonymous) @ chunk-vendors.3af4b5c5.js:20
+(anonymous) @ chunk-vendors.3af4b5c5.js:20
+getAnalyticsData @ 431.818716fd.js:1
+loadAnalyticsData @ 691.0aa1c999.js:22
+mounted @ 691.0aa1c999.js:22
+await in mounted
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+n @ chunk-vendors.3af4b5c5.js:28
+r @ chunk-vendors.3af4b5c5.js:28
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+b @ chunk-vendors.3af4b5c5.js:28
+w @ chunk-vendors.3af4b5c5.js:28
+Promise.then
+C @ chunk-vendors.3af4b5c5.js:28
+g @ chunk-vendors.3af4b5c5.js:28
+jl @ chunk-vendors.3af4b5c5.js:30
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+(anonymous) @ chunk-vendors.3af4b5c5.js:1
+trigger @ chunk-vendors.3af4b5c5.js:1
+L @ chunk-vendors.3af4b5c5.js:1
+notify @ chunk-vendors.3af4b5c5.js:1
+trigger @ chunk-vendors.3af4b5c5.js:1
+set value @ chunk-vendors.3af4b5c5.js:1
+q @ chunk-vendors.3af4b5c5.js:7
+(anonymous) @ chunk-vendors.3af4b5c5.js:7
+Promise.then
+O @ chunk-vendors.3af4b5c5.js:7
+A @ chunk-vendors.3af4b5c5.js:7
+handleMenuClick @ 996.5e2777c1.js:1
+push.2944.onClick.t.<computed>.t.<computed> @ 996.5e2777c1.js:1
+n @ chunk-vendors.3af4b5c5.js:28
+r @ chunk-vendors.3af4b5c5.js:28
+e @ chunk-vendors.3af4b5c5.js:26
+app.f38e14ca.js:1  Full Error Object: uc {message: 'Request failed with status code 500', name: 'AxiosError', code: 'ERR_BAD_RESPONSE', config: {…}, request: XMLHttpRequest, …}
+(anonymous) @ app.f38e14ca.js:1
+Promise.then
+_request @ chunk-vendors.3af4b5c5.js:20
+request @ chunk-vendors.3af4b5c5.js:20
+(anonymous) @ chunk-vendors.3af4b5c5.js:20
+(anonymous) @ chunk-vendors.3af4b5c5.js:20
+getAnalyticsData @ 431.818716fd.js:1
+loadAnalyticsData @ 691.0aa1c999.js:22
+mounted @ 691.0aa1c999.js:22
+await in mounted
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+n @ chunk-vendors.3af4b5c5.js:28
+r @ chunk-vendors.3af4b5c5.js:28
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+b @ chunk-vendors.3af4b5c5.js:28
+w @ chunk-vendors.3af4b5c5.js:28
+Promise.then
+C @ chunk-vendors.3af4b5c5.js:28
+g @ chunk-vendors.3af4b5c5.js:28
+jl @ chunk-vendors.3af4b5c5.js:30
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+(anonymous) @ chunk-vendors.3af4b5c5.js:1
+trigger @ chunk-vendors.3af4b5c5.js:1
+L @ chunk-vendors.3af4b5c5.js:1
+notify @ chunk-vendors.3af4b5c5.js:1
+trigger @ chunk-vendors.3af4b5c5.js:1
+set value @ chunk-vendors.3af4b5c5.js:1
+q @ chunk-vendors.3af4b5c5.js:7
+(anonymous) @ chunk-vendors.3af4b5c5.js:7
+Promise.then
+O @ chunk-vendors.3af4b5c5.js:7
+A @ chunk-vendors.3af4b5c5.js:7
+handleMenuClick @ 996.5e2777c1.js:1
+push.2944.onClick.t.<computed>.t.<computed> @ 996.5e2777c1.js:1
+n @ chunk-vendors.3af4b5c5.js:28
+r @ chunk-vendors.3af4b5c5.js:28
+e @ chunk-vendors.3af4b5c5.js:26
+app.f38e14ca.js:1  Global error: TypeError: Cannot read properties of undefined (reading 'error')
+    at Proxy.loadAnalyticsData (691.0aa1c999.js:22:164174)
+    at async Proxy.mounted (691.0aa1c999.js:22:161905)
+e.9363.q.config.errorHandler @ app.f38e14ca.js:1
+n @ chunk-vendors.3af4b5c5.js:28
+a @ chunk-vendors.3af4b5c5.js:28
+(anonymous) @ chunk-vendors.3af4b5c5.js:28
+Promise.catch
+r @ chunk-vendors.3af4b5c5.js:28
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+b @ chunk-vendors.3af4b5c5.js:28
+w @ chunk-vendors.3af4b5c5.js:28
+Promise.then
+C @ chunk-vendors.3af4b5c5.js:28
+g @ chunk-vendors.3af4b5c5.js:28
+jl @ chunk-vendors.3af4b5c5.js:30
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+(anonymous) @ chunk-vendors.3af4b5c5.js:1
+trigger @ chunk-vendors.3af4b5c5.js:1
+L @ chunk-vendors.3af4b5c5.js:1
+notify @ chunk-vendors.3af4b5c5.js:1
+trigger @ chunk-vendors.3af4b5c5.js:1
+set value @ chunk-vendors.3af4b5c5.js:1
+q @ chunk-vendors.3af4b5c5.js:7
+(anonymous) @ chunk-vendors.3af4b5c5.js:7
+Promise.then
+O @ chunk-vendors.3af4b5c5.js:7
+A @ chunk-vendors.3af4b5c5.js:7
+handleMenuClick @ 996.5e2777c1.js:1
+push.2944.onClick.t.<computed>.t.<computed> @ 996.5e2777c1.js:1
+n @ chunk-vendors.3af4b5c5.js:28
+r @ chunk-vendors.3af4b5c5.js:28
+e @ chunk-vendors.3af4b5c5.js:26
+app.f38e14ca.js:1  Component instance: Proxy(Object) {_: {…}, initializeUI: ƒ, handleSidebarToggle: ƒ, handleMenuChange: ƒ, handleUserDropdownToggle: ƒ, …}
+e.9363.q.config.errorHandler @ app.f38e14ca.js:1
+n @ chunk-vendors.3af4b5c5.js:28
+a @ chunk-vendors.3af4b5c5.js:28
+(anonymous) @ chunk-vendors.3af4b5c5.js:28
+Promise.catch
+r @ chunk-vendors.3af4b5c5.js:28
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+b @ chunk-vendors.3af4b5c5.js:28
+w @ chunk-vendors.3af4b5c5.js:28
+Promise.then
+C @ chunk-vendors.3af4b5c5.js:28
+g @ chunk-vendors.3af4b5c5.js:28
+jl @ chunk-vendors.3af4b5c5.js:30
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+(anonymous) @ chunk-vendors.3af4b5c5.js:1
+trigger @ chunk-vendors.3af4b5c5.js:1
+L @ chunk-vendors.3af4b5c5.js:1
+notify @ chunk-vendors.3af4b5c5.js:1
+trigger @ chunk-vendors.3af4b5c5.js:1
+set value @ chunk-vendors.3af4b5c5.js:1
+q @ chunk-vendors.3af4b5c5.js:7
+(anonymous) @ chunk-vendors.3af4b5c5.js:7
+Promise.then
+O @ chunk-vendors.3af4b5c5.js:7
+A @ chunk-vendors.3af4b5c5.js:7
+handleMenuClick @ 996.5e2777c1.js:1
+push.2944.onClick.t.<computed>.t.<computed> @ 996.5e2777c1.js:1
+n @ chunk-vendors.3af4b5c5.js:28
+r @ chunk-vendors.3af4b5c5.js:28
+e @ chunk-vendors.3af4b5c5.js:26
+app.f38e14ca.js:1  Error info: https://vuejs.org/error-reference/#runtime-m
+e.9363.q.config.errorHandler @ app.f38e14ca.js:1
+n @ chunk-vendors.3af4b5c5.js:28
+a @ chunk-vendors.3af4b5c5.js:28
+(anonymous) @ chunk-vendors.3af4b5c5.js:28
+Promise.catch
+r @ chunk-vendors.3af4b5c5.js:28
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+b @ chunk-vendors.3af4b5c5.js:28
+w @ chunk-vendors.3af4b5c5.js:28
+Promise.then
+C @ chunk-vendors.3af4b5c5.js:28
+g @ chunk-vendors.3af4b5c5.js:28
+jl @ chunk-vendors.3af4b5c5.js:30
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+(anonymous) @ chunk-vendors.3af4b5c5.js:1
+trigger @ chunk-vendors.3af4b5c5.js:1
+L @ chunk-vendors.3af4b5c5.js:1
+notify @ chunk-vendors.3af4b5c5.js:1
+trigger @ chunk-vendors.3af4b5c5.js:1
+set value @ chunk-vendors.3af4b5c5.js:1
+q @ chunk-vendors.3af4b5c5.js:7
+(anonymous) @ chunk-vendors.3af4b5c5.js:7
+Promise.then
+O @ chunk-vendors.3af4b5c5.js:7
+A @ chunk-vendors.3af4b5c5.js:7
+handleMenuClick @ 996.5e2777c1.js:1
+push.2944.onClick.t.<computed>.t.<computed> @ 996.5e2777c1.js:1
+n @ chunk-vendors.3af4b5c5.js:28
+r @ chunk-vendors.3af4b5c5.js:28
+e @ chunk-vendors.3af4b5c5.js:26
+710.f316af27.js:1 🗑️ Event listener removed for admin : error
+710.f316af27.js:1 📝 Event listener registered for admin : error
+chunk-vendors.3af4b5c5.js:20   GET https://brgybulabackend-production.up.railway.app/api/notifications/unread-count 500 (Internal Server Error)
+(anonymous) @ chunk-vendors.3af4b5c5.js:20
+xhr @ chunk-vendors.3af4b5c5.js:20
+ce @ chunk-vendors.3af4b5c5.js:20
+_request @ chunk-vendors.3af4b5c5.js:20
+request @ chunk-vendors.3af4b5c5.js:20
+(anonymous) @ chunk-vendors.3af4b5c5.js:20
+(anonymous) @ chunk-vendors.3af4b5c5.js:20
+getUnreadCount @ 710.f316af27.js:1
+loadUnreadCount @ 996.5e2777c1.js:1
+initializeNotifications @ 996.5e2777c1.js:1
+await in initializeNotifications
+mounted @ 996.5e2777c1.js:1
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+n @ chunk-vendors.3af4b5c5.js:28
+r @ chunk-vendors.3af4b5c5.js:28
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+b @ chunk-vendors.3af4b5c5.js:28
+w @ chunk-vendors.3af4b5c5.js:28
+Promise.then
+C @ chunk-vendors.3af4b5c5.js:28
+g @ chunk-vendors.3af4b5c5.js:28
+jl @ chunk-vendors.3af4b5c5.js:30
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+(anonymous) @ chunk-vendors.3af4b5c5.js:1
+trigger @ chunk-vendors.3af4b5c5.js:1
+L @ chunk-vendors.3af4b5c5.js:1
+notify @ chunk-vendors.3af4b5c5.js:1
+trigger @ chunk-vendors.3af4b5c5.js:1
+set value @ chunk-vendors.3af4b5c5.js:1
+q @ chunk-vendors.3af4b5c5.js:7
+(anonymous) @ chunk-vendors.3af4b5c5.js:7
+Promise.then
+O @ chunk-vendors.3af4b5c5.js:7
+A @ chunk-vendors.3af4b5c5.js:7
+handleMenuClick @ 996.5e2777c1.js:1
+push.2944.onClick.t.<computed>.t.<computed> @ 996.5e2777c1.js:1
+n @ chunk-vendors.3af4b5c5.js:28
+r @ chunk-vendors.3af4b5c5.js:28
+e @ chunk-vendors.3af4b5c5.js:26
+710.f316af27.js:1  ❌ NotificationService: Failed to get unread count: uc {message: 'Request failed with status code 500', name: 'AxiosError', code: 'ERR_BAD_RESPONSE', config: {…}, request: XMLHttpRequest, …}
+getUnreadCount @ 710.f316af27.js:1
+await in getUnreadCount
+loadUnreadCount @ 996.5e2777c1.js:1
+initializeNotifications @ 996.5e2777c1.js:1
+await in initializeNotifications
+mounted @ 996.5e2777c1.js:1
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+n @ chunk-vendors.3af4b5c5.js:28
+r @ chunk-vendors.3af4b5c5.js:28
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+b @ chunk-vendors.3af4b5c5.js:28
+w @ chunk-vendors.3af4b5c5.js:28
+Promise.then
+C @ chunk-vendors.3af4b5c5.js:28
+g @ chunk-vendors.3af4b5c5.js:28
+jl @ chunk-vendors.3af4b5c5.js:30
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+(anonymous) @ chunk-vendors.3af4b5c5.js:1
+trigger @ chunk-vendors.3af4b5c5.js:1
+L @ chunk-vendors.3af4b5c5.js:1
+notify @ chunk-vendors.3af4b5c5.js:1
+trigger @ chunk-vendors.3af4b5c5.js:1
+set value @ chunk-vendors.3af4b5c5.js:1
+q @ chunk-vendors.3af4b5c5.js:7
+(anonymous) @ chunk-vendors.3af4b5c5.js:7
+Promise.then
+O @ chunk-vendors.3af4b5c5.js:7
+A @ chunk-vendors.3af4b5c5.js:7
+handleMenuClick @ 996.5e2777c1.js:1
+push.2944.onClick.t.<computed>.t.<computed> @ 996.5e2777c1.js:1
+n @ chunk-vendors.3af4b5c5.js:28
+r @ chunk-vendors.3af4b5c5.js:28
+e @ chunk-vendors.3af4b5c5.js:26
+710.f316af27.js:1  📊 NotificationService: Error response status: 500
+getUnreadCount @ 710.f316af27.js:1
+await in getUnreadCount
+loadUnreadCount @ 996.5e2777c1.js:1
+initializeNotifications @ 996.5e2777c1.js:1
+await in initializeNotifications
+mounted @ 996.5e2777c1.js:1
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+n @ chunk-vendors.3af4b5c5.js:28
+r @ chunk-vendors.3af4b5c5.js:28
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+b @ chunk-vendors.3af4b5c5.js:28
+w @ chunk-vendors.3af4b5c5.js:28
+Promise.then
+C @ chunk-vendors.3af4b5c5.js:28
+g @ chunk-vendors.3af4b5c5.js:28
+jl @ chunk-vendors.3af4b5c5.js:30
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+(anonymous) @ chunk-vendors.3af4b5c5.js:1
+trigger @ chunk-vendors.3af4b5c5.js:1
+L @ chunk-vendors.3af4b5c5.js:1
+notify @ chunk-vendors.3af4b5c5.js:1
+trigger @ chunk-vendors.3af4b5c5.js:1
+set value @ chunk-vendors.3af4b5c5.js:1
+q @ chunk-vendors.3af4b5c5.js:7
+(anonymous) @ chunk-vendors.3af4b5c5.js:7
+Promise.then
+O @ chunk-vendors.3af4b5c5.js:7
+A @ chunk-vendors.3af4b5c5.js:7
+handleMenuClick @ 996.5e2777c1.js:1
+push.2944.onClick.t.<computed>.t.<computed> @ 996.5e2777c1.js:1
+n @ chunk-vendors.3af4b5c5.js:28
+r @ chunk-vendors.3af4b5c5.js:28
+e @ chunk-vendors.3af4b5c5.js:26
+710.f316af27.js:1  📊 NotificationService: Error response data: {success: false, message: 'Failed to retrieve unread count', timestamp: '2025-10-01T23:22:32.968Z'}
+getUnreadCount @ 710.f316af27.js:1
+await in getUnreadCount
+loadUnreadCount @ 996.5e2777c1.js:1
+initializeNotifications @ 996.5e2777c1.js:1
+await in initializeNotifications
+mounted @ 996.5e2777c1.js:1
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+n @ chunk-vendors.3af4b5c5.js:28
+r @ chunk-vendors.3af4b5c5.js:28
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+b @ chunk-vendors.3af4b5c5.js:28
+w @ chunk-vendors.3af4b5c5.js:28
+Promise.then
+C @ chunk-vendors.3af4b5c5.js:28
+g @ chunk-vendors.3af4b5c5.js:28
+jl @ chunk-vendors.3af4b5c5.js:30
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+(anonymous) @ chunk-vendors.3af4b5c5.js:1
+trigger @ chunk-vendors.3af4b5c5.js:1
+L @ chunk-vendors.3af4b5c5.js:1
+notify @ chunk-vendors.3af4b5c5.js:1
+trigger @ chunk-vendors.3af4b5c5.js:1
+set value @ chunk-vendors.3af4b5c5.js:1
+q @ chunk-vendors.3af4b5c5.js:7
+(anonymous) @ chunk-vendors.3af4b5c5.js:7
+Promise.then
+O @ chunk-vendors.3af4b5c5.js:7
+A @ chunk-vendors.3af4b5c5.js:7
+handleMenuClick @ 996.5e2777c1.js:1
+push.2944.onClick.t.<computed>.t.<computed> @ 996.5e2777c1.js:1
+n @ chunk-vendors.3af4b5c5.js:28
+r @ chunk-vendors.3af4b5c5.js:28
+e @ chunk-vendors.3af4b5c5.js:26
+996.5e2777c1.js:1  Failed to load unread count: uc {message: 'Request failed with status code 500', name: 'AxiosError', code: 'ERR_BAD_RESPONSE', config: {…}, request: XMLHttpRequest, …}
+loadUnreadCount @ 996.5e2777c1.js:1
+await in loadUnreadCount
+initializeNotifications @ 996.5e2777c1.js:1
+await in initializeNotifications
+mounted @ 996.5e2777c1.js:1
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+n @ chunk-vendors.3af4b5c5.js:28
+r @ chunk-vendors.3af4b5c5.js:28
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+b @ chunk-vendors.3af4b5c5.js:28
+w @ chunk-vendors.3af4b5c5.js:28
+Promise.then
+C @ chunk-vendors.3af4b5c5.js:28
+g @ chunk-vendors.3af4b5c5.js:28
+jl @ chunk-vendors.3af4b5c5.js:30
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+(anonymous) @ chunk-vendors.3af4b5c5.js:1
+trigger @ chunk-vendors.3af4b5c5.js:1
+L @ chunk-vendors.3af4b5c5.js:1
+notify @ chunk-vendors.3af4b5c5.js:1
+trigger @ chunk-vendors.3af4b5c5.js:1
+set value @ chunk-vendors.3af4b5c5.js:1
+q @ chunk-vendors.3af4b5c5.js:7
+(anonymous) @ chunk-vendors.3af4b5c5.js:7
+Promise.then
+O @ chunk-vendors.3af4b5c5.js:7
+A @ chunk-vendors.3af4b5c5.js:7
+handleMenuClick @ 996.5e2777c1.js:1
+push.2944.onClick.t.<computed>.t.<computed> @ 996.5e2777c1.js:1
+n @ chunk-vendors.3af4b5c5.js:28
+r @ chunk-vendors.3af4b5c5.js:28
+e @ chunk-vendors.3af4b5c5.js:26
+[NEW] Explain Console errors by using Copilot in Edge: click
+         
+         to explain an error. 
+        Learn more
+        Don't show again
+chunk-vendors.3af4b5c5.js:20   GET https://brgybulabackend-production.up.railway.app/api/admin/activity-logs/comprehensive?page=1&limit=100&dateFrom=2025-09-01&dateTo=2025-10-01 500 (Internal Server Error)
+(anonymous) @ chunk-vendors.3af4b5c5.js:20
+xhr @ chunk-vendors.3af4b5c5.js:20
+ce @ chunk-vendors.3af4b5c5.js:20
+Promise.then
+_request @ chunk-vendors.3af4b5c5.js:20
+request @ chunk-vendors.3af4b5c5.js:20
+(anonymous) @ chunk-vendors.3af4b5c5.js:20
+(anonymous) @ chunk-vendors.3af4b5c5.js:20
+getComprehensiveActivityLogs @ 447.b0cc292d.js:1
+loadLogs @ 447.b0cc292d.js:1
+mounted @ 447.b0cc292d.js:1
+await in mounted
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+n @ chunk-vendors.3af4b5c5.js:28
+r @ chunk-vendors.3af4b5c5.js:28
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+b @ chunk-vendors.3af4b5c5.js:28
+w @ chunk-vendors.3af4b5c5.js:28
+Promise.then
+C @ chunk-vendors.3af4b5c5.js:28
+g @ chunk-vendors.3af4b5c5.js:28
+jl @ chunk-vendors.3af4b5c5.js:30
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+(anonymous) @ chunk-vendors.3af4b5c5.js:1
+trigger @ chunk-vendors.3af4b5c5.js:1
+L @ chunk-vendors.3af4b5c5.js:1
+notify @ chunk-vendors.3af4b5c5.js:1
+trigger @ chunk-vendors.3af4b5c5.js:1
+set value @ chunk-vendors.3af4b5c5.js:1
+q @ chunk-vendors.3af4b5c5.js:7
+(anonymous) @ chunk-vendors.3af4b5c5.js:7
+Promise.then
+O @ chunk-vendors.3af4b5c5.js:7
+A @ chunk-vendors.3af4b5c5.js:7
+handleMenuClick @ 996.5e2777c1.js:1
+push.2944.onClick.t.<computed>.t.<computed> @ 996.5e2777c1.js:1
+n @ chunk-vendors.3af4b5c5.js:28
+r @ chunk-vendors.3af4b5c5.js:28
+e @ chunk-vendors.3af4b5c5.js:26
+app.f38e14ca.js:1  API Error Details: {url: '/admin/activity-logs/comprehensive?page=1&limit=100&dateFrom=2025-09-01&dateTo=2025-10-01', method: 'GET', status: 500, statusText: '', message: 'Failed to retrieve comprehensive activity logs', …}
+(anonymous) @ app.f38e14ca.js:1
+Promise.then
+_request @ chunk-vendors.3af4b5c5.js:20
+request @ chunk-vendors.3af4b5c5.js:20
+(anonymous) @ chunk-vendors.3af4b5c5.js:20
+(anonymous) @ chunk-vendors.3af4b5c5.js:20
+getComprehensiveActivityLogs @ 447.b0cc292d.js:1
+loadLogs @ 447.b0cc292d.js:1
+mounted @ 447.b0cc292d.js:1
+await in mounted
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+n @ chunk-vendors.3af4b5c5.js:28
+r @ chunk-vendors.3af4b5c5.js:28
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+b @ chunk-vendors.3af4b5c5.js:28
+w @ chunk-vendors.3af4b5c5.js:28
+Promise.then
+C @ chunk-vendors.3af4b5c5.js:28
+g @ chunk-vendors.3af4b5c5.js:28
+jl @ chunk-vendors.3af4b5c5.js:30
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+(anonymous) @ chunk-vendors.3af4b5c5.js:1
+trigger @ chunk-vendors.3af4b5c5.js:1
+L @ chunk-vendors.3af4b5c5.js:1
+notify @ chunk-vendors.3af4b5c5.js:1
+trigger @ chunk-vendors.3af4b5c5.js:1
+set value @ chunk-vendors.3af4b5c5.js:1
+q @ chunk-vendors.3af4b5c5.js:7
+(anonymous) @ chunk-vendors.3af4b5c5.js:7
+Promise.then
+O @ chunk-vendors.3af4b5c5.js:7
+A @ chunk-vendors.3af4b5c5.js:7
+handleMenuClick @ 996.5e2777c1.js:1
+push.2944.onClick.t.<computed>.t.<computed> @ 996.5e2777c1.js:1
+n @ chunk-vendors.3af4b5c5.js:28
+r @ chunk-vendors.3af4b5c5.js:28
+e @ chunk-vendors.3af4b5c5.js:26
+app.f38e14ca.js:1  Full Error Object: uc {message: 'Request failed with status code 500', name: 'AxiosError', code: 'ERR_BAD_RESPONSE', config: {…}, request: XMLHttpRequest, …}
+(anonymous) @ app.f38e14ca.js:1
+Promise.then
+_request @ chunk-vendors.3af4b5c5.js:20
+request @ chunk-vendors.3af4b5c5.js:20
+(anonymous) @ chunk-vendors.3af4b5c5.js:20
+(anonymous) @ chunk-vendors.3af4b5c5.js:20
+getComprehensiveActivityLogs @ 447.b0cc292d.js:1
+loadLogs @ 447.b0cc292d.js:1
+mounted @ 447.b0cc292d.js:1
+await in mounted
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+n @ chunk-vendors.3af4b5c5.js:28
+r @ chunk-vendors.3af4b5c5.js:28
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+b @ chunk-vendors.3af4b5c5.js:28
+w @ chunk-vendors.3af4b5c5.js:28
+Promise.then
+C @ chunk-vendors.3af4b5c5.js:28
+g @ chunk-vendors.3af4b5c5.js:28
+jl @ chunk-vendors.3af4b5c5.js:30
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+(anonymous) @ chunk-vendors.3af4b5c5.js:1
+trigger @ chunk-vendors.3af4b5c5.js:1
+L @ chunk-vendors.3af4b5c5.js:1
+notify @ chunk-vendors.3af4b5c5.js:1
+trigger @ chunk-vendors.3af4b5c5.js:1
+set value @ chunk-vendors.3af4b5c5.js:1
+q @ chunk-vendors.3af4b5c5.js:7
+(anonymous) @ chunk-vendors.3af4b5c5.js:7
+Promise.then
+O @ chunk-vendors.3af4b5c5.js:7
+A @ chunk-vendors.3af4b5c5.js:7
+handleMenuClick @ 996.5e2777c1.js:1
+push.2944.onClick.t.<computed>.t.<computed> @ 996.5e2777c1.js:1
+n @ chunk-vendors.3af4b5c5.js:28
+r @ chunk-vendors.3af4b5c5.js:28
+e @ chunk-vendors.3af4b5c5.js:26
+447.b0cc292d.js:1  ActivityLogService error: uc {message: 'Server error - please check the backend logs for details', name: 'AxiosError', code: 'ERR_BAD_RESPONSE', config: {…}, request: XMLHttpRequest, …}
+handleError @ 447.b0cc292d.js:1
+getComprehensiveActivityLogs @ 447.b0cc292d.js:1
+await in getComprehensiveActivityLogs
+loadLogs @ 447.b0cc292d.js:1
+mounted @ 447.b0cc292d.js:1
+await in mounted
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+n @ chunk-vendors.3af4b5c5.js:28
+r @ chunk-vendors.3af4b5c5.js:28
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+b @ chunk-vendors.3af4b5c5.js:28
+w @ chunk-vendors.3af4b5c5.js:28
+Promise.then
+C @ chunk-vendors.3af4b5c5.js:28
+g @ chunk-vendors.3af4b5c5.js:28
+jl @ chunk-vendors.3af4b5c5.js:30
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+(anonymous) @ chunk-vendors.3af4b5c5.js:1
+trigger @ chunk-vendors.3af4b5c5.js:1
+L @ chunk-vendors.3af4b5c5.js:1
+notify @ chunk-vendors.3af4b5c5.js:1
+trigger @ chunk-vendors.3af4b5c5.js:1
+set value @ chunk-vendors.3af4b5c5.js:1
+q @ chunk-vendors.3af4b5c5.js:7
+(anonymous) @ chunk-vendors.3af4b5c5.js:7
+Promise.then
+O @ chunk-vendors.3af4b5c5.js:7
+A @ chunk-vendors.3af4b5c5.js:7
+handleMenuClick @ 996.5e2777c1.js:1
+push.2944.onClick.t.<computed>.t.<computed> @ 996.5e2777c1.js:1
+n @ chunk-vendors.3af4b5c5.js:28
+r @ chunk-vendors.3af4b5c5.js:28
+e @ chunk-vendors.3af4b5c5.js:26
+chunk-vendors.3af4b5c5.js:20   GET https://brgybulabackend-production.up.railway.app/api/admin/activity-logs?page=1&limit=100&dateFrom=2025-09-01&dateTo=2025-10-01 500 (Internal Server Error)
+(anonymous) @ chunk-vendors.3af4b5c5.js:20
+xhr @ chunk-vendors.3af4b5c5.js:20
+ce @ chunk-vendors.3af4b5c5.js:20
+Promise.then
+_request @ chunk-vendors.3af4b5c5.js:20
+request @ chunk-vendors.3af4b5c5.js:20
+(anonymous) @ chunk-vendors.3af4b5c5.js:20
+(anonymous) @ chunk-vendors.3af4b5c5.js:20
+getActivityLogs @ 447.b0cc292d.js:1
+loadLogs @ 447.b0cc292d.js:1
+await in loadLogs
+mounted @ 447.b0cc292d.js:1
+await in mounted
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+n @ chunk-vendors.3af4b5c5.js:28
+r @ chunk-vendors.3af4b5c5.js:28
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+b @ chunk-vendors.3af4b5c5.js:28
+w @ chunk-vendors.3af4b5c5.js:28
+Promise.then
+C @ chunk-vendors.3af4b5c5.js:28
+g @ chunk-vendors.3af4b5c5.js:28
+jl @ chunk-vendors.3af4b5c5.js:30
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+(anonymous) @ chunk-vendors.3af4b5c5.js:1
+trigger @ chunk-vendors.3af4b5c5.js:1
+L @ chunk-vendors.3af4b5c5.js:1
+notify @ chunk-vendors.3af4b5c5.js:1
+trigger @ chunk-vendors.3af4b5c5.js:1
+set value @ chunk-vendors.3af4b5c5.js:1
+q @ chunk-vendors.3af4b5c5.js:7
+(anonymous) @ chunk-vendors.3af4b5c5.js:7
+Promise.then
+O @ chunk-vendors.3af4b5c5.js:7
+A @ chunk-vendors.3af4b5c5.js:7
+handleMenuClick @ 996.5e2777c1.js:1
+push.2944.onClick.t.<computed>.t.<computed> @ 996.5e2777c1.js:1
+n @ chunk-vendors.3af4b5c5.js:28
+r @ chunk-vendors.3af4b5c5.js:28
+e @ chunk-vendors.3af4b5c5.js:26
+app.f38e14ca.js:1  API Error Details: {url: '/admin/activity-logs?page=1&limit=100&dateFrom=2025-09-01&dateTo=2025-10-01', method: 'GET', status: 500, statusText: '', message: 'Failed to retrieve activity logs', …}
+(anonymous) @ app.f38e14ca.js:1
+Promise.then
+_request @ chunk-vendors.3af4b5c5.js:20
+request @ chunk-vendors.3af4b5c5.js:20
+(anonymous) @ chunk-vendors.3af4b5c5.js:20
+(anonymous) @ chunk-vendors.3af4b5c5.js:20
+getActivityLogs @ 447.b0cc292d.js:1
+loadLogs @ 447.b0cc292d.js:1
+await in loadLogs
+mounted @ 447.b0cc292d.js:1
+await in mounted
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+n @ chunk-vendors.3af4b5c5.js:28
+r @ chunk-vendors.3af4b5c5.js:28
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+b @ chunk-vendors.3af4b5c5.js:28
+w @ chunk-vendors.3af4b5c5.js:28
+Promise.then
+C @ chunk-vendors.3af4b5c5.js:28
+g @ chunk-vendors.3af4b5c5.js:28
+jl @ chunk-vendors.3af4b5c5.js:30
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+(anonymous) @ chunk-vendors.3af4b5c5.js:1
+trigger @ chunk-vendors.3af4b5c5.js:1
+L @ chunk-vendors.3af4b5c5.js:1
+notify @ chunk-vendors.3af4b5c5.js:1
+trigger @ chunk-vendors.3af4b5c5.js:1
+set value @ chunk-vendors.3af4b5c5.js:1
+q @ chunk-vendors.3af4b5c5.js:7
+(anonymous) @ chunk-vendors.3af4b5c5.js:7
+Promise.then
+O @ chunk-vendors.3af4b5c5.js:7
+A @ chunk-vendors.3af4b5c5.js:7
+handleMenuClick @ 996.5e2777c1.js:1
+push.2944.onClick.t.<computed>.t.<computed> @ 996.5e2777c1.js:1
+n @ chunk-vendors.3af4b5c5.js:28
+r @ chunk-vendors.3af4b5c5.js:28
+e @ chunk-vendors.3af4b5c5.js:26
+app.f38e14ca.js:1  Full Error Object: uc {message: 'Request failed with status code 500', name: 'AxiosError', code: 'ERR_BAD_RESPONSE', config: {…}, request: XMLHttpRequest, …}
+(anonymous) @ app.f38e14ca.js:1
+Promise.then
+_request @ chunk-vendors.3af4b5c5.js:20
+request @ chunk-vendors.3af4b5c5.js:20
+(anonymous) @ chunk-vendors.3af4b5c5.js:20
+(anonymous) @ chunk-vendors.3af4b5c5.js:20
+getActivityLogs @ 447.b0cc292d.js:1
+loadLogs @ 447.b0cc292d.js:1
+await in loadLogs
+mounted @ 447.b0cc292d.js:1
+await in mounted
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+n @ chunk-vendors.3af4b5c5.js:28
+r @ chunk-vendors.3af4b5c5.js:28
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+b @ chunk-vendors.3af4b5c5.js:28
+w @ chunk-vendors.3af4b5c5.js:28
+Promise.then
+C @ chunk-vendors.3af4b5c5.js:28
+g @ chunk-vendors.3af4b5c5.js:28
+jl @ chunk-vendors.3af4b5c5.js:30
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+(anonymous) @ chunk-vendors.3af4b5c5.js:1
+trigger @ chunk-vendors.3af4b5c5.js:1
+L @ chunk-vendors.3af4b5c5.js:1
+notify @ chunk-vendors.3af4b5c5.js:1
+trigger @ chunk-vendors.3af4b5c5.js:1
+set value @ chunk-vendors.3af4b5c5.js:1
+q @ chunk-vendors.3af4b5c5.js:7
+(anonymous) @ chunk-vendors.3af4b5c5.js:7
+Promise.then
+O @ chunk-vendors.3af4b5c5.js:7
+A @ chunk-vendors.3af4b5c5.js:7
+handleMenuClick @ 996.5e2777c1.js:1
+push.2944.onClick.t.<computed>.t.<computed> @ 996.5e2777c1.js:1
+n @ chunk-vendors.3af4b5c5.js:28
+r @ chunk-vendors.3af4b5c5.js:28
+e @ chunk-vendors.3af4b5c5.js:26
+447.b0cc292d.js:1  ActivityLogService error: uc {message: 'Server error - please check the backend logs for details', name: 'AxiosError', code: 'ERR_BAD_RESPONSE', config: {…}, request: XMLHttpRequest, …}
+handleError @ 447.b0cc292d.js:1
+getActivityLogs @ 447.b0cc292d.js:1
+await in getActivityLogs
+loadLogs @ 447.b0cc292d.js:1
+await in loadLogs
+mounted @ 447.b0cc292d.js:1
+await in mounted
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+n @ chunk-vendors.3af4b5c5.js:28
+r @ chunk-vendors.3af4b5c5.js:28
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+b @ chunk-vendors.3af4b5c5.js:28
+w @ chunk-vendors.3af4b5c5.js:28
+Promise.then
+C @ chunk-vendors.3af4b5c5.js:28
+g @ chunk-vendors.3af4b5c5.js:28
+jl @ chunk-vendors.3af4b5c5.js:30
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+(anonymous) @ chunk-vendors.3af4b5c5.js:1
+trigger @ chunk-vendors.3af4b5c5.js:1
+L @ chunk-vendors.3af4b5c5.js:1
+notify @ chunk-vendors.3af4b5c5.js:1
+trigger @ chunk-vendors.3af4b5c5.js:1
+set value @ chunk-vendors.3af4b5c5.js:1
+q @ chunk-vendors.3af4b5c5.js:7
+(anonymous) @ chunk-vendors.3af4b5c5.js:7
+Promise.then
+O @ chunk-vendors.3af4b5c5.js:7
+A @ chunk-vendors.3af4b5c5.js:7
+handleMenuClick @ 996.5e2777c1.js:1
+push.2944.onClick.t.<computed>.t.<computed> @ 996.5e2777c1.js:1
+n @ chunk-vendors.3af4b5c5.js:28
+r @ chunk-vendors.3af4b5c5.js:28
+e @ chunk-vendors.3af4b5c5.js:26
+chunk-vendors.3af4b5c5.js:20   GET https://brgybulabackend-production.up.railway.app/api/admin/documents/dashboard/recent?limit=100 500 (Internal Server Error)
+(anonymous) @ chunk-vendors.3af4b5c5.js:20
+xhr @ chunk-vendors.3af4b5c5.js:20
+ce @ chunk-vendors.3af4b5c5.js:20
+Promise.then
+_request @ chunk-vendors.3af4b5c5.js:20
+request @ chunk-vendors.3af4b5c5.js:20
+(anonymous) @ chunk-vendors.3af4b5c5.js:20
+(anonymous) @ chunk-vendors.3af4b5c5.js:20
+getRecentActivity @ 431.818716fd.js:1
+loadLogs @ 447.b0cc292d.js:1
+await in loadLogs
+mounted @ 447.b0cc292d.js:1
+await in mounted
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+n @ chunk-vendors.3af4b5c5.js:28
+r @ chunk-vendors.3af4b5c5.js:28
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+b @ chunk-vendors.3af4b5c5.js:28
+w @ chunk-vendors.3af4b5c5.js:28
+Promise.then
+C @ chunk-vendors.3af4b5c5.js:28
+g @ chunk-vendors.3af4b5c5.js:28
+jl @ chunk-vendors.3af4b5c5.js:30
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+(anonymous) @ chunk-vendors.3af4b5c5.js:1
+trigger @ chunk-vendors.3af4b5c5.js:1
+L @ chunk-vendors.3af4b5c5.js:1
+notify @ chunk-vendors.3af4b5c5.js:1
+trigger @ chunk-vendors.3af4b5c5.js:1
+set value @ chunk-vendors.3af4b5c5.js:1
+q @ chunk-vendors.3af4b5c5.js:7
+(anonymous) @ chunk-vendors.3af4b5c5.js:7
+Promise.then
+O @ chunk-vendors.3af4b5c5.js:7
+A @ chunk-vendors.3af4b5c5.js:7
+handleMenuClick @ 996.5e2777c1.js:1
+push.2944.onClick.t.<computed>.t.<computed> @ 996.5e2777c1.js:1
+n @ chunk-vendors.3af4b5c5.js:28
+r @ chunk-vendors.3af4b5c5.js:28
+e @ chunk-vendors.3af4b5c5.js:26
+app.f38e14ca.js:1  API Error Details: {url: '/admin/documents/dashboard/recent?limit=100', method: 'GET', status: 500, statusText: '', message: 'Failed to retrieve recent activity', …}
+(anonymous) @ app.f38e14ca.js:1
+Promise.then
+_request @ chunk-vendors.3af4b5c5.js:20
+request @ chunk-vendors.3af4b5c5.js:20
+(anonymous) @ chunk-vendors.3af4b5c5.js:20
+(anonymous) @ chunk-vendors.3af4b5c5.js:20
+getRecentActivity @ 431.818716fd.js:1
+loadLogs @ 447.b0cc292d.js:1
+await in loadLogs
+mounted @ 447.b0cc292d.js:1
+await in mounted
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+n @ chunk-vendors.3af4b5c5.js:28
+r @ chunk-vendors.3af4b5c5.js:28
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+b @ chunk-vendors.3af4b5c5.js:28
+w @ chunk-vendors.3af4b5c5.js:28
+Promise.then
+C @ chunk-vendors.3af4b5c5.js:28
+g @ chunk-vendors.3af4b5c5.js:28
+jl @ chunk-vendors.3af4b5c5.js:30
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+(anonymous) @ chunk-vendors.3af4b5c5.js:1
+trigger @ chunk-vendors.3af4b5c5.js:1
+L @ chunk-vendors.3af4b5c5.js:1
+notify @ chunk-vendors.3af4b5c5.js:1
+trigger @ chunk-vendors.3af4b5c5.js:1
+set value @ chunk-vendors.3af4b5c5.js:1
+q @ chunk-vendors.3af4b5c5.js:7
+(anonymous) @ chunk-vendors.3af4b5c5.js:7
+Promise.then
+O @ chunk-vendors.3af4b5c5.js:7
+A @ chunk-vendors.3af4b5c5.js:7
+handleMenuClick @ 996.5e2777c1.js:1
+push.2944.onClick.t.<computed>.t.<computed> @ 996.5e2777c1.js:1
+n @ chunk-vendors.3af4b5c5.js:28
+r @ chunk-vendors.3af4b5c5.js:28
+e @ chunk-vendors.3af4b5c5.js:26
+app.f38e14ca.js:1  Full Error Object: uc {message: 'Request failed with status code 500', name: 'AxiosError', code: 'ERR_BAD_RESPONSE', config: {…}, request: XMLHttpRequest, …}
+(anonymous) @ app.f38e14ca.js:1
+Promise.then
+_request @ chunk-vendors.3af4b5c5.js:20
+request @ chunk-vendors.3af4b5c5.js:20
+(anonymous) @ chunk-vendors.3af4b5c5.js:20
+(anonymous) @ chunk-vendors.3af4b5c5.js:20
+getRecentActivity @ 431.818716fd.js:1
+loadLogs @ 447.b0cc292d.js:1
+await in loadLogs
+mounted @ 447.b0cc292d.js:1
+await in mounted
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+n @ chunk-vendors.3af4b5c5.js:28
+r @ chunk-vendors.3af4b5c5.js:28
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+b @ chunk-vendors.3af4b5c5.js:28
+w @ chunk-vendors.3af4b5c5.js:28
+Promise.then
+C @ chunk-vendors.3af4b5c5.js:28
+g @ chunk-vendors.3af4b5c5.js:28
+jl @ chunk-vendors.3af4b5c5.js:30
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+(anonymous) @ chunk-vendors.3af4b5c5.js:1
+trigger @ chunk-vendors.3af4b5c5.js:1
+L @ chunk-vendors.3af4b5c5.js:1
+notify @ chunk-vendors.3af4b5c5.js:1
+trigger @ chunk-vendors.3af4b5c5.js:1
+set value @ chunk-vendors.3af4b5c5.js:1
+q @ chunk-vendors.3af4b5c5.js:7
+(anonymous) @ chunk-vendors.3af4b5c5.js:7
+Promise.then
+O @ chunk-vendors.3af4b5c5.js:7
+A @ chunk-vendors.3af4b5c5.js:7
+handleMenuClick @ 996.5e2777c1.js:1
+push.2944.onClick.t.<computed>.t.<computed> @ 996.5e2777c1.js:1
+n @ chunk-vendors.3af4b5c5.js:28
+r @ chunk-vendors.3af4b5c5.js:28
+e @ chunk-vendors.3af4b5c5.js:26
+447.b0cc292d.js:1 ⚠️  AdminDocumentService final fallback failed: {"message":"Failed to retrieve recent activity","errors":[],"status":500}
+710.f316af27.js:1 🗑️ Event listener removed for admin : error
+76.b63543ad.js:1 userData keys: (10) ['userName', 'userEmail', 'userAvatar', 'firstName', 'lastName', 'middleName', 'suffix', 'profile', 'isLoading', 'error']
+76.b63543ad.js:1 userData keys: (10) ['userName', 'userEmail', 'userAvatar', 'firstName', 'lastName', 'middleName', 'suffix', 'profile', 'isLoading', 'error']
+710.f316af27.js:1 📝 Event listener registered for client : error
+chunk-vendors.3af4b5c5.js:20   GET https://brgybulabackend-production.up.railway.app/api/notifications/unread-count 500 (Internal Server Error)
+(anonymous) @ chunk-vendors.3af4b5c5.js:20
+xhr @ chunk-vendors.3af4b5c5.js:20
+ce @ chunk-vendors.3af4b5c5.js:20
+_request @ chunk-vendors.3af4b5c5.js:20
+request @ chunk-vendors.3af4b5c5.js:20
+(anonymous) @ chunk-vendors.3af4b5c5.js:20
+(anonymous) @ chunk-vendors.3af4b5c5.js:20
+getUnreadCount @ 710.f316af27.js:1
+loadUnreadCount @ 76.b63543ad.js:1
+initializeNotifications @ 76.b63543ad.js:1
+await in initializeNotifications
+mounted @ 76.b63543ad.js:1
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+n @ chunk-vendors.3af4b5c5.js:28
+r @ chunk-vendors.3af4b5c5.js:28
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+b @ chunk-vendors.3af4b5c5.js:28
+w @ chunk-vendors.3af4b5c5.js:28
+Promise.then
+C @ chunk-vendors.3af4b5c5.js:28
+g @ chunk-vendors.3af4b5c5.js:28
+jl @ chunk-vendors.3af4b5c5.js:30
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+(anonymous) @ chunk-vendors.3af4b5c5.js:1
+trigger @ chunk-vendors.3af4b5c5.js:1
+L @ chunk-vendors.3af4b5c5.js:1
+notify @ chunk-vendors.3af4b5c5.js:1
+trigger @ chunk-vendors.3af4b5c5.js:1
+set value @ chunk-vendors.3af4b5c5.js:1
+q @ chunk-vendors.3af4b5c5.js:7
+(anonymous) @ chunk-vendors.3af4b5c5.js:7
+Promise.then
+O @ chunk-vendors.3af4b5c5.js:7
+A @ chunk-vendors.3af4b5c5.js:7
+(anonymous) @ 907.942af54c.js:1
+setTimeout
+(anonymous) @ 907.942af54c.js:1
+setTimeout
+submitLogin @ 907.942af54c.js:1
+await in submitLogin
+(anonymous) @ 907.942af54c.js:1
+e.<computed>.e.<computed> @ chunk-vendors.3af4b5c5.js:28
+n @ chunk-vendors.3af4b5c5.js:28
+r @ chunk-vendors.3af4b5c5.js:28
+e @ chunk-vendors.3af4b5c5.js:26
+710.f316af27.js:1  ❌ NotificationService: Failed to get unread count: uc {message: 'Request failed with status code 500', name: 'AxiosError', code: 'ERR_BAD_RESPONSE', config: {…}, request: XMLHttpRequest, …}
+getUnreadCount @ 710.f316af27.js:1
+await in getUnreadCount
+loadUnreadCount @ 76.b63543ad.js:1
+initializeNotifications @ 76.b63543ad.js:1
+await in initializeNotifications
+mounted @ 76.b63543ad.js:1
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+n @ chunk-vendors.3af4b5c5.js:28
+r @ chunk-vendors.3af4b5c5.js:28
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+b @ chunk-vendors.3af4b5c5.js:28
+w @ chunk-vendors.3af4b5c5.js:28
+Promise.then
+C @ chunk-vendors.3af4b5c5.js:28
+g @ chunk-vendors.3af4b5c5.js:28
+jl @ chunk-vendors.3af4b5c5.js:30
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+(anonymous) @ chunk-vendors.3af4b5c5.js:1
+trigger @ chunk-vendors.3af4b5c5.js:1
+L @ chunk-vendors.3af4b5c5.js:1
+notify @ chunk-vendors.3af4b5c5.js:1
+trigger @ chunk-vendors.3af4b5c5.js:1
+set value @ chunk-vendors.3af4b5c5.js:1
+q @ chunk-vendors.3af4b5c5.js:7
+(anonymous) @ chunk-vendors.3af4b5c5.js:7
+Promise.then
+O @ chunk-vendors.3af4b5c5.js:7
+A @ chunk-vendors.3af4b5c5.js:7
+(anonymous) @ 907.942af54c.js:1
+setTimeout
+(anonymous) @ 907.942af54c.js:1
+setTimeout
+submitLogin @ 907.942af54c.js:1
+await in submitLogin
+(anonymous) @ 907.942af54c.js:1
+e.<computed>.e.<computed> @ chunk-vendors.3af4b5c5.js:28
+n @ chunk-vendors.3af4b5c5.js:28
+r @ chunk-vendors.3af4b5c5.js:28
+e @ chunk-vendors.3af4b5c5.js:26
+710.f316af27.js:1  📊 NotificationService: Error response status: 500
+getUnreadCount @ 710.f316af27.js:1
+await in getUnreadCount
+loadUnreadCount @ 76.b63543ad.js:1
+initializeNotifications @ 76.b63543ad.js:1
+await in initializeNotifications
+mounted @ 76.b63543ad.js:1
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+n @ chunk-vendors.3af4b5c5.js:28
+r @ chunk-vendors.3af4b5c5.js:28
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+b @ chunk-vendors.3af4b5c5.js:28
+w @ chunk-vendors.3af4b5c5.js:28
+Promise.then
+C @ chunk-vendors.3af4b5c5.js:28
+g @ chunk-vendors.3af4b5c5.js:28
+jl @ chunk-vendors.3af4b5c5.js:30
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+(anonymous) @ chunk-vendors.3af4b5c5.js:1
+trigger @ chunk-vendors.3af4b5c5.js:1
+L @ chunk-vendors.3af4b5c5.js:1
+notify @ chunk-vendors.3af4b5c5.js:1
+trigger @ chunk-vendors.3af4b5c5.js:1
+set value @ chunk-vendors.3af4b5c5.js:1
+q @ chunk-vendors.3af4b5c5.js:7
+(anonymous) @ chunk-vendors.3af4b5c5.js:7
+Promise.then
+O @ chunk-vendors.3af4b5c5.js:7
+A @ chunk-vendors.3af4b5c5.js:7
+(anonymous) @ 907.942af54c.js:1
+setTimeout
+(anonymous) @ 907.942af54c.js:1
+setTimeout
+submitLogin @ 907.942af54c.js:1
+await in submitLogin
+(anonymous) @ 907.942af54c.js:1
+e.<computed>.e.<computed> @ chunk-vendors.3af4b5c5.js:28
+n @ chunk-vendors.3af4b5c5.js:28
+r @ chunk-vendors.3af4b5c5.js:28
+e @ chunk-vendors.3af4b5c5.js:26
+710.f316af27.js:1  📊 NotificationService: Error response data: {success: false, message: 'Failed to retrieve unread count', timestamp: '2025-10-01T23:23:14.737Z'}
+getUnreadCount @ 710.f316af27.js:1
+await in getUnreadCount
+loadUnreadCount @ 76.b63543ad.js:1
+initializeNotifications @ 76.b63543ad.js:1
+await in initializeNotifications
+mounted @ 76.b63543ad.js:1
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+n @ chunk-vendors.3af4b5c5.js:28
+r @ chunk-vendors.3af4b5c5.js:28
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+b @ chunk-vendors.3af4b5c5.js:28
+w @ chunk-vendors.3af4b5c5.js:28
+Promise.then
+C @ chunk-vendors.3af4b5c5.js:28
+g @ chunk-vendors.3af4b5c5.js:28
+jl @ chunk-vendors.3af4b5c5.js:30
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+(anonymous) @ chunk-vendors.3af4b5c5.js:1
+trigger @ chunk-vendors.3af4b5c5.js:1
+L @ chunk-vendors.3af4b5c5.js:1
+notify @ chunk-vendors.3af4b5c5.js:1
+trigger @ chunk-vendors.3af4b5c5.js:1
+set value @ chunk-vendors.3af4b5c5.js:1
+q @ chunk-vendors.3af4b5c5.js:7
+(anonymous) @ chunk-vendors.3af4b5c5.js:7
+Promise.then
+O @ chunk-vendors.3af4b5c5.js:7
+A @ chunk-vendors.3af4b5c5.js:7
+(anonymous) @ 907.942af54c.js:1
+setTimeout
+(anonymous) @ 907.942af54c.js:1
+setTimeout
+submitLogin @ 907.942af54c.js:1
+await in submitLogin
+(anonymous) @ 907.942af54c.js:1
+e.<computed>.e.<computed> @ chunk-vendors.3af4b5c5.js:28
+n @ chunk-vendors.3af4b5c5.js:28
+r @ chunk-vendors.3af4b5c5.js:28
+e @ chunk-vendors.3af4b5c5.js:26
+76.b63543ad.js:1  Failed to load unread count: uc {message: 'Request failed with status code 500', name: 'AxiosError', code: 'ERR_BAD_RESPONSE', config: {…}, request: XMLHttpRequest, …}
+loadUnreadCount @ 76.b63543ad.js:1
+await in loadUnreadCount
+initializeNotifications @ 76.b63543ad.js:1
+await in initializeNotifications
+mounted @ 76.b63543ad.js:1
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+n @ chunk-vendors.3af4b5c5.js:28
+r @ chunk-vendors.3af4b5c5.js:28
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+b @ chunk-vendors.3af4b5c5.js:28
+w @ chunk-vendors.3af4b5c5.js:28
+Promise.then
+C @ chunk-vendors.3af4b5c5.js:28
+g @ chunk-vendors.3af4b5c5.js:28
+jl @ chunk-vendors.3af4b5c5.js:30
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+(anonymous) @ chunk-vendors.3af4b5c5.js:1
+trigger @ chunk-vendors.3af4b5c5.js:1
+L @ chunk-vendors.3af4b5c5.js:1
+notify @ chunk-vendors.3af4b5c5.js:1
+trigger @ chunk-vendors.3af4b5c5.js:1
+set value @ chunk-vendors.3af4b5c5.js:1
+q @ chunk-vendors.3af4b5c5.js:7
+(anonymous) @ chunk-vendors.3af4b5c5.js:7
+Promise.then
+O @ chunk-vendors.3af4b5c5.js:7
+A @ chunk-vendors.3af4b5c5.js:7
+(anonymous) @ 907.942af54c.js:1
+setTimeout
+(anonymous) @ 907.942af54c.js:1
+setTimeout
+submitLogin @ 907.942af54c.js:1
+await in submitLogin
+(anonymous) @ 907.942af54c.js:1
+e.<computed>.e.<computed> @ chunk-vendors.3af4b5c5.js:28
+n @ chunk-vendors.3af4b5c5.js:28
+r @ chunk-vendors.3af4b5c5.js:28
+e @ chunk-vendors.3af4b5c5.js:26
+[NEW] Explain Console errors by using Copilot in Edge: click
+         
+         to explain an error. 
+        Learn more
+        Don't show again
+710.f316af27.js:1 🗑️ Event listener removed for client : error
+chunk-vendors.3af4b5c5.js:20   GET https://brgybulabackend-production.up.railway.app/api/client/receipts?page=1&limit=10&sortBy=receipt_date&sortOrder=DESC 500 (Internal Server Error)
+(anonymous) @ chunk-vendors.3af4b5c5.js:20
+xhr @ chunk-vendors.3af4b5c5.js:20
+ce @ chunk-vendors.3af4b5c5.js:20
+Promise.then
+_request @ chunk-vendors.3af4b5c5.js:20
+request @ chunk-vendors.3af4b5c5.js:20
+(anonymous) @ chunk-vendors.3af4b5c5.js:20
+(anonymous) @ chunk-vendors.3af4b5c5.js:20
+loadTransactions @ 669.158791dd.js:1
+mounted @ 669.158791dd.js:1
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+n @ chunk-vendors.3af4b5c5.js:28
+r @ chunk-vendors.3af4b5c5.js:28
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+b @ chunk-vendors.3af4b5c5.js:28
+w @ chunk-vendors.3af4b5c5.js:28
+Promise.then
+C @ chunk-vendors.3af4b5c5.js:28
+g @ chunk-vendors.3af4b5c5.js:28
+jl @ chunk-vendors.3af4b5c5.js:30
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+(anonymous) @ chunk-vendors.3af4b5c5.js:1
+trigger @ chunk-vendors.3af4b5c5.js:1
+L @ chunk-vendors.3af4b5c5.js:1
+notify @ chunk-vendors.3af4b5c5.js:1
+trigger @ chunk-vendors.3af4b5c5.js:1
+set value @ chunk-vendors.3af4b5c5.js:1
+q @ chunk-vendors.3af4b5c5.js:7
+(anonymous) @ chunk-vendors.3af4b5c5.js:7
+Promise.then
+O @ chunk-vendors.3af4b5c5.js:7
+A @ chunk-vendors.3af4b5c5.js:7
+V @ 76.b63543ad.js:1
+T.onClick.t.<computed>.t.<computed> @ 76.b63543ad.js:1
+n @ chunk-vendors.3af4b5c5.js:28
+r @ chunk-vendors.3af4b5c5.js:28
+e @ chunk-vendors.3af4b5c5.js:26
+app.f38e14ca.js:1  API Error Details: {url: '/client/receipts', method: 'GET', status: 500, statusText: '', message: 'Failed to retrieve receipts', …}
+(anonymous) @ app.f38e14ca.js:1
+Promise.then
+_request @ chunk-vendors.3af4b5c5.js:20
+request @ chunk-vendors.3af4b5c5.js:20
+(anonymous) @ chunk-vendors.3af4b5c5.js:20
+(anonymous) @ chunk-vendors.3af4b5c5.js:20
+loadTransactions @ 669.158791dd.js:1
+mounted @ 669.158791dd.js:1
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+n @ chunk-vendors.3af4b5c5.js:28
+r @ chunk-vendors.3af4b5c5.js:28
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+b @ chunk-vendors.3af4b5c5.js:28
+w @ chunk-vendors.3af4b5c5.js:28
+Promise.then
+C @ chunk-vendors.3af4b5c5.js:28
+g @ chunk-vendors.3af4b5c5.js:28
+jl @ chunk-vendors.3af4b5c5.js:30
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+(anonymous) @ chunk-vendors.3af4b5c5.js:1
+trigger @ chunk-vendors.3af4b5c5.js:1
+L @ chunk-vendors.3af4b5c5.js:1
+notify @ chunk-vendors.3af4b5c5.js:1
+trigger @ chunk-vendors.3af4b5c5.js:1
+set value @ chunk-vendors.3af4b5c5.js:1
+q @ chunk-vendors.3af4b5c5.js:7
+(anonymous) @ chunk-vendors.3af4b5c5.js:7
+Promise.then
+O @ chunk-vendors.3af4b5c5.js:7
+A @ chunk-vendors.3af4b5c5.js:7
+V @ 76.b63543ad.js:1
+T.onClick.t.<computed>.t.<computed> @ 76.b63543ad.js:1
+n @ chunk-vendors.3af4b5c5.js:28
+r @ chunk-vendors.3af4b5c5.js:28
+e @ chunk-vendors.3af4b5c5.js:26
+app.f38e14ca.js:1  Full Error Object: uc {message: 'Request failed with status code 500', name: 'AxiosError', code: 'ERR_BAD_RESPONSE', config: {…}, request: XMLHttpRequest, …}
+(anonymous) @ app.f38e14ca.js:1
+Promise.then
+_request @ chunk-vendors.3af4b5c5.js:20
+request @ chunk-vendors.3af4b5c5.js:20
+(anonymous) @ chunk-vendors.3af4b5c5.js:20
+(anonymous) @ chunk-vendors.3af4b5c5.js:20
+loadTransactions @ 669.158791dd.js:1
+mounted @ 669.158791dd.js:1
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+n @ chunk-vendors.3af4b5c5.js:28
+r @ chunk-vendors.3af4b5c5.js:28
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+b @ chunk-vendors.3af4b5c5.js:28
+w @ chunk-vendors.3af4b5c5.js:28
+Promise.then
+C @ chunk-vendors.3af4b5c5.js:28
+g @ chunk-vendors.3af4b5c5.js:28
+jl @ chunk-vendors.3af4b5c5.js:30
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+(anonymous) @ chunk-vendors.3af4b5c5.js:1
+trigger @ chunk-vendors.3af4b5c5.js:1
+L @ chunk-vendors.3af4b5c5.js:1
+notify @ chunk-vendors.3af4b5c5.js:1
+trigger @ chunk-vendors.3af4b5c5.js:1
+set value @ chunk-vendors.3af4b5c5.js:1
+q @ chunk-vendors.3af4b5c5.js:7
+(anonymous) @ chunk-vendors.3af4b5c5.js:7
+Promise.then
+O @ chunk-vendors.3af4b5c5.js:7
+A @ chunk-vendors.3af4b5c5.js:7
+V @ 76.b63543ad.js:1
+T.onClick.t.<computed>.t.<computed> @ 76.b63543ad.js:1
+n @ chunk-vendors.3af4b5c5.js:28
+r @ chunk-vendors.3af4b5c5.js:28
+e @ chunk-vendors.3af4b5c5.js:26
+669.158791dd.js:1  Failed to load transactions: uc {message: 'Server error - please check the backend logs for details', name: 'AxiosError', code: 'ERR_BAD_RESPONSE', config: {…}, request: XMLHttpRequest, …}
+loadTransactions @ 669.158791dd.js:1
+await in loadTransactions
+mounted @ 669.158791dd.js:1
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+n @ chunk-vendors.3af4b5c5.js:28
+r @ chunk-vendors.3af4b5c5.js:28
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+b @ chunk-vendors.3af4b5c5.js:28
+w @ chunk-vendors.3af4b5c5.js:28
+Promise.then
+C @ chunk-vendors.3af4b5c5.js:28
+g @ chunk-vendors.3af4b5c5.js:28
+jl @ chunk-vendors.3af4b5c5.js:30
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+(anonymous) @ chunk-vendors.3af4b5c5.js:1
+trigger @ chunk-vendors.3af4b5c5.js:1
+L @ chunk-vendors.3af4b5c5.js:1
+notify @ chunk-vendors.3af4b5c5.js:1
+trigger @ chunk-vendors.3af4b5c5.js:1
+set value @ chunk-vendors.3af4b5c5.js:1
+q @ chunk-vendors.3af4b5c5.js:7
+(anonymous) @ chunk-vendors.3af4b5c5.js:7
+Promise.then
+O @ chunk-vendors.3af4b5c5.js:7
+A @ chunk-vendors.3af4b5c5.js:7
+V @ 76.b63543ad.js:1
+T.onClick.t.<computed>.t.<computed> @ 76.b63543ad.js:1
+n @ chunk-vendors.3af4b5c5.js:28
+r @ chunk-vendors.3af4b5c5.js:28
+e @ chunk-vendors.3af4b5c5.js:26
+[NEW] Explain Console errors by using Copilot in Edge: click
+         
+         to explain an error. 
+        Learn more
+        Don't show again
+710.f316af27.js:1 🗑️ Event listener removed for client : error
+chunk-vendors.3af4b5c5.js:20   GET https://brgybulabackend-production.up.railway.app/api/client/document-requests? 500 (Internal Server Error)
+(anonymous) @ chunk-vendors.3af4b5c5.js:20
+xhr @ chunk-vendors.3af4b5c5.js:20
+ce @ chunk-vendors.3af4b5c5.js:20
+Promise.then
+_request @ chunk-vendors.3af4b5c5.js:20
+request @ chunk-vendors.3af4b5c5.js:20
+(anonymous) @ chunk-vendors.3af4b5c5.js:20
+(anonymous) @ chunk-vendors.3af4b5c5.js:20
+getMyRequests @ 76.b63543ad.js:1
+loadRequests @ 603.28176c60.js:1
+mounted @ 603.28176c60.js:1
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+n @ chunk-vendors.3af4b5c5.js:28
+r @ chunk-vendors.3af4b5c5.js:28
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+b @ chunk-vendors.3af4b5c5.js:28
+w @ chunk-vendors.3af4b5c5.js:28
+Promise.then
+C @ chunk-vendors.3af4b5c5.js:28
+g @ chunk-vendors.3af4b5c5.js:28
+jl @ chunk-vendors.3af4b5c5.js:30
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+(anonymous) @ chunk-vendors.3af4b5c5.js:1
+trigger @ chunk-vendors.3af4b5c5.js:1
+L @ chunk-vendors.3af4b5c5.js:1
+notify @ chunk-vendors.3af4b5c5.js:1
+trigger @ chunk-vendors.3af4b5c5.js:1
+set value @ chunk-vendors.3af4b5c5.js:1
+q @ chunk-vendors.3af4b5c5.js:7
+(anonymous) @ chunk-vendors.3af4b5c5.js:7
+Promise.then
+O @ chunk-vendors.3af4b5c5.js:7
+A @ chunk-vendors.3af4b5c5.js:7
+$ @ 76.b63543ad.js:1
+T.onClick.t.<computed>.t.<computed> @ 76.b63543ad.js:1
+n @ chunk-vendors.3af4b5c5.js:28
+r @ chunk-vendors.3af4b5c5.js:28
+e @ chunk-vendors.3af4b5c5.js:26
+app.f38e14ca.js:1  API Error Details: {url: '/client/document-requests?', method: 'GET', status: 500, statusText: '', message: 'Failed to retrieve requests', …}
+(anonymous) @ app.f38e14ca.js:1
+Promise.then
+_request @ chunk-vendors.3af4b5c5.js:20
+request @ chunk-vendors.3af4b5c5.js:20
+(anonymous) @ chunk-vendors.3af4b5c5.js:20
+(anonymous) @ chunk-vendors.3af4b5c5.js:20
+getMyRequests @ 76.b63543ad.js:1
+loadRequests @ 603.28176c60.js:1
+mounted @ 603.28176c60.js:1
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+n @ chunk-vendors.3af4b5c5.js:28
+r @ chunk-vendors.3af4b5c5.js:28
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+b @ chunk-vendors.3af4b5c5.js:28
+w @ chunk-vendors.3af4b5c5.js:28
+Promise.then
+C @ chunk-vendors.3af4b5c5.js:28
+g @ chunk-vendors.3af4b5c5.js:28
+jl @ chunk-vendors.3af4b5c5.js:30
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+(anonymous) @ chunk-vendors.3af4b5c5.js:1
+trigger @ chunk-vendors.3af4b5c5.js:1
+L @ chunk-vendors.3af4b5c5.js:1
+notify @ chunk-vendors.3af4b5c5.js:1
+trigger @ chunk-vendors.3af4b5c5.js:1
+set value @ chunk-vendors.3af4b5c5.js:1
+q @ chunk-vendors.3af4b5c5.js:7
+(anonymous) @ chunk-vendors.3af4b5c5.js:7
+Promise.then
+O @ chunk-vendors.3af4b5c5.js:7
+A @ chunk-vendors.3af4b5c5.js:7
+$ @ 76.b63543ad.js:1
+T.onClick.t.<computed>.t.<computed> @ 76.b63543ad.js:1
+n @ chunk-vendors.3af4b5c5.js:28
+r @ chunk-vendors.3af4b5c5.js:28
+e @ chunk-vendors.3af4b5c5.js:26
+app.f38e14ca.js:1  Full Error Object: uc {message: 'Request failed with status code 500', name: 'AxiosError', code: 'ERR_BAD_RESPONSE', config: {…}, request: XMLHttpRequest, …}
+(anonymous) @ app.f38e14ca.js:1
+Promise.then
+_request @ chunk-vendors.3af4b5c5.js:20
+request @ chunk-vendors.3af4b5c5.js:20
+(anonymous) @ chunk-vendors.3af4b5c5.js:20
+(anonymous) @ chunk-vendors.3af4b5c5.js:20
+getMyRequests @ 76.b63543ad.js:1
+loadRequests @ 603.28176c60.js:1
+mounted @ 603.28176c60.js:1
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+n @ chunk-vendors.3af4b5c5.js:28
+r @ chunk-vendors.3af4b5c5.js:28
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+b @ chunk-vendors.3af4b5c5.js:28
+w @ chunk-vendors.3af4b5c5.js:28
+Promise.then
+C @ chunk-vendors.3af4b5c5.js:28
+g @ chunk-vendors.3af4b5c5.js:28
+jl @ chunk-vendors.3af4b5c5.js:30
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+(anonymous) @ chunk-vendors.3af4b5c5.js:1
+trigger @ chunk-vendors.3af4b5c5.js:1
+L @ chunk-vendors.3af4b5c5.js:1
+notify @ chunk-vendors.3af4b5c5.js:1
+trigger @ chunk-vendors.3af4b5c5.js:1
+set value @ chunk-vendors.3af4b5c5.js:1
+q @ chunk-vendors.3af4b5c5.js:7
+(anonymous) @ chunk-vendors.3af4b5c5.js:7
+Promise.then
+O @ chunk-vendors.3af4b5c5.js:7
+A @ chunk-vendors.3af4b5c5.js:7
+$ @ 76.b63543ad.js:1
+T.onClick.t.<computed>.t.<computed> @ 76.b63543ad.js:1
+n @ chunk-vendors.3af4b5c5.js:28
+r @ chunk-vendors.3af4b5c5.js:28
+e @ chunk-vendors.3af4b5c5.js:26
+76.b63543ad.js:1  Error fetching requests: uc {message: 'Server error - please check the backend logs for details', name: 'AxiosError', code: 'ERR_BAD_RESPONSE', config: {…}, request: XMLHttpRequest, …}
+getMyRequests @ 76.b63543ad.js:1
+await in getMyRequests
+loadRequests @ 603.28176c60.js:1
+mounted @ 603.28176c60.js:1
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+n @ chunk-vendors.3af4b5c5.js:28
+r @ chunk-vendors.3af4b5c5.js:28
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+b @ chunk-vendors.3af4b5c5.js:28
+w @ chunk-vendors.3af4b5c5.js:28
+Promise.then
+C @ chunk-vendors.3af4b5c5.js:28
+g @ chunk-vendors.3af4b5c5.js:28
+jl @ chunk-vendors.3af4b5c5.js:30
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+(anonymous) @ chunk-vendors.3af4b5c5.js:1
+trigger @ chunk-vendors.3af4b5c5.js:1
+L @ chunk-vendors.3af4b5c5.js:1
+notify @ chunk-vendors.3af4b5c5.js:1
+trigger @ chunk-vendors.3af4b5c5.js:1
+set value @ chunk-vendors.3af4b5c5.js:1
+q @ chunk-vendors.3af4b5c5.js:7
+(anonymous) @ chunk-vendors.3af4b5c5.js:7
+Promise.then
+O @ chunk-vendors.3af4b5c5.js:7
+A @ chunk-vendors.3af4b5c5.js:7
+$ @ 76.b63543ad.js:1
+T.onClick.t.<computed>.t.<computed> @ 76.b63543ad.js:1
+n @ chunk-vendors.3af4b5c5.js:28
+r @ chunk-vendors.3af4b5c5.js:28
+e @ chunk-vendors.3af4b5c5.js:26
+603.28176c60.js:1  Error loading requests: uc {message: 'Server error - please check the backend logs for details', name: 'AxiosError', code: 'ERR_BAD_RESPONSE', config: {…}, request: XMLHttpRequest, …}
+loadRequests @ 603.28176c60.js:1
+await in loadRequests
+mounted @ 603.28176c60.js:1
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+n @ chunk-vendors.3af4b5c5.js:28
+r @ chunk-vendors.3af4b5c5.js:28
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+b @ chunk-vendors.3af4b5c5.js:28
+w @ chunk-vendors.3af4b5c5.js:28
+Promise.then
+C @ chunk-vendors.3af4b5c5.js:28
+g @ chunk-vendors.3af4b5c5.js:28
+jl @ chunk-vendors.3af4b5c5.js:30
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+(anonymous) @ chunk-vendors.3af4b5c5.js:1
+trigger @ chunk-vendors.3af4b5c5.js:1
+L @ chunk-vendors.3af4b5c5.js:1
+notify @ chunk-vendors.3af4b5c5.js:1
+trigger @ chunk-vendors.3af4b5c5.js:1
+set value @ chunk-vendors.3af4b5c5.js:1
+q @ chunk-vendors.3af4b5c5.js:7
+(anonymous) @ chunk-vendors.3af4b5c5.js:7
+Promise.then
+O @ chunk-vendors.3af4b5c5.js:7
+A @ chunk-vendors.3af4b5c5.js:7
+$ @ 76.b63543ad.js:1
+T.onClick.t.<computed>.t.<computed> @ 76.b63543ad.js:1
+n @ chunk-vendors.3af4b5c5.js:28
+r @ chunk-vendors.3af4b5c5.js:28
+e @ chunk-vendors.3af4b5c5.js:26
+[NEW] Explain Console errors by using Copilot in Edge: click
+         
+         to explain an error. 
+        Learn more
+        Don't show again
+  710.f316af27.js:1 🗑️ Event listener removed for client : error
+419.a9b9c1ef.js:1  Error fetching regions: SyntaxError: Unexpected token '<', "<!doctype "... is not valid JSON
+getRegions @ 419.a9b9c1ef.js:1
+await in getRegions
+loadAddressData @ 744.63772c85.js:1
+loadFormData @ 744.63772c85.js:1
+await in loadFormData
+mounted @ 744.63772c85.js:1
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+n @ chunk-vendors.3af4b5c5.js:28
+r @ chunk-vendors.3af4b5c5.js:28
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+b @ chunk-vendors.3af4b5c5.js:28
+w @ chunk-vendors.3af4b5c5.js:28
+Promise.then
+C @ chunk-vendors.3af4b5c5.js:28
+g @ chunk-vendors.3af4b5c5.js:28
+jl @ chunk-vendors.3af4b5c5.js:30
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+(anonymous) @ chunk-vendors.3af4b5c5.js:1
+trigger @ chunk-vendors.3af4b5c5.js:1
+L @ chunk-vendors.3af4b5c5.js:1
+notify @ chunk-vendors.3af4b5c5.js:1
+trigger @ chunk-vendors.3af4b5c5.js:1
+set value @ chunk-vendors.3af4b5c5.js:1
+q @ chunk-vendors.3af4b5c5.js:7
+(anonymous) @ chunk-vendors.3af4b5c5.js:7
+Promise.then
+O @ chunk-vendors.3af4b5c5.js:7
+A @ chunk-vendors.3af4b5c5.js:7
+K @ 76.b63543ad.js:1
+n @ chunk-vendors.3af4b5c5.js:28
+r @ chunk-vendors.3af4b5c5.js:28
+kl @ chunk-vendors.3af4b5c5.js:30
+handleSelectDocument @ 76.b63543ad.js:1
+await in handleSelectDocument
+onClick @ 76.b63543ad.js:1
+n @ chunk-vendors.3af4b5c5.js:28
+r @ chunk-vendors.3af4b5c5.js:28
+e @ chunk-vendors.3af4b5c5.js:26
+744.63772c85.js:1  Error loading address data: SyntaxError: Unexpected token '<', "<!doctype "... is not valid JSON
+loadAddressData @ 744.63772c85.js:1
+await in loadAddressData
+loadFormData @ 744.63772c85.js:1
+await in loadFormData
+mounted @ 744.63772c85.js:1
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+n @ chunk-vendors.3af4b5c5.js:28
+r @ chunk-vendors.3af4b5c5.js:28
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+b @ chunk-vendors.3af4b5c5.js:28
+w @ chunk-vendors.3af4b5c5.js:28
+Promise.then
+C @ chunk-vendors.3af4b5c5.js:28
+g @ chunk-vendors.3af4b5c5.js:28
+jl @ chunk-vendors.3af4b5c5.js:30
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+(anonymous) @ chunk-vendors.3af4b5c5.js:1
+trigger @ chunk-vendors.3af4b5c5.js:1
+L @ chunk-vendors.3af4b5c5.js:1
+notify @ chunk-vendors.3af4b5c5.js:1
+trigger @ chunk-vendors.3af4b5c5.js:1
+set value @ chunk-vendors.3af4b5c5.js:1
+q @ chunk-vendors.3af4b5c5.js:7
+(anonymous) @ chunk-vendors.3af4b5c5.js:7
+Promise.then
+O @ chunk-vendors.3af4b5c5.js:7
+A @ chunk-vendors.3af4b5c5.js:7
+K @ 76.b63543ad.js:1
+n @ chunk-vendors.3af4b5c5.js:28
+r @ chunk-vendors.3af4b5c5.js:28
+kl @ chunk-vendors.3af4b5c5.js:30
+handleSelectDocument @ 76.b63543ad.js:1
+await in handleSelectDocument
+onClick @ 76.b63543ad.js:1
+n @ chunk-vendors.3af4b5c5.js:28
+r @ chunk-vendors.3af4b5c5.js:28
+e @ chunk-vendors.3af4b5c5.js:26
+744.63772c85.js:1 [ERROR] Error: Failed to load address data
+[NEW] Explain Console errors by using Copilot in Edge: click
+         
+         to explain an error. 
+        Learn more
+        Don't show again
+710.f316af27.js:1 🗑️ Event listener removed for client : error
+419.a9b9c1ef.js:1  Error fetching regions: SyntaxError: Unexpected token '<', "<!doctype "... is not valid JSON
+getRegions @ 419.a9b9c1ef.js:1
+await in getRegions
+loadAddressData @ 140.7c4d40f3.js:1
+loadFormData @ 140.7c4d40f3.js:1
+await in loadFormData
+mounted @ 140.7c4d40f3.js:1
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+n @ chunk-vendors.3af4b5c5.js:28
+r @ chunk-vendors.3af4b5c5.js:28
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+b @ chunk-vendors.3af4b5c5.js:28
+w @ chunk-vendors.3af4b5c5.js:28
+Promise.then
+C @ chunk-vendors.3af4b5c5.js:28
+g @ chunk-vendors.3af4b5c5.js:28
+jl @ chunk-vendors.3af4b5c5.js:30
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+(anonymous) @ chunk-vendors.3af4b5c5.js:1
+trigger @ chunk-vendors.3af4b5c5.js:1
+L @ chunk-vendors.3af4b5c5.js:1
+notify @ chunk-vendors.3af4b5c5.js:1
+trigger @ chunk-vendors.3af4b5c5.js:1
+set value @ chunk-vendors.3af4b5c5.js:1
+q @ chunk-vendors.3af4b5c5.js:7
+(anonymous) @ chunk-vendors.3af4b5c5.js:7
+Promise.then
+O @ chunk-vendors.3af4b5c5.js:7
+A @ chunk-vendors.3af4b5c5.js:7
+K @ 76.b63543ad.js:1
+n @ chunk-vendors.3af4b5c5.js:28
+r @ chunk-vendors.3af4b5c5.js:28
+kl @ chunk-vendors.3af4b5c5.js:30
+handleSelectDocument @ 76.b63543ad.js:1
+await in handleSelectDocument
+onClick @ 76.b63543ad.js:1
+n @ chunk-vendors.3af4b5c5.js:28
+r @ chunk-vendors.3af4b5c5.js:28
+e @ chunk-vendors.3af4b5c5.js:26
+140.7c4d40f3.js:1  Error loading address data: SyntaxError: Unexpected token '<', "<!doctype "... is not valid JSON
+loadAddressData @ 140.7c4d40f3.js:1
+await in loadAddressData
+loadFormData @ 140.7c4d40f3.js:1
+await in loadFormData
+mounted @ 140.7c4d40f3.js:1
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+n @ chunk-vendors.3af4b5c5.js:28
+r @ chunk-vendors.3af4b5c5.js:28
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+b @ chunk-vendors.3af4b5c5.js:28
+w @ chunk-vendors.3af4b5c5.js:28
+Promise.then
+C @ chunk-vendors.3af4b5c5.js:28
+g @ chunk-vendors.3af4b5c5.js:28
+jl @ chunk-vendors.3af4b5c5.js:30
+(anonymous) @ chunk-vendors.3af4b5c5.js:30
+(anonymous) @ chunk-vendors.3af4b5c5.js:1
+trigger @ chunk-vendors.3af4b5c5.js:1
+L @ chunk-vendors.3af4b5c5.js:1
+notify @ chunk-vendors.3af4b5c5.js:1
+trigger @ chunk-vendors.3af4b5c5.js:1
+set value @ chunk-vendors.3af4b5c5.js:1
+q @ chunk-vendors.3af4b5c5.js:7
+(anonymous) @ chunk-vendors.3af4b5c5.js:7
+Promise.then
+O @ chunk-vendors.3af4b5c5.js:7
+A @ chunk-vendors.3af4b5c5.js:7
+K @ 76.b63543ad.js:1
+n @ chunk-vendors.3af4b5c5.js:28
+r @ chunk-vendors.3af4b5c5.js:28
+kl @ chunk-vendors.3af4b5c5.js:30
+handleSelectDocument @ 76.b63543ad.js:1
+await in handleSelectDocument
+onClick @ 76.b63543ad.js:1
+n @ chunk-vendors.3af4b5c5.js:28
+r @ chunk-vendors.3af4b5c5.js:28
+e @ chunk-vendors.3af4b5c5.js:26
+[NEW] Explain Console errors by using Copilot in Edge: click
+         
+         to explain an error. 
+        Learn more
+        Don't show again

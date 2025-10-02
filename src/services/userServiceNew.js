@@ -119,28 +119,46 @@ class UserServiceNew {
         LIMIT ? OFFSET ?
       `;
 
+      // Store filter params separately for count query
+      const filterParams = [...queryParams];
+
+      // Add limit and offset for main query
       queryParams.push(limit, offset);
       const users = await executeQuery(query, queryParams);
 
-      // Get total count
+      // Get total count - need to include all columns used in WHERE clause
       const countQuery = `
         SELECT COUNT(*) as total
         FROM (
-          SELECT aea.id FROM admin_employee_accounts aea
+          SELECT
+            aea.id,
+            aea.username,
+            aep.first_name,
+            aep.last_name,
+            aep.email,
+            aea.status,
+            'admin' as user_type
+          FROM admin_employee_accounts aea
           LEFT JOIN admin_employee_profiles aep ON aea.id = aep.account_id
 
           UNION ALL
 
-          SELECT ca.id FROM client_accounts ca
+          SELECT
+            ca.id,
+            ca.username,
+            cp.first_name,
+            cp.last_name,
+            cp.email,
+            ca.status,
+            'client' as user_type
+          FROM client_accounts ca
           LEFT JOIN client_profiles cp ON ca.id = cp.account_id
-          LEFT JOIN residency_documents rd ON ca.id = rd.account_id
-          GROUP BY ca.id
         ) u
         ${whereClause}
       `;
 
-      const countParams = queryParams.slice(0, -2); // Remove limit and offset
-      const [{ total }] = await executeQuery(countQuery, countParams);
+      // Use only filter params for count query (no limit/offset)
+      const [{ total }] = await executeQuery(countQuery, filterParams);
 
       return {
         success: true,

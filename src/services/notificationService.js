@@ -561,7 +561,7 @@ class NotificationService {
         // 2. Specific admin notifications (recipient_id = adminId AND recipient_type = 'admin')
         query = `
           SELECT * FROM notifications
-          WHERE recipient_type = 'admin' AND (recipient_id IS NULL OR recipient_id = ?)
+          WHERE user_type = 'admin' AND (user_id IS NULL OR user_id = ?)
           ${unreadFilter}
           ORDER BY created_at DESC
           LIMIT ? OFFSET ?
@@ -570,7 +570,7 @@ class NotificationService {
 
         countQuery = `
           SELECT COUNT(*) as total FROM notifications
-          WHERE recipient_type = 'admin' AND (recipient_id IS NULL OR recipient_id = ?)
+          WHERE user_type = 'admin' AND (user_id IS NULL OR user_id = ?)
           ${unreadFilter}
         `;
         countParams = [userId];
@@ -579,7 +579,7 @@ class NotificationService {
         // 1. Only their specific notifications (recipient_id = clientId AND recipient_type = 'client')
         query = `
           SELECT * FROM notifications
-          WHERE recipient_type = 'client' AND recipient_id = ?
+          WHERE user_type = 'client' AND user_id = ?
           ${unreadFilter}
           ORDER BY created_at DESC
           LIMIT ? OFFSET ?
@@ -588,7 +588,7 @@ class NotificationService {
 
         countQuery = `
           SELECT COUNT(*) as total FROM notifications
-          WHERE recipient_type = 'client' AND recipient_id = ?
+          WHERE user_type = 'client' AND user_id = ?
           ${unreadFilter}
         `;
         countParams = [userId];
@@ -749,14 +749,14 @@ class NotificationService {
         // Admins see global admin notifications + their specific notifications
         query = `
           SELECT COUNT(*) as count FROM notifications
-          WHERE recipient_type = 'admin' AND (recipient_id IS NULL OR recipient_id = ?) AND is_read = FALSE
+          WHERE user_type = 'admin' AND (user_id IS NULL OR user_id = ?) AND is_read = FALSE
         `;
         params = [userId];
       } else {
         // Clients see only their specific notifications
         query = `
           SELECT COUNT(*) as count FROM notifications
-          WHERE recipient_type = 'client' AND recipient_id = ? AND is_read = FALSE
+          WHERE user_type = 'client' AND user_id = ? AND is_read = FALSE
         `;
         params = [userId];
       }

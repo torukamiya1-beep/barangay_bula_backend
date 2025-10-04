@@ -14,13 +14,28 @@ class PaymentController {
   constructor() {
     try {
       this.paymongoService = new PayMongoService();
-      logger.info('PaymentController initialized successfully');
+
+      // Enhanced initialization logging
+      logger.info('PaymentController initialization', {
+        paymongoServiceAvailable: !!this.paymongoService,
+        hasSecretKey: !!process.env.PAYMONGO_SECRET_KEY,
+        hasPublicKey: !!process.env.PAYMONGO_PUBLIC_KEY,
+        hasWebhookSecret: !!process.env.PAYMONGO_WEBHOOK_SECRET,
+        baseURL: process.env.PAYMONGO_BASE_URL || 'https://api.paymongo.com/v1'
+      });
+
+      if (!this.paymongoService || !this.paymongoService.api) {
+        logger.warn('PayMongo service not properly initialized - payment features will be limited');
+      } else {
+        logger.info('PaymentController initialized successfully');
+      }
     } catch (error) {
       logger.error('Failed to initialize PaymentController', {
         error: error.message,
         stack: error.stack
       });
-      throw error;
+      // Don't throw error - allow controller to initialize with limited functionality
+      this.paymongoService = null;
     }
   }
 
@@ -37,9 +52,14 @@ class PaymentController {
       });
 
       // Check if PayMongo service is available
-      if (!this.paymongoService) {
-        logger.error('PayMongo service not initialized');
-        return ApiResponse.serverError(res, 'Payment service not available');
+      if (!this.paymongoService || !this.paymongoService.api) {
+        logger.error('PayMongo service not initialized', {
+          serviceExists: !!this.paymongoService,
+          apiExists: !!this.paymongoService?.api,
+          hasSecretKey: !!process.env.PAYMONGO_SECRET_KEY,
+          environment: process.env.NODE_ENV
+        });
+        return ApiResponse.serverError(res, 'Payment service not available. Please check PayMongo configuration.');
       }
 
       const {

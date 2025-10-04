@@ -10,7 +10,13 @@ class PayMongoService {
     this.webhookSecret = process.env.PAYMONGO_WEBHOOK_SECRET;
 
     if (!this.secretKey) {
-      logger.warn('⚠️  PayMongo secret key not configured. Payment service will not work.');
+      logger.warn('⚠️  PayMongo secret key not configured. Payment service will not work.', {
+        hasSecretKey: !!this.secretKey,
+        hasPublicKey: !!this.publicKey,
+        hasWebhookSecret: !!this.webhookSecret,
+        baseURL: this.baseURL,
+        environment: process.env.NODE_ENV
+      });
       this.secretKey = null;
       this.api = null;
       return;
@@ -75,7 +81,8 @@ class PayMongoService {
         link_id: response.data.data.id,
         checkout_url: response.data.data.attributes.checkout_url,
         amount,
-        status: response.data.data.attributes.status
+        status: response.data.data.attributes.status,
+        created_at: response.data.data.attributes.created_at
       });
 
       return response.data;

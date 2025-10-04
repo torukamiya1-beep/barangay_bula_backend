@@ -227,8 +227,12 @@ class AdminDocumentService {
         whereConditions.push(`(
           dr.request_number LIKE ? OR
           CONCAT(cp.first_name, ' ', cp.last_name) LIKE ? OR
-          CONCAT(db.first_name, ' ', db.last_name) LIKE ? OR
-          dr.purpose_details LIKE ?
+          dr.purpose_details LIKE ? OR
+          EXISTS (
+            SELECT 1 FROM document_beneficiaries db
+            WHERE db.request_id = dr.id
+            AND CONCAT(db.first_name, ' ', db.last_name) LIKE ?
+          )
         )`);
         const searchTerm = `%${search}%`;
         queryParams.push(searchTerm, searchTerm, searchTerm, searchTerm);
@@ -255,9 +259,9 @@ class AdminDocumentService {
       const sortColumn = validSortColumns.includes(sort_by) ? sort_by : 'created_at';
       const sortOrder = sort_order.toLowerCase() === 'asc' ? 'ASC' : 'DESC';
 
-      // Main query
+      // Main query - Fixed to prevent duplicates from beneficiary/pickup JOINs
       const query = `
-        SELECT DISTINCT
+        SELECT
           dr.id,
           dr.request_number,
           dr.client_id,
@@ -294,32 +298,38 @@ class AdminDocumentService {
             CONCAT(approved_aep.first_name, ' ', approved_aep.last_name),
             NULL
           ) as approved_by_name,
-          -- Beneficiary information for third-party requests
-          CASE
+          -- Beneficiary information using subquery to prevent duplicates
+          (SELECT CASE
             WHEN dr.is_third_party_request = TRUE THEN
               CONCAT(db.first_name, ' ',
                      COALESCE(CONCAT(db.middle_name, ' '), ''),
                      db.last_name,
                      COALESCE(CONCAT(' ', db.suffix), ''))
             ELSE NULL
-          END as beneficiary_name,
-          db.id as beneficiary_id,
-          db.relationship_to_requestor as beneficiary_relationship,
-          db.verification_status as beneficiary_verification_status,
-          db.verification_image_path as beneficiary_verification_image,
-          -- Authorized pickup information
-          CASE
+          END
+          FROM document_beneficiaries db
+          WHERE db.request_id = dr.id
+          LIMIT 1) as beneficiary_name,
+          (SELECT db.id FROM document_beneficiaries db WHERE db.request_id = dr.id LIMIT 1) as beneficiary_id,
+          (SELECT db.relationship_to_requestor FROM document_beneficiaries db WHERE db.request_id = dr.id LIMIT 1) as beneficiary_relationship,
+          (SELECT db.verification_status FROM document_beneficiaries db WHERE db.request_id = dr.id LIMIT 1) as beneficiary_verification_status,
+          (SELECT db.verification_image_path FROM document_beneficiaries db WHERE db.request_id = dr.id LIMIT 1) as beneficiary_verification_image,
+          -- Authorized pickup information using subquery to prevent duplicates
+          (SELECT CASE
             WHEN app.id IS NOT NULL THEN
               CONCAT(app.first_name, ' ',
                      COALESCE(CONCAT(app.middle_name, ' '), ''),
                      app.last_name,
                      COALESCE(CONCAT(' ', app.suffix), ''))
             ELSE NULL
-          END as pickup_person_name,
-          app.relationship_to_beneficiary as pickup_relationship,
-          app.is_verified as pickup_verified,
-          app.id_image_path as pickup_id_image,
-          app.authorization_letter_path as pickup_authorization_letter
+          END
+          FROM authorized_pickup_persons app
+          WHERE app.request_id = dr.id
+          LIMIT 1) as pickup_person_name,
+          (SELECT app.relationship_to_beneficiary FROM authorized_pickup_persons app WHERE app.request_id = dr.id LIMIT 1) as pickup_relationship,
+          (SELECT app.is_verified FROM authorized_pickup_persons app WHERE app.request_id = dr.id LIMIT 1) as pickup_verified,
+          (SELECT app.id_image_path FROM authorized_pickup_persons app WHERE app.request_id = dr.id LIMIT 1) as pickup_id_image,
+          (SELECT app.authorization_letter_path FROM authorized_pickup_persons app WHERE app.request_id = dr.id LIMIT 1) as pickup_authorization_letter
         FROM document_requests dr
         JOIN document_types dt ON dr.document_type_id = dt.id
         JOIN purpose_categories pc ON dr.purpose_category_id = pc.id
@@ -332,8 +342,6 @@ class AdminDocumentService {
         LEFT JOIN admin_employee_profiles processed_aep ON processed_aea.id = processed_aep.account_id
         LEFT JOIN admin_employee_accounts approved_aea ON dr.approved_by = approved_aea.id
         LEFT JOIN admin_employee_profiles approved_aep ON approved_aea.id = approved_aep.account_id
-        LEFT JOIN document_beneficiaries db ON dr.id = db.request_id
-        LEFT JOIN authorized_pickup_persons app ON dr.id = app.request_id
         ${whereClause}
         ORDER BY ${sortColumn === 'client_name' ? 'CONCAT(cp.first_name, " ", cp.last_name)' :
                    sortColumn === 'document_type' ? 'dt.type_name' :
@@ -344,9 +352,9 @@ class AdminDocumentService {
         LIMIT ? OFFSET ?
       `;
 
-      // Count query for pagination
+      // Count query for pagination - Fixed to match main query structure
       const countQuery = `
-        SELECT COUNT(DISTINCT dr.id) as total
+        SELECT COUNT(dr.id) as total
         FROM document_requests dr
         JOIN document_types dt ON dr.document_type_id = dt.id
         JOIN purpose_categories pc ON dr.purpose_category_id = pc.id
@@ -355,8 +363,6 @@ class AdminDocumentService {
         LEFT JOIN client_accounts ca ON dr.client_id = ca.id
         LEFT JOIN client_profiles cp ON ca.id = cp.account_id
         LEFT JOIN civil_status cs ON cp.civil_status_id = cs.id
-        LEFT JOIN document_beneficiaries db ON dr.id = db.request_id
-        LEFT JOIN authorized_pickup_persons app ON dr.id = app.request_id
         ${whereClause}
       `;
 
@@ -1342,6 +1348,8 @@ class AdminDocumentService {
    */
   static async getAnalyticsData(period = 'month') {
     try {
+      logger.info('Getting analytics data', { period });
+
       let dateCondition = '';
       let groupBy = '';
 
@@ -1360,6 +1368,8 @@ class AdminDocumentService {
           groupBy = 'DATE_FORMAT(dr.created_at, "%Y-%m")';
           break;
       }
+
+      logger.info('Analytics query conditions', { dateCondition, groupBy });
 
       // Request trends over time
       const trendsQuery = `
@@ -1417,21 +1427,71 @@ class AdminDocumentService {
         LIMIT 10
       `;
 
-      const [trends, documentTypes, statusDistribution, topClients] = await Promise.all([
-        executeQuery(trendsQuery),
-        executeQuery(documentTypesQuery),
-        executeQuery(statusDistributionQuery),
-        executeQuery(topClientsQuery)
-      ]);
+      logger.info('Executing analytics queries...');
 
-      return {
+      // Execute queries individually with better error handling
+      let trends = [];
+      let documentTypes = [];
+      let statusDistribution = [];
+      let topClients = [];
+
+      try {
+        logger.info('Executing trends query...');
+        trends = await executeQuery(trendsQuery);
+        logger.info('Trends query successful', { count: trends.length });
+      } catch (trendsError) {
+        logger.error('Trends query failed:', trendsError);
+        trends = [];
+      }
+
+      try {
+        logger.info('Executing document types query...');
+        documentTypes = await executeQuery(documentTypesQuery);
+        logger.info('Document types query successful', { count: documentTypes.length });
+      } catch (docTypesError) {
+        logger.error('Document types query failed:', docTypesError);
+        documentTypes = [];
+      }
+
+      try {
+        logger.info('Executing status distribution query...');
+        statusDistribution = await executeQuery(statusDistributionQuery);
+        logger.info('Status distribution query successful', { count: statusDistribution.length });
+      } catch (statusError) {
+        logger.error('Status distribution query failed:', statusError);
+        statusDistribution = [];
+      }
+
+      try {
+        logger.info('Executing top clients query...');
+        topClients = await executeQuery(topClientsQuery);
+        logger.info('Top clients query successful', { count: topClients.length });
+      } catch (clientsError) {
+        logger.error('Top clients query failed:', clientsError);
+        topClients = [];
+      }
+
+      const result = {
         trends,
         documentTypes,
         statusDistribution,
         topClients
       };
+
+      logger.info('Analytics data compiled successfully', {
+        trendsCount: trends.length,
+        documentTypesCount: documentTypes.length,
+        statusDistributionCount: statusDistribution.length,
+        topClientsCount: topClients.length
+      });
+
+      return result;
     } catch (error) {
-      logger.error('Get analytics data error:', error);
+      logger.error('Get analytics data error:', {
+        message: error.message,
+        stack: error.stack,
+        period
+      });
       throw error;
     }
   }

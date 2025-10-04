@@ -178,41 +178,60 @@ class AdminAuthController {
         .trim()
         .isLength({ min: 1, max: 100 })
         .withMessage('First name must be between 1 and 100 characters'),
-      
+
       body('last_name')
         .optional()
         .trim()
         .isLength({ min: 1, max: 100 })
         .withMessage('Last name must be between 1 and 100 characters'),
-      
+
       body('middle_name')
         .optional()
         .trim()
         .isLength({ max: 100 })
         .withMessage('Middle name must be less than 100 characters'),
-      
+
       body('suffix')
         .optional()
         .trim()
         .isLength({ max: 10 })
         .withMessage('Suffix must be less than 10 characters'),
-      
+
+      body('employee_id')
+        .optional()
+        .trim()
+        .isLength({ min: 1, max: 50 })
+        .withMessage('Employee ID must be between 1 and 50 characters'),
+
+      body('email')
+        .optional()
+        .trim()
+        .isEmail()
+        .withMessage('Please provide a valid email address')
+        .isLength({ max: 255 })
+        .withMessage('Email must be less than 255 characters'),
+
       body('phone_number')
         .optional({ checkFalsy: true })
         .matches(/^09\d{9}$/)
         .withMessage('Please provide a valid Philippine phone number (09XXXXXXXXX - 11 digits starting with 09)'),
-      
+
       body('position')
         .optional()
         .trim()
         .isLength({ max: 100 })
         .withMessage('Position must be less than 100 characters'),
-      
+
       body('department')
         .optional()
         .trim()
         .isLength({ max: 100 })
-        .withMessage('Department must be less than 100 characters')
+        .withMessage('Department must be less than 100 characters'),
+
+      body('hire_date')
+        .optional()
+        .isISO8601()
+        .withMessage('Hire date must be a valid date (YYYY-MM-DD)')
     ];
   }
 
@@ -673,36 +692,57 @@ class AdminAuthController {
   // Update admin profile
   async updateProfile(req, res) {
     try {
+      console.log('🔄 Admin profile update started:', {
+        accountId: req.user?.id,
+        updateData: req.body
+      });
+
       // Check for validation errors
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
+        console.log('❌ Validation errors:', errors.array());
         return errorResponse(res, 'Validation failed', 400, errors.array());
       }
 
       const accountId = req.user.id;
       const updateData = req.body;
 
+      console.log('✅ Validation passed, proceeding with update');
+
       // Check if employee_id is unique (if being updated)
       if (updateData.employee_id) {
+        console.log('🔍 Checking employee_id uniqueness:', updateData.employee_id);
         const existingEmployeeId = await AdminEmployeeProfile.findByEmployeeId(updateData.employee_id);
         if (existingEmployeeId && existingEmployeeId.account_id !== accountId) {
+          console.log('❌ Employee ID already exists for another account');
           return errorResponse(res, 'Employee ID already exists', 400);
         }
+        console.log('✅ Employee ID is unique or belongs to current user');
       }
 
       // Check if email is unique (if being updated)
       if (updateData.email) {
+        console.log('🔍 Checking email uniqueness:', updateData.email);
         const existingEmail = await AdminEmployeeProfile.findByEmail(updateData.email);
         if (existingEmail && existingEmail.account_id !== accountId) {
+          console.log('❌ Email already exists for another account');
           return errorResponse(res, 'Email already exists', 400);
         }
+        console.log('✅ Email is unique or belongs to current user');
       }
 
       // Update profile
       try {
+        console.log('🔄 Attempting database update...');
         await AdminEmployeeProfile.updateByAccountId(accountId, updateData);
+        console.log('✅ Database update successful');
       } catch (dbError) {
-        console.error('Database error during profile update:', dbError);
+        console.error('❌ Database error during profile update:', {
+          code: dbError.code,
+          message: dbError.message,
+          sqlMessage: dbError.sqlMessage,
+          sql: dbError.sql
+        });
 
         // Handle specific database constraint violations
         if (dbError.code === 'ER_DUP_ENTRY') {
@@ -719,8 +759,19 @@ class AdminAuthController {
       }
 
       // Get updated profile
+      console.log('🔄 Fetching updated profile data...');
       const updatedProfile = await AdminEmployeeProfile.findByAccountId(accountId);
       const account = await AdminEmployeeAccount.findById(accountId);
+
+      if (!updatedProfile) {
+        console.log('❌ Profile not found after update');
+        return errorResponse(res, 'Profile not found after update', 500);
+      }
+
+      if (!account) {
+        console.log('❌ Account not found');
+        return errorResponse(res, 'Account not found', 500);
+      }
 
       // Prepare updated admin data for response
       const adminData = {
@@ -741,10 +792,15 @@ class AdminAuthController {
         hire_date: updatedProfile?.hire_date
       };
 
+      console.log('✅ Profile update completed successfully');
       return successResponse(res, 'Profile updated successfully', adminData);
 
     } catch (error) {
-      console.error('Update profile error:', error);
+      console.error('❌ Update profile error:', {
+        message: error.message,
+        stack: error.stack,
+        code: error.code
+      });
       return errorResponse(res, 'Failed to update profile', 500);
     }
   }

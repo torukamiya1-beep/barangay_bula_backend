@@ -198,7 +198,7 @@ class AdminAuthController {
         .withMessage('Suffix must be less than 10 characters'),
       
       body('phone_number')
-        .optional()
+        .optional({ checkFalsy: true })
         .matches(/^09\d{9}$/)
         .withMessage('Please provide a valid Philippine phone number (09XXXXXXXXX - 11 digits starting with 09)'),
       
@@ -690,8 +690,33 @@ class AdminAuthController {
         }
       }
 
+      // Check if email is unique (if being updated)
+      if (updateData.email) {
+        const existingEmail = await AdminEmployeeProfile.findByEmail(updateData.email);
+        if (existingEmail && existingEmail.account_id !== accountId) {
+          return errorResponse(res, 'Email already exists', 400);
+        }
+      }
+
       // Update profile
-      await AdminEmployeeProfile.updateByAccountId(accountId, updateData);
+      try {
+        await AdminEmployeeProfile.updateByAccountId(accountId, updateData);
+      } catch (dbError) {
+        console.error('Database error during profile update:', dbError);
+
+        // Handle specific database constraint violations
+        if (dbError.code === 'ER_DUP_ENTRY') {
+          if (dbError.message.includes('employee_id')) {
+            return errorResponse(res, 'Employee ID already exists', 400);
+          } else if (dbError.message.includes('email')) {
+            return errorResponse(res, 'Email already exists', 400);
+          }
+          return errorResponse(res, 'Duplicate entry detected', 400);
+        }
+
+        // Re-throw other database errors
+        throw dbError;
+      }
 
       // Get updated profile
       const updatedProfile = await AdminEmployeeProfile.findByAccountId(accountId);

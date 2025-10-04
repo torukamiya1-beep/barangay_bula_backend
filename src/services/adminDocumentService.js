@@ -257,7 +257,7 @@ class AdminDocumentService {
 
       // Main query
       const query = `
-        SELECT
+        SELECT DISTINCT
           dr.id,
           dr.request_number,
           dr.client_id,
@@ -1379,13 +1379,13 @@ class AdminDocumentService {
       const documentTypesQuery = `
         SELECT
           dt.type_name,
-          COUNT(*) as count,
+          COUNT(*) as request_count,
           SUM(COALESCE(dr.total_document_fee, 0)) as revenue
         FROM document_requests dr
         JOIN document_types dt ON dr.document_type_id = dt.id
         WHERE DATE(dr.created_at) >= DATE_SUB(CURDATE(), INTERVAL 30 DAY)
         GROUP BY dt.type_name
-        ORDER BY count DESC
+        ORDER BY request_count DESC
       `;
 
       // Status distribution

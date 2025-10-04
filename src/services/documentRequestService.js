@@ -98,6 +98,31 @@ class DocumentRequestService {
     const sanitizedData = this.sanitizeRequestData(requestData);
     console.log('Service: Sanitized request data:', sanitizedData);
 
+    // Check for recent duplicate submissions (within last 30 seconds)
+    const duplicateCheckQuery = `
+      SELECT id, request_number, created_at
+      FROM document_requests
+      WHERE client_id = ?
+        AND document_type_id = ?
+        AND created_at > DATE_SUB(NOW(), INTERVAL 30 SECOND)
+      ORDER BY created_at DESC
+      LIMIT 1
+    `;
+
+    try {
+      const recentRequests = await executeQuery(duplicateCheckQuery, [clientId, sanitizedData.document_type_id]);
+      if (recentRequests.length > 0) {
+        const recentRequest = recentRequests[0];
+        console.log('⚠️ Potential duplicate submission detected:', recentRequest);
+        throw new Error(`Duplicate submission detected. Please wait before submitting another request. Recent request: ${recentRequest.request_number}`);
+      }
+    } catch (error) {
+      if (error.message.includes('Duplicate submission detected')) {
+        throw error;
+      }
+      console.warn('Duplicate check failed, continuing with submission:', error.message);
+    }
+
     const transaction = async (connection) => {
       try {
         const {

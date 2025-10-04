@@ -29,7 +29,7 @@ EMAIL_FROM_ADDRESS=barangaybula45@gmail.com
 
 # === PAYMONGO SETTINGS (TEST MODE) ===
 PAYMONGO_PUBLIC_KEY=pk_test_VhW6ygvK4x3JCnRmfsPBFxyh
-PAYMONGO_SECRET_KEY=sk_test_xxxxxxxxxxxxxxxxxxxxx
+PAYMONGO_SECRET_KEY=sk_test_wi8qaYjt74YtvpUEeFKpZsg1
 PAYMONGO_BASE_URL=https://api.paymongo.com/v1
 ENABLE_ONLINE_PAYMENTS=true
 PAYMENT_TIMEOUT_MINUTES=30
@@ -38,7 +38,7 @@ PAYMENT_TIMEOUT_MINUTES=30
 FRONTEND_URL=https://barangay-bula-docu-hub.vercel.app
 
 # === WEBHOOK SETTINGS ===
-WEBHOOK_URL=https://brgybulabackend-production.up.railway.app/api/webhooks/paymongo
+WEBHOOK_URL=https://brgybulabackend-production.up.railway.app/api/payments/webhook
 PAYMONGO_WEBHOOK_SECRET=whsk_bcUrWCxnFdULeBuDW6zfGe6Z
 
 # === SECURITY SETTINGS ===

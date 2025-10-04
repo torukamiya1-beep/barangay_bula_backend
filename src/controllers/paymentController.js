@@ -323,15 +323,27 @@ class PaymentController {
         headers: req.headers,
         body: req.body,
         url: req.url,
-        method: req.method
+        method: req.method,
+        timestamp: new Date().toISOString()
       });
 
       const signature = req.headers['paymongo-signature'];
       const payload = JSON.stringify(req.body);
 
+      // Enhanced logging for debugging
+      console.log('🔍 Webhook Debug Info:', {
+        hasSignature: !!signature,
+        hasWebhookSecret: !!process.env.PAYMONGO_WEBHOOK_SECRET,
+        payloadLength: payload.length,
+        nodeEnv: process.env.NODE_ENV
+      });
+
       // Verify webhook signature
       if (!this.paymongoService.verifyWebhookSignature(payload, signature)) {
-        logger.warn('Invalid webhook signature', { signature });
+        logger.warn('Invalid webhook signature', {
+          signature: signature ? signature.substring(0, 20) + '...' : 'none',
+          payloadLength: payload.length
+        });
         return ApiResponse.unauthorized(res, 'Invalid webhook signature');
       }
 
@@ -396,9 +408,20 @@ class PaymentController {
       logger.error('Webhook processing failed', {
         error: error.message,
         stack: error.stack,
-        body: req.body
+        body: req.body,
+        headers: req.headers,
+        timestamp: new Date().toISOString()
       });
-      return res.status(500).json({ error: 'Webhook processing failed' });
+
+      console.log('❌ Webhook processing error:', error.message);
+
+      // Always return 200 to prevent PayMongo from retrying
+      // Log the error but acknowledge receipt
+      return res.status(200).json({
+        received: true,
+        error: 'Processing failed but acknowledged',
+        timestamp: new Date().toISOString()
+      });
     }
   }
 

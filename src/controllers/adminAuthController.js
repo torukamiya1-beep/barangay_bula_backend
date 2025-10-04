@@ -229,7 +229,7 @@ class AdminAuthController {
         .withMessage('Department must be less than 100 characters'),
 
       body('hire_date')
-        .optional()
+        .optional({ checkFalsy: true })
         .isISO8601()
         .withMessage('Hire date must be a valid date (YYYY-MM-DD)')
     ];

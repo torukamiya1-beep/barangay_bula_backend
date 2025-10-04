@@ -1,0 +1,2 @@
+# This file ensures the pickup authorization directory is tracked in git
+# Pickup authorization files will be stored here by the application

@@ -1,5 +1,6 @@
 const express = require('express');
 const unifiedAuthController = require('../controllers/unifiedAuthController');
+const UnifiedAuthController = unifiedAuthController.constructor;
 
 const router = express.Router();
 
@@ -22,7 +23,7 @@ router.get('/test', (req, res) => {
  * @body    { username, password }
  */
 router.post('/login',
-  unifiedAuthController.constructor.unifiedLoginValidation(),
+  UnifiedAuthController.unifiedLoginValidation(),
   unifiedAuthController.unifiedLogin.bind(unifiedAuthController)
 );
 

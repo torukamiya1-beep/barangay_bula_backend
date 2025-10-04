@@ -45,7 +45,18 @@ const connectDatabase = async () => {
 // Execute query with error handling
 const executeQuery = async (query, params = []) => {
   try {
-    const [results] = await pool.execute(query, params);
+    // Check if query contains LIMIT or OFFSET - use query() instead of execute() for MySQL 9.x compatibility
+    const hasLimitOrOffset = /\b(LIMIT|OFFSET)\b/i.test(query);
+
+    let results;
+    if (hasLimitOrOffset) {
+      // Use query() for LIMIT/OFFSET queries to avoid MySQL 9.x parameter binding issues
+      [results] = await pool.query(query, params);
+    } else {
+      // Use execute() for other queries (better performance with prepared statements)
+      [results] = await pool.execute(query, params);
+    }
+
     return results;
   } catch (error) {
     console.error('❌ Database query error:');

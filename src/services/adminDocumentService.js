@@ -1411,7 +1411,8 @@ class AdminDocumentService {
         ORDER BY count DESC
       `;
 
-      // Top clients by request count (extended to 90 days for better data visibility)
+      // Top clients by request count (all-time to ensure data is always shown)
+      // Note: Removed date filter because production data may be older than 90 days
       const topClientsQuery = `
         SELECT
           CONCAT(cp.first_name, ' ', cp.last_name) as client_name,
@@ -1421,8 +1422,7 @@ class AdminDocumentService {
         FROM document_requests dr
         JOIN client_accounts ca ON dr.client_id = ca.id
         JOIN client_profiles cp ON ca.id = cp.account_id
-        WHERE DATE(dr.created_at) >= DATE_SUB(CURDATE(), INTERVAL 90 DAY)
-        GROUP BY dr.client_id
+        GROUP BY dr.client_id, cp.first_name, cp.last_name, cp.email
         ORDER BY request_count DESC
         LIMIT 10
       `;

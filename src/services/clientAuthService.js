@@ -93,23 +93,29 @@ class ClientAuthService {
           email: profileData.email
         });
 
-        // Resend OTP
+        // Resend OTP (ASYNC - don't wait for it to complete)
         let otpSent = false;
         if (profileData.email || existingProfile.email) {
-          try {
-            await otpService.generateAndSendUnifiedOTP(
-              profileData.email || existingProfile.email,
-              profileData.phone_number || existingProfile.phone_number,
-              'email_verification',
-              profileData.first_name || existingProfile.first_name
-            );
-            otpSent = true;
-          } catch (otpError) {
-            logger.warn('Failed to resend verification OTP', {
+          // Fire and forget - send OTP in background
+          otpService.generateAndSendUnifiedOTP(
+            profileData.email || existingProfile.email,
+            profileData.phone_number || existingProfile.phone_number,
+            'email_verification',
+            profileData.first_name || existingProfile.first_name
+          ).then(() => {
+            logger.info('Verification OTP resent successfully', {
+              accountId,
+              email: profileData.email || existingProfile.email
+            });
+          }).catch(otpError => {
+            logger.warn('Failed to resend verification OTP (non-blocking)', {
               accountId,
               error: otpError.message
             });
-          }
+          });
+
+          // Assume OTP will be sent (optimistic response)
+          otpSent = true;
         }
 
         return {
@@ -144,32 +150,40 @@ class ClientAuthService {
         ...profileData
       });
 
-      // Send unified OTP for verification (same code to both email and SMS if phone provided)
+      // Send unified OTP for verification (ASYNC - don't wait for it to complete)
+      // This prevents SMS/email timeouts from blocking the registration response
       let otpSent = false;
       if (profileData.email) {
-        try {
-          await otpService.generateAndSendUnifiedOTP(
-            profileData.email,
-            profileData.phone_number || null, // Send to SMS if phone number provided
-            'email_verification',
-            profileData.first_name
-          );
-          otpSent = true;
-        } catch (otpError) {
-          logger.warn('Failed to send verification OTP', {
+        // Fire and forget - send OTP in background
+        otpService.generateAndSendUnifiedOTP(
+          profileData.email,
+          profileData.phone_number || null,
+          'email_verification',
+          profileData.first_name
+        ).then(() => {
+          logger.info('Verification OTP sent successfully', {
+            accountId,
+            email: profileData.email,
+            phoneNumber: profileData.phone_number
+          });
+        }).catch(otpError => {
+          logger.warn('Failed to send verification OTP (non-blocking)', {
             accountId,
             email: profileData.email,
             phoneNumber: profileData.phone_number,
             error: otpError.message
           });
-        }
+        });
+
+        // Assume OTP will be sent (optimistic response)
+        otpSent = true;
       }
 
       logger.info('Client profile created', {
         accountId,
         profileId: clientProfile.id,
         email: profileData.email,
-        otpSent
+        otpSentAsync: otpSent
       });
 
       return {

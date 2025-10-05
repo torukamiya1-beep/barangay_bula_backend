@@ -21,7 +21,11 @@ class EmailService {
         },
         tls: {
           rejectUnauthorized: false
-        }
+        },
+        // Add connection timeout to prevent hanging
+        connectionTimeout: 10000, // 10 seconds
+        greetingTimeout: 10000, // 10 seconds
+        socketTimeout: 15000 // 15 seconds
       });
 
       this.logger.info('Email transporter initialized successfully');

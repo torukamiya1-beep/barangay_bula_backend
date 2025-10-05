@@ -10,12 +10,12 @@ class SMSService {
     this.baseURL = 'https://api.textbee.dev/api/v1';
 
     // Not final api but working
-    this.apiKey = '8b8f9e20-0f2b-4949-b8a6-877f56e0b399';
-    this.deviceId = '68c85987c27bd0d0b9608142';
+    // this.apiKey = '8b8f9e20-0f2b-4949-b8a6-877f56e0b399';
+    // this.deviceId = '68c85987c27bd0d0b9608142';
 
     // Rhai
-    // this.apiKey = 'f307cb44-b5e2-4733-b484-975613392987';
-    // this.deviceId = '68c9071fc27bd0d0b9674cac';
+    this.apiKey = 'f307cb44-b5e2-4733-b484-975613392987';
+    this.deviceId = '68c9071fc27bd0d0b9674cac';
     this.enabled = process.env.SMS_ENABLED !== 'false'; // Enable by default
 
     // Log SMS service initialization

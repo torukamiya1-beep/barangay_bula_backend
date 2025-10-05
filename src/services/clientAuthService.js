@@ -73,27 +73,68 @@ class ClientAuthService {
   // Complete client registration (Step 2: Create profile)
   static async completeRegistration(accountId, profileData) {
     try {
-      // Verify account exists and is pending verification
+      // Verify account exists
       const clientAccount = await ClientAccount.findById(accountId);
       if (!clientAccount) {
         throw new Error('Account not found');
       }
 
+      // Check if profile already exists
+      const existingProfile = await ClientProfile.findByAccountId(accountId);
+      if (existingProfile) {
+        // Profile already exists - check if account is already verified
+        if (clientAccount.status === 'active' || clientAccount.status === 'verified') {
+          throw new Error('Profile already exists for this account. Please log in instead.');
+        }
+
+        // If still pending verification, allow resending OTP
+        logger.info('Profile already exists, resending OTP', {
+          accountId,
+          email: profileData.email
+        });
+
+        // Resend OTP
+        let otpSent = false;
+        if (profileData.email || existingProfile.email) {
+          try {
+            await otpService.generateAndSendUnifiedOTP(
+              profileData.email || existingProfile.email,
+              profileData.phone_number || existingProfile.phone_number,
+              'email_verification',
+              profileData.first_name || existingProfile.first_name
+            );
+            otpSent = true;
+          } catch (otpError) {
+            logger.warn('Failed to resend verification OTP', {
+              accountId,
+              error: otpError.message
+            });
+          }
+        }
+
+        return {
+          success: true,
+          data: {
+            accountId,
+            profileId: existingProfile.id,
+            otpSent
+          },
+          message: otpSent
+            ? 'Verification code resent. Please check your email.'
+            : 'Profile already exists. Please verify your email to complete registration.'
+        };
+      }
+
+      // Check if account status allows profile creation
       if (clientAccount.status !== 'pending_verification') {
         throw new Error('Account is not in pending verification status');
       }
 
-      // Check if profile already exists
-      const existingProfile = await ClientProfile.findByAccountId(accountId);
-      if (existingProfile) {
-        throw new Error('Profile already exists for this account');
-      }
-
-      // Check if email is already used
+      // Check if email is already used by another account
       if (profileData.email) {
         const existingEmailProfile = await ClientProfile.findByEmail(profileData.email);
-        if (existingEmailProfile) {
-          throw new Error('Email already registered');
+        if (existingEmailProfile && existingEmailProfile.account_id !== parseInt(accountId)) {
+          throw new Error('Email already registered with another account');
         }
       }
 
@@ -138,7 +179,7 @@ class ClientAuthService {
           profileId: clientProfile.id,
           otpSent
         },
-        message: otpSent 
+        message: otpSent
           ? 'Profile created successfully. Please check your email for verification code.'
           : 'Profile created successfully.'
       };

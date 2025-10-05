@@ -62,7 +62,7 @@ class DocumentRequestController {
     try {
       console.log('🎯 DocumentRequestController.submitRequest called');
       console.log('👤 Client ID:', req.user?.id);
-      console.log('📋 Request data:', req.body);
+      console.log('📋 Request data:', JSON.stringify(req.body, null, 2));
 
       // Check for validation errors
       const errors = validationResult(req);
@@ -74,24 +74,40 @@ class DocumentRequestController {
       const clientId = req.user.id;
       const requestData = req.body;
 
+      // Log specific data for debugging
+      console.log('🔍 Request details:', {
+        document_type_id: requestData.document_type_id,
+        purpose_category_id: requestData.purpose_category_id,
+        is_third_party_request: requestData.is_third_party_request,
+        has_beneficiary: !!requestData.beneficiary,
+        has_authorized_pickup: !!requestData.authorized_pickup,
+        beneficiary_keys: requestData.beneficiary ? Object.keys(requestData.beneficiary) : [],
+        authorized_pickup_keys: requestData.authorized_pickup ? Object.keys(requestData.authorized_pickup) : []
+      });
+
       console.log('🔄 Calling DocumentRequestService.submitRequest...');
       const result = await DocumentRequestService.submitRequest(requestData, clientId);
       console.log('✅ DocumentRequestService.submitRequest completed:', result);
 
       // Log document request submission activity
       if (result.data && result.data.id) {
-        await logDocumentRequest(req, clientId, 'client', result.data.id,
-          requestData.document_type_name || 'Unknown Document Type',
-          result.data.request_number,
-          {
-            document_type_id: requestData.document_type_id,
-            purpose_category_id: requestData.purpose_category_id,
-            purpose_details: requestData.purpose_details,
-            payment_method_id: requestData.payment_method_id,
-            delivery_method: requestData.delivery_method || 'pickup',
-            priority: requestData.priority || 'normal'
-          }
-        );
+        try {
+          await logDocumentRequest(req, clientId, 'client', result.data.id,
+            requestData.document_type_name || 'Unknown Document Type',
+            result.data.request_number,
+            {
+              document_type_id: requestData.document_type_id,
+              purpose_category_id: requestData.purpose_category_id,
+              purpose_details: requestData.purpose_details,
+              payment_method_id: requestData.payment_method_id,
+              delivery_method: requestData.delivery_method || 'pickup',
+              priority: requestData.priority || 'normal'
+            }
+          );
+        } catch (logError) {
+          console.error('⚠️ Failed to log document request activity:', logError.message);
+          // Don't fail the request if logging fails
+        }
       }
 
       return ApiResponse.created(res, result.data, result.message);
@@ -100,14 +116,44 @@ class DocumentRequestController {
         error: error.message,
         stack: error.stack,
         clientId: req.user?.id,
-        requestData: req.body
+        requestData: req.body,
+        errorDetails: {
+          name: error.name,
+          code: error.code,
+          errno: error.errno,
+          sqlMessage: error.sqlMessage,
+          sql: error.sql
+        }
       });
 
+      // More specific error handling
       if (error.message.includes('Invalid document type')) {
         return ApiResponse.badRequest(res, error.message);
       }
 
-      return ApiResponse.serverError(res, error.message);
+      if (error.message.includes('validation failed')) {
+        return ApiResponse.badRequest(res, error.message);
+      }
+
+      if (error.message.includes('duplicate')) {
+        return ApiResponse.badRequest(res, 'A similar request was already submitted recently');
+      }
+
+      // Database errors
+      if (error.code === 'ER_DUP_ENTRY') {
+        return ApiResponse.badRequest(res, 'Duplicate entry detected');
+      }
+
+      if (error.code === 'ER_NO_REFERENCED_ROW_2') {
+        return ApiResponse.badRequest(res, 'Invalid reference data provided');
+      }
+
+      if (error.code === 'ER_BAD_NULL_ERROR') {
+        return ApiResponse.badRequest(res, 'Required field is missing');
+      }
+
+      // Return detailed error message for debugging in production
+      return ApiResponse.serverError(res, `Failed to submit document request: ${error.message}`);
     }
   }
 

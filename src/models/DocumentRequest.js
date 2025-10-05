@@ -131,11 +131,25 @@ class DocumentRequest {
     ];
 
     try {
+      console.log('📝 Creating document request with params:', {
+        request_number,
+        client_id,
+        is_third_party_request,
+        document_type_id,
+        purpose_category_id,
+        has_beneficiary: !!beneficiary,
+        has_authorized_pickup: !!authorized_pickup
+      });
+
       const result = await executeQuery(query, params);
       const requestId = result.insertId;
+      console.log('✅ Document request created with ID:', requestId);
 
       // Create beneficiary record if this is a third-party request
       if (is_third_party_request && beneficiary) {
+        console.log('📝 Creating beneficiary record for request:', requestId);
+        console.log('Beneficiary data received:', JSON.stringify(beneficiary, null, 2));
+
         const beneficiaryData = {
           request_id: requestId,
           ...beneficiary
@@ -144,14 +158,28 @@ class DocumentRequest {
         // Validate beneficiary data
         const beneficiaryErrors = DocumentBeneficiary.validateData(beneficiaryData);
         if (beneficiaryErrors.length > 0) {
+          console.error('❌ Beneficiary validation failed:', beneficiaryErrors);
           throw new Error(`Beneficiary validation failed: ${beneficiaryErrors.join(', ')}`);
         }
 
-        await DocumentBeneficiary.create(beneficiaryData);
+        try {
+          await DocumentBeneficiary.create(beneficiaryData);
+          console.log('✅ Beneficiary record created successfully');
+        } catch (beneficiaryError) {
+          console.error('❌ Failed to create beneficiary record:', {
+            error: beneficiaryError.message,
+            stack: beneficiaryError.stack,
+            data: beneficiaryData
+          });
+          throw new Error(`Failed to create beneficiary: ${beneficiaryError.message}`);
+        }
       }
 
       // Create authorized pickup person if provided
       if (authorized_pickup) {
+        console.log('📝 Creating authorized pickup person for request:', requestId);
+        console.log('Authorized pickup data received:', JSON.stringify(authorized_pickup, null, 2));
+
         const pickupData = {
           request_id: requestId,
           ...authorized_pickup
@@ -160,12 +188,24 @@ class DocumentRequest {
         // Validate pickup person data
         const pickupErrors = AuthorizedPickupPerson.validateData(pickupData);
         if (pickupErrors.length > 0) {
+          console.error('❌ Authorized pickup validation failed:', pickupErrors);
           throw new Error(`Authorized pickup validation failed: ${pickupErrors.join(', ')}`);
         }
 
-        await AuthorizedPickupPerson.create(pickupData);
+        try {
+          await AuthorizedPickupPerson.create(pickupData);
+          console.log('✅ Authorized pickup person created successfully');
+        } catch (pickupError) {
+          console.error('❌ Failed to create authorized pickup person:', {
+            error: pickupError.message,
+            stack: pickupError.stack,
+            data: pickupData
+          });
+          throw new Error(`Failed to create authorized pickup person: ${pickupError.message}`);
+        }
       }
 
+      console.log('📝 Fetching created request details...');
       const newRequest = await DocumentRequest.findById(requestId);
 
       // Send notification to admins about new request
@@ -180,7 +220,19 @@ class DocumentRequest {
 
       return newRequest;
     } catch (error) {
-      console.error('Error creating document request:', error);
+      console.error('❌ Error creating document request:', {
+        error: error.message,
+        stack: error.stack,
+        requestData: {
+          request_number,
+          client_id,
+          document_type_id,
+          purpose_category_id,
+          is_third_party_request,
+          has_beneficiary: !!beneficiary,
+          has_authorized_pickup: !!authorized_pickup
+        }
+      });
       throw error;
     }
   }

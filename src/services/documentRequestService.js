@@ -290,7 +290,7 @@ class DocumentRequestService {
 
     try {
       const docRequest = await executeTransactionCallback(transaction);
-      
+
       return {
         success: true,
         data: docRequest,
@@ -299,9 +299,20 @@ class DocumentRequestService {
     } catch (error) {
       logger.error('Error submitting document request', {
         error: error.message,
-        clientId
+        stack: error.stack,
+        clientId,
+        requestData: sanitizedData,
+        errorDetails: {
+          name: error.name,
+          code: error.code,
+          errno: error.errno,
+          sqlMessage: error.sqlMessage,
+          sql: error.sql
+        }
       });
-      throw new Error('Failed to submit document request');
+
+      // Re-throw the original error instead of generic message
+      throw error;
     }
   }
 

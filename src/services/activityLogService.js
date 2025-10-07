@@ -1,4 +1,5 @@
 const { executeQuery } = require('../config/database');
+const logger = require('../utils/logger');
 
 /**
  * Activity Log Service
@@ -8,9 +9,44 @@ const { executeQuery } = require('../config/database');
 class ActivityLogService {
   
   /**
-   * Get activity logs with filtering and pagination
+   * Get comprehensive activity logs combining audit_logs and request_status_history
    */
   async getActivityLogs(filters = {}, page = 1, limit = 50) {
+    try {
+      // Get activities from both audit_logs and request_status_history
+      const auditActivities = await this.getAuditLogActivities(filters);
+      const documentActivities = await this.getDocumentStatusActivities(filters);
+
+      // Combine and sort all activities by timestamp
+      const allActivities = [...auditActivities, ...documentActivities]
+        .sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+
+      // Apply pagination
+      const offset = (page - 1) * limit;
+      const paginatedActivities = allActivities.slice(offset, offset + limit);
+
+      return {
+        success: true,
+        data: {
+          activities: paginatedActivities,
+          pagination: {
+            page: parseInt(page),
+            limit: parseInt(limit),
+            total: allActivities.length,
+            pages: Math.ceil(allActivities.length / limit)
+          }
+        }
+      };
+    } catch (error) {
+      logger.error('Get activity logs error:', error);
+      throw error;
+    }
+  }
+
+  /**
+   * Get activities from audit_logs table (login/registration activities)
+   */
+  async getAuditLogActivities(filters = {}) {
     try {
       // Check if audit_logs table exists
       const tableCheckQuery = `
@@ -21,117 +57,66 @@ class ActivityLogService {
       const [tableCheck] = await executeQuery(tableCheckQuery);
 
       if (tableCheck.table_exists === 0) {
-        // Return empty result if table doesn't exist
-        return {
-          success: true,
-          data: {
-            activities: [],
-            pagination: {
-              page: parseInt(page),
-              limit: parseInt(limit),
-              total: 0,
-              pages: 0
-            }
-          }
-        };
+        return [];
       }
 
-      const offset = (page - 1) * limit;
-
-      // Build WHERE clause based on filters
+      // Build WHERE clause based on filters for audit_logs
       let whereConditions = [];
       let queryParams = [];
-      
+
       // Date range filters
       if (filters.dateFrom) {
         whereConditions.push('DATE(al.created_at) >= ?');
         queryParams.push(filters.dateFrom);
       }
-      
+
       if (filters.dateTo) {
         whereConditions.push('DATE(al.created_at) <= ?');
         queryParams.push(filters.dateTo);
       }
-      
+
       // Activity type filter
       if (filters.type && filters.type !== '') {
         whereConditions.push('al.action LIKE ?');
         queryParams.push(`%${filters.type}%`);
       }
-      
+
       // User type filter
       if (filters.userType && filters.userType !== '') {
         whereConditions.push('al.user_type = ?');
         queryParams.push(filters.userType);
       }
-      
-      // User filter (by name)
-      if (filters.user && filters.user !== '') {
-        whereConditions.push(`(
-          CONCAT(COALESCE(aep.first_name, ''), ' ', COALESCE(aep.last_name, '')) LIKE ? OR
-          CONCAT(COALESCE(cp.first_name, ''), ' ', COALESCE(cp.last_name, '')) LIKE ?
-        )`);
-        queryParams.push(`%${filters.user}%`, `%${filters.user}%`);
-      }
-      
-      // IP address filter
-      if (filters.ipAddress && filters.ipAddress !== '') {
-        whereConditions.push('al.ip_address LIKE ?');
-        queryParams.push(`%${filters.ipAddress}%`);
-      }
-      
+
       const whereClause = whereConditions.length > 0 ? 'WHERE ' + whereConditions.join(' AND ') : '';
       
-      // Main query to get activity logs
+      // Query audit_logs for login/registration activities
       const query = `
-        SELECT 
+        SELECT
           al.id,
           al.user_id,
           al.user_type,
           al.action,
-          al.table_name,
-          al.record_id,
-          al.old_values,
-          al.new_values,
           al.ip_address,
-          al.user_agent,
           al.created_at as timestamp,
-          -- Get user names based on user type
-          CASE 
-            WHEN al.user_type = 'admin' OR al.user_type = 'employee' THEN 
+          CASE
+            WHEN al.user_type = 'admin' OR al.user_type = 'employee' THEN
               COALESCE(CONCAT(aep.first_name, ' ', aep.last_name), 'Unknown Admin')
-            WHEN al.user_type = 'client' THEN 
+            WHEN al.user_type = 'client' THEN
               COALESCE(CONCAT(cp.first_name, ' ', cp.last_name), 'Unknown Client')
             ELSE 'System'
           END as user_name,
-          -- Get user role
-          CASE 
+          CASE
             WHEN al.user_type = 'admin' THEN 'Administrator'
             WHEN al.user_type = 'employee' THEN 'Employee'
             WHEN al.user_type = 'client' THEN 'Client'
             ELSE 'System'
           END as user_role,
-          -- Generate activity description
-          CASE 
+          CASE
             WHEN al.action = 'login_success' THEN CONCAT(COALESCE(CONCAT(aep.first_name, ' ', aep.last_name), CONCAT(cp.first_name, ' ', cp.last_name), 'User'), ' logged in successfully')
             WHEN al.action = 'login_failed' THEN 'Failed login attempt'
             WHEN al.action = 'logout' THEN CONCAT(COALESCE(CONCAT(aep.first_name, ' ', aep.last_name), CONCAT(cp.first_name, ' ', cp.last_name), 'User'), ' logged out')
-            WHEN al.action = 'document_request_submit' THEN CONCAT(COALESCE(CONCAT(cp.first_name, ' ', cp.last_name), 'Client'), ' submitted a document request')
-            WHEN al.action = 'document_status_change' THEN CONCAT(COALESCE(CONCAT(aep.first_name, ' ', aep.last_name), 'Admin'), ' changed document status')
-            WHEN al.action = 'payment_submit' THEN CONCAT(COALESCE(CONCAT(cp.first_name, ' ', cp.last_name), 'Client'), ' submitted payment')
-            WHEN al.action = 'payment_confirm' THEN CONCAT(COALESCE(CONCAT(aep.first_name, ' ', aep.last_name), 'Admin'), ' confirmed payment')
             ELSE CONCAT(al.action, ' by ', COALESCE(CONCAT(aep.first_name, ' ', aep.last_name), CONCAT(cp.first_name, ' ', cp.last_name), 'User'))
-          END as activity,
-          -- Generate detailed description
-          CONCAT(
-            'Action: ', al.action, '\\n',
-            'User: ', COALESCE(CONCAT(aep.first_name, ' ', aep.last_name), CONCAT(cp.first_name, ' ', cp.last_name), 'System'), '\\n',
-            'IP Address: ', COALESCE(al.ip_address, 'N/A'), '\\n',
-            'Timestamp: ', al.created_at, '\\n',
-            CASE WHEN al.table_name IS NOT NULL THEN CONCAT('Table: ', al.table_name, '\\n') ELSE '' END,
-            CASE WHEN al.record_id IS NOT NULL THEN CONCAT('Record ID: ', al.record_id, '\\n') ELSE '' END,
-            CASE WHEN al.user_agent IS NOT NULL THEN CONCAT('User Agent: ', al.user_agent) ELSE '' END
-          ) as details
+          END as activity
         FROM audit_logs al
         LEFT JOIN admin_employee_accounts aea ON al.user_id = aea.id AND al.user_type IN ('admin', 'employee')
         LEFT JOIN admin_employee_profiles aep ON aea.id = aep.account_id
@@ -139,54 +124,123 @@ class ActivityLogService {
         LEFT JOIN client_profiles cp ON ca.id = cp.account_id
         ${whereClause}
         ORDER BY al.created_at DESC
-        LIMIT ? OFFSET ?
+        LIMIT 100
       `;
-      
-      queryParams.push(limit, offset);
-      
+
       const activities = await executeQuery(query, queryParams);
-      
-      // Get total count for pagination
-      const countQuery = `
-        SELECT COUNT(*) as total
-        FROM audit_logs al
-        LEFT JOIN admin_employee_accounts aea ON al.user_id = aea.id AND al.user_type IN ('admin', 'employee')
-        LEFT JOIN admin_employee_profiles aep ON aea.id = aep.account_id
-        LEFT JOIN client_accounts ca ON al.user_id = ca.id AND al.user_type = 'client'
-        LEFT JOIN client_profiles cp ON ca.id = cp.account_id
-        ${whereClause}
-      `;
-      
-      const countResult = await executeQuery(countQuery, queryParams.slice(0, -2)); // Remove limit and offset
-      const total = countResult[0].total;
-      
-      // Process activities to ensure proper data types
-      const processedActivities = activities.map(activity => ({
+
+      // Process activities and add missing fields
+      return activities.map(activity => ({
         ...activity,
         type: this.categorizeActivity(activity.action),
-        document_type: this.extractDocumentType(activity.old_values, activity.new_values),
-        status_change: this.extractStatusChange(activity.old_values, activity.new_values)
+        document_type: null, // Audit logs don't have document types
+        status_change: null, // Audit logs don't have status changes
+        details: `Action: ${activity.action}\nUser: ${activity.user_name}\nIP Address: ${activity.ip_address || 'N/A'}\nTimestamp: ${activity.timestamp}`
       }));
       
-      return {
-        success: true,
-        data: {
-          activities: processedActivities,
-          pagination: {
-            page: parseInt(page),
-            limit: parseInt(limit),
-            total: total,
-            pages: Math.ceil(total / limit)
-          }
-        }
-      };
-      
     } catch (error) {
-      console.error('Error fetching activity logs:', error);
-      throw error;
+      console.error('Error fetching audit log activities:', error);
+      return []; // Return empty array on error
     }
   }
-  
+
+  /**
+   * Get activities from request_status_history table (document request activities)
+   */
+  async getDocumentStatusActivities(filters = {}) {
+    try {
+      // Build WHERE clause based on filters for request_status_history
+      let whereConditions = [];
+      let queryParams = [];
+
+      // Date range filters
+      if (filters.dateFrom) {
+        whereConditions.push('DATE(rsh.changed_at) >= ?');
+        queryParams.push(filters.dateFrom);
+      }
+
+      if (filters.dateTo) {
+        whereConditions.push('DATE(rsh.changed_at) <= ?');
+        queryParams.push(filters.dateTo);
+      }
+
+      // Document type filter
+      if (filters.documentType) {
+        whereConditions.push('dt.type_name LIKE ?');
+        queryParams.push(`%${filters.documentType}%`);
+      }
+
+      // User type filter (admin/employee who made the change)
+      if (filters.userType && filters.userType === 'admin') {
+        whereConditions.push('rsh.changed_by IS NOT NULL');
+      }
+
+      const whereClause = whereConditions.length > 0 ? 'WHERE ' + whereConditions.join(' AND ') : '';
+
+      // Query request_status_history for document activities
+      const query = `
+        SELECT
+          rsh.id,
+          rsh.changed_by as user_id,
+          'admin' as user_type,
+          rsh.changed_at as timestamp,
+          COALESCE(CONCAT(aep.first_name, ' ', aep.last_name), 'System') as user_name,
+          'Administrator' as user_role,
+          CONCAT(
+            COALESCE(CONCAT(aep.first_name, ' ', aep.last_name), 'System'),
+            ' changed status from "',
+            COALESCE(old_rs.status_name, 'None'),
+            '" to "',
+            new_rs.status_name,
+            '" for ',
+            dt.type_name,
+            ' request ',
+            dr.request_number
+          ) as activity,
+          dt.type_name as document_type,
+          new_rs.status_name as status_change,
+          'N/A' as ip_address,
+          CONCAT(
+            'Request: ', dr.request_number, '\\n',
+            'Document Type: ', dt.type_name, '\\n',
+            'Client: ', COALESCE(CONCAT(cp.first_name, ' ', cp.last_name), 'Unknown'), '\\n',
+            CASE
+              WHEN old_rs.status_name IS NOT NULL THEN
+                CONCAT('Status Changed: ', old_rs.status_name, ' → ', new_rs.status_name, '\\n')
+              ELSE
+                CONCAT('Status Set: ', new_rs.status_name, '\\n')
+            END,
+            'Changed At: ', DATE_FORMAT(rsh.changed_at, '%Y-%m-%d %H:%i:%s'), '\\n',
+            'Changed By: ', COALESCE(CONCAT(aep.first_name, ' ', aep.last_name), 'System')
+          ) as details
+        FROM request_status_history rsh
+        JOIN document_requests dr ON rsh.request_id = dr.id
+        JOIN document_types dt ON dr.document_type_id = dt.id
+        LEFT JOIN request_status old_rs ON rsh.old_status_id = old_rs.id
+        JOIN request_status new_rs ON rsh.new_status_id = new_rs.id
+        LEFT JOIN admin_employee_accounts aea ON rsh.changed_by = aea.id
+        LEFT JOIN admin_employee_profiles aep ON aea.id = aep.account_id
+        LEFT JOIN client_accounts ca ON dr.client_id = ca.id
+        LEFT JOIN client_profiles cp ON ca.id = cp.account_id
+        ${whereClause}
+        ORDER BY rsh.changed_at DESC
+        LIMIT 100
+      `;
+
+      const activities = await executeQuery(query, queryParams);
+
+      // Process activities and add missing fields
+      return activities.map(activity => ({
+        ...activity,
+        type: 'status_change'
+      }));
+
+    } catch (error) {
+      console.error('Error fetching document status activities:', error);
+      return []; // Return empty array on error
+    }
+  }
+
   /**
    * Get activity statistics
    */

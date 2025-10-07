@@ -4,6 +4,7 @@ const UserServiceNew = require('../services/userServiceNew');
 const { ApiResponse } = require('../utils/response');
 const logger = require('../utils/logger');
 const { validateResidencyDocuments } = require('../middleware/residencyUpload');
+const ComprehensiveActivityLogService = require('../services/comprehensiveActivityLogService');
 
 class ResidencyController {
   constructor() {
@@ -305,6 +306,28 @@ class ResidencyController {
         adminId,
         document_ids || []
       );
+
+      // Log audit activity for residency approval
+      try {
+        await ComprehensiveActivityLogService.logAdminActivity(
+          adminId,
+          'residency_approval',
+          'client_profiles',
+          actualAccountId,
+          null, // old values
+          {
+            residency_verified: true,
+            verified_by: adminId,
+            verification_timestamp: new Date().toISOString(),
+            document_ids: document_ids || []
+          },
+          req.clientIP || req.ip || 'unknown',
+          req.get('User-Agent') || 'unknown'
+        );
+      } catch (auditError) {
+        console.error('Failed to log residency approval audit:', auditError.message);
+        // Don't fail the approval if audit logging fails
+      }
 
       this.logger.info('Residency verification approved by admin', {
         accountId: account_id,

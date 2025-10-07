@@ -5,6 +5,7 @@ const AdminEmployeeProfile = require('../models/AdminEmployeeProfile');
 const otpService = require('./otpService');
 const emailService = require('./emailService');
 const logger = require('../utils/logger');
+const ComprehensiveActivityLogService = require('./comprehensiveActivityLogService');
 
 class AdminAuthService {
   // Generate JWT token for admin
@@ -57,6 +58,30 @@ class AdminAuthService {
         username,
         role
       });
+
+      // Log audit activity for admin account creation
+      try {
+        await ComprehensiveActivityLogService.logActivity({
+          userId: null, // System action, no specific user
+          userType: 'admin',
+          action: 'admin_account_creation',
+          tableName: 'admin_employee_accounts',
+          recordId: accountId,
+          newValues: {
+            creation_timestamp: new Date().toISOString(),
+            username: username,
+            role: role,
+            email: email,
+            status: 'inactive'
+          }
+        });
+      } catch (auditError) {
+        logger.error('Failed to log admin account creation audit', {
+          accountId,
+          username,
+          error: auditError.message
+        });
+      }
 
       return {
         success: true,

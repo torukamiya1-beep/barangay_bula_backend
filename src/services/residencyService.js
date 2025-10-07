@@ -4,6 +4,7 @@ const ClientProfile = require('../models/ClientProfile');
 const { cleanupUploadedFiles } = require('../middleware/residencyUpload');
 const { executeQuery } = require('../config/database');
 const logger = require('../utils/logger');
+const ComprehensiveActivityLogService = require('./comprehensiveActivityLogService');
 const notificationService = require('./notificationService');
 const smsService = require('./smsService');
 const emailService = require('./emailService');
@@ -172,6 +173,28 @@ class ResidencyService {
         approvedDocuments: documentIds.length || documents.length
       });
 
+      // Log audit activity for residency approval
+      try {
+        await ComprehensiveActivityLogService.logActivity({
+          userId: adminId,
+          userType: 'admin',
+          action: 'residency_approval',
+          tableName: 'client_accounts',
+          recordId: accountId,
+          newValues: {
+            approval_timestamp: new Date().toISOString(),
+            approved_documents: documentIds.length || documents.length,
+            admin_id: adminId
+          }
+        });
+      } catch (auditError) {
+        logger.error('Failed to log residency approval audit', {
+          accountId,
+          adminId,
+          error: auditError.message
+        });
+      }
+
       // Send notification to client
       try {
         await notificationService.createNotification({
@@ -312,6 +335,29 @@ class ResidencyService {
         rejectionReason,
         rejectedDocuments: documentIds.length || documents.length
       });
+
+      // Log audit activity for residency rejection
+      try {
+        await ComprehensiveActivityLogService.logActivity({
+          userId: adminId,
+          userType: 'admin',
+          action: 'residency_rejection',
+          tableName: 'client_accounts',
+          recordId: accountId,
+          newValues: {
+            rejection_timestamp: new Date().toISOString(),
+            rejection_reason: rejectionReason,
+            rejected_documents: documentIds.length || documents.length,
+            admin_id: adminId
+          }
+        });
+      } catch (auditError) {
+        logger.error('Failed to log residency rejection audit', {
+          accountId,
+          adminId,
+          error: auditError.message
+        });
+      }
 
       // Send notification to client
       try {

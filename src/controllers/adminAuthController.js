@@ -6,6 +6,7 @@ const AdminEmployeeProfile = require('../models/AdminEmployeeProfile');
 const OTPService = require('../services/otpService');
 const EmailService = require('../services/emailService');
 const AdminAuthService = require('../services/adminAuthService');
+const ComprehensiveActivityLogService = require('../services/comprehensiveActivityLogService');
 const { successResponse, errorResponse } = require('../utils/response');
 const { logAuthActivity, ACTIVITY_TYPES } = require('../middleware/activityLogger');
 const {
@@ -791,6 +792,26 @@ class AdminAuthController {
         department: updatedProfile?.department,
         hire_date: updatedProfile?.hire_date
       };
+
+      // Log audit activity for admin profile update
+      try {
+        await ComprehensiveActivityLogService.logActivity({
+          userId: accountId,
+          userType: 'admin',
+          action: 'admin_profile_update',
+          tableName: 'admin_employee_profiles',
+          recordId: updatedProfile.id,
+          oldValues: originalProfile,
+          newValues: updateData,
+          ipAddress: req.clientIP,
+          userAgent: req.userAgent
+        });
+      } catch (auditError) {
+        console.error('Failed to log admin profile update audit', {
+          accountId,
+          error: auditError.message
+        });
+      }
 
       console.log('✅ Profile update completed successfully');
       return successResponse(res, 'Profile updated successfully', adminData);

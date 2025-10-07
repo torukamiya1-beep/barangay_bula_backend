@@ -4,6 +4,7 @@ const logger = require('../utils/logger');
 /**
  * Activity Log Service
  * Handles retrieval and management of activity logs from audit_logs table
+ * Updated: 2025-10-07 - Enhanced with union of audit_logs and request_status_history
  */
 
 class ActivityLogService {

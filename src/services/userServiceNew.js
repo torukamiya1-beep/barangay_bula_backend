@@ -1,5 +1,6 @@
 const { executeQuery } = require('../config/database');
 const bcrypt = require('bcryptjs');
+const ComprehensiveActivityLogService = require('./comprehensiveActivityLogService');
 
 class UserServiceNew {
 
@@ -975,6 +976,32 @@ class UserServiceNew {
           `;
           profileParams.push(id); // Use actual ID, not composite ID
           await executeQuery(profileQuery, profileParams);
+
+          // Log audit activity for client profile update
+          try {
+            const updateData = {};
+            profileFields.forEach((field, index) => {
+              const fieldName = field.split(' = ?')[0];
+              updateData[fieldName] = profileParams[index];
+            });
+
+            await ComprehensiveActivityLogService.logActivity({
+              userId: id,
+              userType: 'client',
+              action: 'client_profile_update',
+              tableName: 'client_profiles',
+              recordId: id,
+              newValues: {
+                update_timestamp: new Date().toISOString(),
+                updated_fields: updateData
+              }
+            });
+          } catch (auditError) {
+            console.error('Failed to log client profile update audit', {
+              clientId: id,
+              error: auditError.message
+            });
+          }
         }
       }
 

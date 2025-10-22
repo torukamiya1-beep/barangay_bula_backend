@@ -71,6 +71,7 @@ const activityLogRoutes = require('./src/routes/activityLogRoutes');
 const enhancedActivityLogRoutes = require('./src/routes/enhancedActivityLogRoutes');
 const receiptRoutes = require('./src/routes/receiptRoutes');
 const diagnosticRoutes = require('./src/routes/diagnosticRoutes');
+const documentFeeRoutes = require('./src/routes/documentFeeRoutes');
 
 const app = express();
 const PORT = process.env.PORT || 7000;
@@ -235,6 +236,7 @@ app.use('/api/authorization-documents', authorizationDocumentRoutes);
 app.use('/api/authorized-pickup', authorizedPickupRoutes);
 app.use('/api/client/receipts', receiptRoutes);
 app.use('/api/diagnostic', diagnosticRoutes);
+app.use('/api/document-fees', documentFeeRoutes);
 
 // Handle deprecated payment intent URLs
 app.get('/payment/intent', (req, res) => {

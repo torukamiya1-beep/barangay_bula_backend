@@ -152,6 +152,7 @@ class DocumentRequest {
 
         const beneficiaryData = {
           request_id: requestId,
+          account_id: client_id,  // Add account_id from the request
           ...beneficiary
         };
 

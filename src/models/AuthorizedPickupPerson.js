@@ -198,7 +198,29 @@ class AuthorizedPickupPerson {
       WHERE id = ?
     `;
 
-    await executeQuery(query, [isVerified, adminId, notes, this.id]);
+    // Ensure notes is null instead of undefined for SQL
+    await executeQuery(query, [isVerified, adminId, notes || null, this.id]);
+
+    // Refresh the instance
+    const updated = await AuthorizedPickupPerson.findById(this.id);
+    Object.assign(this, updated);
+
+    return this;
+  }
+
+  // Update verification status (matches pattern of other document types)
+  async updateVerificationStatus(status, adminId, notes = null) {
+    const isVerified = status === 'verified' ? 1 : 0;
+    
+    const query = `
+      UPDATE authorized_pickup_persons 
+      SET is_verified = ?, verified_by = ?, verified_at = CURRENT_TIMESTAMP, 
+          verification_notes = ?, updated_at = CURRENT_TIMESTAMP
+      WHERE id = ?
+    `;
+
+    // Ensure notes is null instead of undefined for SQL
+    await executeQuery(query, [isVerified, adminId, notes || null, this.id]);
 
     // Refresh the instance
     const updated = await AuthorizedPickupPerson.findById(this.id);
@@ -234,6 +256,31 @@ class AuthorizedPickupPerson {
     
     const results = await executeQuery(query, [limit, offset]);
     return results.map(row => new AuthorizedPickupPerson(row));
+  }
+
+  // Get rejected pickup persons by client ID
+  static async getRejectedByClientId(clientId) {
+    const query = `
+      SELECT app.*, 
+             dr.request_number,
+             dr.id as request_id,
+             dt.type_name as document_type
+      FROM authorized_pickup_persons app
+      JOIN document_requests dr ON app.request_id = dr.id
+      JOIN document_types dt ON dr.document_type_id = dt.id
+      WHERE dr.client_id = ? 
+        AND app.is_verified = FALSE 
+        AND app.verified_at IS NOT NULL
+      ORDER BY app.verified_at DESC
+    `;
+    
+    const results = await executeQuery(query, [clientId]);
+    
+    if (!results) {
+      return [];
+    }
+    
+    return Array.isArray(results) ? results.map(row => ({ ...row })) : [];
   }
 
   // Validate pickup person data

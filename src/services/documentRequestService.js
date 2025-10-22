@@ -98,23 +98,46 @@ class DocumentRequestService {
     const sanitizedData = this.sanitizeRequestData(requestData);
     console.log('Service: Sanitized request data:', sanitizedData);
 
-    // Check for recent duplicate submissions (within last 30 seconds)
+    // Simple duplicate check: prevent rapid-fire submissions (within last 3 seconds)
+    // This only prevents accidental double-clicks, not legitimate multiple requests
+    // Beneficiary-specific frequency limits are handled by the frequency validation middleware
     const duplicateCheckQuery = `
-      SELECT id, request_number, created_at
-      FROM document_requests
-      WHERE client_id = ?
-        AND document_type_id = ?
-        AND created_at > DATE_SUB(NOW(), INTERVAL 30 SECOND)
-      ORDER BY created_at DESC
+      SELECT dr.id, dr.request_number, dr.created_at, rs.status_name
+      FROM document_requests dr
+      JOIN request_status rs ON dr.status_id = rs.id
+      WHERE dr.client_id = ?
+        AND dr.document_type_id = ?
+        AND dr.created_at > DATE_SUB(NOW(), INTERVAL 3 SECOND)
+        AND rs.status_name NOT IN ('cancelled', 'rejected')
+      ORDER BY dr.created_at DESC
       LIMIT 1
     `;
 
     try {
+      console.log('🔍 Checking for duplicate submissions...');
+      console.log('Client ID:', clientId);
+      console.log('Document Type ID:', sanitizedData.document_type_id);
+      
       const recentRequests = await executeQuery(duplicateCheckQuery, [clientId, sanitizedData.document_type_id]);
+      
+      console.log('Recent requests found:', recentRequests.length);
+      if (recentRequests.length > 0) {
+        console.log('Recent request details:', recentRequests[0]);
+      }
+      
       if (recentRequests.length > 0) {
         const recentRequest = recentRequests[0];
-        console.log('⚠️ Potential duplicate submission detected:', recentRequest);
-        throw new Error(`Duplicate submission detected. Please wait before submitting another request. Recent request: ${recentRequest.request_number}`);
+        const timeDiff = new Date() - new Date(recentRequest.created_at);
+        console.log(`⚠️ Potential duplicate submission detected: ${recentRequest.request_number} (${timeDiff}ms ago, status: ${recentRequest.status_name})`);
+        
+        // Only block if it's within 3 seconds (3000ms)
+        if (timeDiff < 3000) {
+          throw new Error(`Duplicate submission detected. Please wait a moment before submitting another request.`);
+        } else {
+          console.log('✅ Time difference is acceptable, allowing submission');
+        }
+      } else {
+        console.log('✅ No recent duplicate found, proceeding with submission');
       }
     } catch (error) {
       if (error.message.includes('Duplicate submission detected')) {
@@ -257,6 +280,7 @@ class DocumentRequestService {
           console.log('Service: Creating beneficiary record');
           await DocumentRequestService.createBeneficiaryInTransaction(connection, {
             request_id: docRequest.id,
+            account_id: clientId,  // Add account_id to prevent NULL values
             ...beneficiary
           });
         }
@@ -712,7 +736,7 @@ class DocumentRequestService {
     console.log('Service: createBeneficiaryInTransaction called with:', beneficiaryData);
 
     const {
-      request_id, first_name, middle_name, last_name, suffix,
+      request_id, account_id, first_name, middle_name, last_name, suffix,
       birth_date, gender, civil_status_id, nationality, email, phone_number,
       house_number, street, subdivision, barangay, city_municipality, province,
       region, region_code, province_code, city_code, barangay_code,
@@ -721,16 +745,16 @@ class DocumentRequestService {
 
     const query = `
       INSERT INTO document_beneficiaries (
-        request_id, first_name, middle_name, last_name, suffix,
+        request_id, account_id, first_name, middle_name, last_name, suffix,
         birth_date, gender, civil_status_id, nationality, email, phone_number,
         house_number, street, subdivision, barangay, city_municipality, province,
         region, region_code, province_code, city_code, barangay_code,
         postal_code, years_of_residency, months_of_residency, relationship_to_requestor
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `;
 
     const params = [
-      request_id, first_name, middle_name || null, last_name, suffix || null,
+      request_id, account_id || null, first_name, middle_name || null, last_name, suffix || null,
       birth_date, gender, civil_status_id, nationality, email || null, phone_number || null,
       house_number || null, street || null, subdivision || null, barangay, city_municipality, province,
       region || null, region_code || null, province_code || null, city_code || null, barangay_code || null,

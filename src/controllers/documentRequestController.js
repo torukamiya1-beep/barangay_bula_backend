@@ -415,6 +415,7 @@ class DocumentRequestController {
 
             const documentData = {
               request_id: requestId,
+              account_id: clientId,  // Add account_id to prevent NULL values
               document_name: fileInfo.originalName,
               document_type: fieldName,
               file_path: fileInfo.path,
@@ -919,7 +920,12 @@ class DocumentRequestController {
 
       switch (type) {
         case 'beneficiary':
+          // Try new location first (uploads/verification/beneficiaries)
           filePath = path.join(baseDir, 'beneficiaries', sanitizedFilename);
+          // If not found, try old location (uploads/beneficiary_verifications)
+          if (!fs.existsSync(filePath)) {
+            filePath = path.join(baseDir, '..', 'beneficiary_verifications', sanitizedFilename);
+          }
           break;
         case 'pickup-id':
           filePath = path.join(baseDir, 'pickup_ids', sanitizedFilename);

@@ -114,4 +114,41 @@ router.get('/documents/:documentId/file',
   asyncHandler(residencyController.getDocumentFile)
 );
 
+/**
+ * @route   PATCH /api/residency/documents/:documentId/status
+ * @desc    Update individual document verification status
+ * @access  Private (Admin only)
+ * @params  documentId
+ * @body    { verification_status: 'approved' | 'rejected' }
+ */
+router.patch('/documents/:documentId/status',
+  protect,
+  authorize('admin', 'employee'),
+  asyncHandler(residencyController.updateDocumentStatus)
+);
+
+/**
+ * @route   GET /api/residency/documents/rejected/list
+ * @desc    Get rejected documents for current client
+ * @access  Private (Client only)
+ */
+router.get('/documents/rejected/list',
+  protect,
+  authorize('client'),
+  asyncHandler(residencyController.getRejectedDocuments)
+);
+
+/**
+ * @route   POST /api/residency/documents/:documentId/reupload
+ * @desc    Reupload a rejected document
+ * @access  Private (Client only)
+ * @params  documentId
+ * @files   Single file
+ */
+router.post('/documents/:documentId/reupload',
+  authenticateClient,
+  uploadResidencyDocuments,
+  asyncHandler(residencyController.reuploadDocument)
+);
+
 module.exports = router;

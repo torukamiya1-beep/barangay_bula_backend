@@ -197,19 +197,33 @@ class ResidencyService {
 
       // Send notification to client
       try {
-        await notificationService.createNotification({
-          recipient_id: accountId,
-          recipient_type: 'client',
-          type: 'residency_approved',
-          title: 'Residency Verification Approved',
-          message: 'Your residency verification has been approved. You can now request documents.',
-          data: {
-            account_id: accountId,
-            approved_by: adminId,
-            approved_at: new Date().toISOString()
-          },
-          priority: 'high'
-        });
+        // Check for duplicate notification in last 10 seconds
+        const checkDuplicateQuery = `
+          SELECT id FROM notifications 
+          WHERE recipient_id = ? 
+            AND type = 'residency_approved'
+            AND created_at > DATE_SUB(NOW(), INTERVAL 10 SECOND)
+          LIMIT 1
+        `;
+        const duplicateCheck = await executeQuery(checkDuplicateQuery, [accountId]);
+
+        if (duplicateCheck.length === 0) {
+          await notificationService.createNotification({
+            recipient_id: accountId,
+            recipient_type: 'client',
+            type: 'residency_approved',
+            title: 'Residency Verification Approved',
+            message: 'Your residency verification has been approved. You can now request documents.',
+            data: {
+              account_id: accountId,
+              approved_by: adminId,
+              approved_at: new Date().toISOString()
+            },
+            priority: 'high'
+          });
+        } else {
+          logger.info('Duplicate residency approval notification prevented', { accountId });
+        }
 
         // Send real-time notification
         notificationService.sendToUser(accountId, {
@@ -361,20 +375,38 @@ class ResidencyService {
 
       // Send notification to client
       try {
-        await notificationService.createNotification({
-          recipient_id: accountId,
-          recipient_type: 'client',
-          type: 'residency_rejected',
-          title: 'Residency Verification Rejected',
-          message: `Your residency verification was rejected. Reason: ${rejectionReason}`,
-          data: {
-            account_id: accountId,
-            rejected_by: adminId,
-            rejection_reason: rejectionReason,
-            rejected_at: new Date().toISOString()
-          },
-          priority: 'high'
-        });
+        // Check for duplicate notification in last 10 seconds
+        const checkDuplicateQuery = `
+          SELECT id FROM notifications 
+          WHERE recipient_id = ? 
+            AND type = 'residency_rejected'
+            AND message = ?
+            AND created_at > DATE_SUB(NOW(), INTERVAL 10 SECOND)
+          LIMIT 1
+        `;
+        const duplicateCheck = await executeQuery(checkDuplicateQuery, [
+          accountId,
+          `Your residency verification was rejected. Reason: ${rejectionReason}`
+        ]);
+
+        if (duplicateCheck.length === 0) {
+          await notificationService.createNotification({
+            recipient_id: accountId,
+            recipient_type: 'client',
+            type: 'residency_rejected',
+            title: 'Residency Verification Rejected',
+            message: `Your residency verification was rejected. Reason: ${rejectionReason}`,
+            data: {
+              account_id: accountId,
+              rejected_by: adminId,
+              rejection_reason: rejectionReason,
+              rejected_at: new Date().toISOString()
+            },
+            priority: 'high'
+          });
+        } else {
+          logger.info('Duplicate residency rejection notification prevented', { accountId });
+        }
 
         // Send real-time notification
         notificationService.sendToUser(accountId, {
@@ -710,6 +742,456 @@ class ResidencyService {
       });
       throw error;
     }
+  }
+
+  // Update individual document verification status
+  static async updateDocumentVerificationStatus(documentId, status, adminId) {
+    try {
+      const document = await ResidencyDocument.findById(documentId);
+      if (!document) {
+        throw new Error('Document not found');
+      }
+
+      const accountId = document.account_id;
+
+      // Update document status
+      await document.updateVerificationStatus(status, adminId, null);
+
+      logger.info('Document verification status updated', {
+        documentId,
+        accountId,
+        status,
+        adminId
+      });
+
+      // Send notifications for both approval and rejection
+      if (status === 'approved' || status === 'rejected') {
+        logger.info(`🔔 Preparing to send ${status} notifications`, {
+          documentId,
+          accountId,
+          status
+        });
+        
+        try {
+          // Get client information
+          const clientQuery = `
+            SELECT cp.email, cp.first_name, cp.last_name, cp.phone_number
+            FROM client_accounts ca
+            LEFT JOIN client_profiles cp ON ca.id = cp.account_id
+            WHERE ca.id = ?
+          `;
+          const clientResult = await executeQuery(clientQuery, [accountId]);
+          
+          logger.info('Client information retrieved', {
+            found: clientResult.length > 0,
+            hasEmail: clientResult[0]?.email ? 'yes' : 'no',
+            hasPhone: clientResult[0]?.phone_number ? 'yes' : 'no'
+          });
+
+          if (clientResult.length > 0) {
+            const client = clientResult[0];
+            const clientName = `${client.first_name} ${client.last_name}`;
+            const documentTypeName = this.formatDocumentType(document.document_type);
+
+            if (status === 'approved') {
+              logger.info('📧 Sending approval notifications', {
+                documentId,
+                accountId,
+                documentType: document.document_type
+              });
+              
+              // Send in-app notification for approval
+              logger.info('Creating in-app notification for approval');
+              
+              // Check for duplicate notification in last 10 seconds
+              const checkDuplicateQuery = `
+                SELECT id FROM notifications 
+                WHERE recipient_id = ? 
+                  AND type = 'document_approved'
+                  AND message = ?
+                  AND created_at > DATE_SUB(NOW(), INTERVAL 10 SECOND)
+                LIMIT 1
+              `;
+              const duplicateCheck = await executeQuery(checkDuplicateQuery, [
+                accountId,
+                `Your ${documentTypeName} has been approved.`
+              ]);
+
+              if (duplicateCheck.length === 0) {
+                await notificationService.createNotification({
+                  recipient_id: accountId,
+                  recipient_type: 'client',
+                  type: 'document_approved',
+                  title: 'Document Approved',
+                  message: `Your ${documentTypeName} has been approved.`,
+                  data: {
+                    document_id: documentId,
+                    document_type: document.document_type,
+                    approved_by: adminId,
+                    approved_at: new Date().toISOString()
+                  },
+                  priority: 'medium'
+                });
+                logger.info('✅ In-app notification created for approval');
+              } else {
+                logger.info('Duplicate notification prevented (approved)', { documentId, accountId });
+              }
+
+              // Send real-time notification
+              notificationService.sendToUser(accountId, {
+                type: 'document_approved',
+                title: 'Document Approved',
+                message: `Your ${documentTypeName} has been approved.`,
+                data: {
+                  document_id: documentId,
+                  document_type: document.document_type
+                }
+              });
+
+              // Send SMS notification for approval
+              if (client.phone_number) {
+                try {
+                  await smsService.sendSMS({
+                    phoneNumber: client.phone_number,
+                    message: `Hello ${clientName}, your ${documentTypeName} has been approved! Thank you for your submission.`
+                  });
+                  logger.info('Document approval SMS sent', {
+                    documentId,
+                    accountId,
+                    phoneNumber: client.phone_number
+                  });
+                } catch (smsError) {
+                  logger.error('Failed to send document approval SMS', {
+                    documentId,
+                    accountId,
+                    error: smsError.message
+                  });
+                }
+              }
+
+              // Send email notification for approval
+              if (client.email) {
+                try {
+                  await emailService.sendEmail(
+                    client.email,
+                    'Document Approved',
+                    `
+                      <h2>Document Approved</h2>
+                      <p>Dear ${clientName},</p>
+                      <p>Great news! Your ${documentTypeName} has been approved.</p>
+                      <p>You can now proceed with your document requests.</p>
+                      <p>Thank you,<br>Barangay Bula Document Hub</p>
+                    `
+                  );
+                  logger.info('Document approval email sent', {
+                    documentId,
+                    accountId,
+                    email: client.email
+                  });
+                } catch (emailError) {
+                  logger.error('Failed to send document approval email', {
+                    documentId,
+                    accountId,
+                    error: emailError.message
+                  });
+                }
+              }
+            } else if (status === 'rejected') {
+              // Check for duplicate notification in last 10 seconds
+              const checkDuplicateQuery = `
+                SELECT id FROM notifications 
+                WHERE recipient_id = ? 
+                  AND type = 'document_rejected'
+                  AND message = ?
+                  AND created_at > DATE_SUB(NOW(), INTERVAL 10 SECOND)
+                LIMIT 1
+              `;
+              const duplicateCheck = await executeQuery(checkDuplicateQuery, [
+                accountId,
+                `Your ${documentTypeName} was rejected. Please reupload in your account.`
+              ]);
+
+              if (duplicateCheck.length === 0) {
+                // Send in-app notification for rejection (NO rejection reason per requirements)
+                await notificationService.createNotification({
+                  recipient_id: accountId,
+                  recipient_type: 'client',
+                  type: 'document_rejected',
+                  title: 'Document Rejected',
+                  message: `Your ${documentTypeName} was rejected. Please reupload in your account.`,
+                  data: {
+                    document_id: documentId,
+                    document_type: document.document_type,
+                    rejected_by: adminId,
+                    rejected_at: new Date().toISOString()
+                  },
+                  priority: 'high'
+                });
+              } else {
+                logger.info('Duplicate notification prevented (rejected)', { documentId, accountId });
+              }
+
+              // Send real-time notification
+              notificationService.sendToUser(accountId, {
+                type: 'document_rejected',
+                title: 'Document Rejected',
+                message: `Your ${documentTypeName} was rejected. Please reupload in your account.`,
+                data: {
+                  document_id: documentId,
+                  document_type: document.document_type
+                }
+              });
+
+              // Send SMS notification for rejection (NO rejection reason per requirements)
+              if (client.phone_number) {
+                try {
+                  await smsService.sendSMS({
+                    phoneNumber: client.phone_number,
+                    message: `Hello ${clientName}, your ${documentTypeName} was rejected. Please reupload in your account.`
+                  });
+                  logger.info('Document rejection SMS sent', {
+                    documentId,
+                    accountId,
+                    phoneNumber: client.phone_number
+                  });
+                } catch (smsError) {
+                  logger.error('Failed to send document rejection SMS', {
+                    documentId,
+                    accountId,
+                    error: smsError.message
+                  });
+                }
+              }
+
+              // Send email notification for rejection (NO rejection reason per requirements)
+              if (client.email) {
+                try {
+                  await emailService.sendEmail(
+                    client.email,
+                    'Document Rejected - Action Required',
+                    `
+                      <h2>Document Rejected</h2>
+                      <p>Dear ${clientName},</p>
+                      <p>Your ${documentTypeName} was rejected.</p>
+                      <p>Please log in to your account and reupload the document.</p>
+                      <p><a href="${process.env.FRONTEND_URL || 'http://localhost:8081'}/client/rejected-documents">Click here to reupload</a></p>
+                      <p>Thank you,<br>Barangay Bula Document Hub</p>
+                    `
+                  );
+                  logger.info('Document rejection email sent', {
+                    documentId,
+                    accountId,
+                    email: client.email
+                  });
+                } catch (emailError) {
+                  logger.error('Failed to send document rejection email', {
+                    documentId,
+                    accountId,
+                    error: emailError.message
+                  });
+                }
+              }
+            }
+          }
+        } catch (notificationError) {
+          logger.error('Failed to send document status notifications', {
+            documentId,
+            accountId,
+            status,
+            error: notificationError.message
+          });
+        }
+      }
+
+      return {
+        success: true,
+        data: {
+          documentId,
+          status,
+          updatedAt: new Date()
+        },
+        message: `Document ${status} successfully`
+      };
+    } catch (error) {
+      logger.error('Failed to update document verification status', {
+        documentId,
+        status,
+        adminId,
+        error: error.message
+      });
+      throw error;
+    }
+  }
+
+  // Get rejected documents for a client
+  static async getRejectedDocumentsForClient(clientId) {
+    try {
+      const documents = await ResidencyDocument.findByAccountId(clientId);
+      const rejectedDocuments = documents.filter(doc => doc.verification_status === 'rejected');
+
+      return {
+        success: true,
+        data: rejectedDocuments.map(doc => doc.toJSON()),
+        message: 'Rejected documents retrieved successfully'
+      };
+    } catch (error) {
+      logger.error('Failed to get rejected documents', {
+        clientId,
+        error: error.message
+      });
+      throw error;
+    }
+  }
+
+  // Reupload a rejected document
+  static async reuploadRejectedDocument(documentId, clientId, file) {
+    try {
+      const document = await ResidencyDocument.findById(documentId);
+      if (!document) {
+        throw new Error('Document not found');
+      }
+
+      // Verify ownership
+      if (document.account_id !== clientId) {
+        throw new Error('Unauthorized to reupload this document');
+      }
+
+      // Verify document is rejected
+      if (document.verification_status !== 'rejected') {
+        throw new Error('Only rejected documents can be reuploaded');
+      }
+
+      // Delete old file from filesystem
+      if (document.file_path) {
+        const oldFilePath = path.join(process.cwd(), 'uploads', 'residency', path.basename(document.file_path));
+        if (fs.existsSync(oldFilePath)) {
+          try {
+            fs.unlinkSync(oldFilePath);
+            logger.info('Old file deleted', { filePath: oldFilePath });
+          } catch (fileError) {
+            logger.warn('Failed to delete old file', {
+              filePath: oldFilePath,
+              error: fileError.message
+            });
+          }
+        }
+      }
+
+      // Update document with new file information and reset status to pending
+      const updateQuery = `
+        UPDATE residency_documents 
+        SET document_name = ?, 
+            file_path = ?, 
+            file_size = ?, 
+            mime_type = ?,
+            verification_status = 'pending',
+            verified_by = NULL,
+            verified_at = NULL,
+            rejection_reason = NULL,
+            updated_at = CURRENT_TIMESTAMP
+        WHERE id = ?
+      `;
+
+      await executeQuery(updateQuery, [
+        file.originalname,
+        path.basename(file.path),
+        file.size,
+        file.mimetype,
+        documentId
+      ]);
+
+      logger.info('Document reuploaded successfully', {
+        documentId,
+        clientId,
+        fileName: file.originalname
+      });
+
+      // Get updated document
+      const updatedDocument = await ResidencyDocument.findById(documentId);
+
+      // Get client name for notification
+      const clientQuery = `
+        SELECT CONCAT(cp.first_name, ' ', cp.last_name) as client_name
+        FROM client_accounts ca
+        JOIN client_profiles cp ON ca.id = cp.account_id
+        WHERE ca.id = ?
+      `;
+      const clientResult = await executeQuery(clientQuery, [clientId]);
+      const clientName = clientResult[0]?.client_name || 'A client';
+
+      // Send notification to all admins
+      try {
+        const adminQuery = `
+          SELECT id FROM admin_employee_accounts WHERE status = 'active'
+        `;
+        const admins = await executeQuery(adminQuery);
+        
+        for (const admin of admins) {
+          const notificationQuery = `
+            INSERT INTO notifications (
+              recipient_id, recipient_type, type, title, message, 
+              data, priority, created_at
+            ) VALUES (?, 'admin', 'document_reupload', ?, ?, NULL, 'high', NOW())
+          `;
+          
+          await executeQuery(notificationQuery, [
+            admin.id,
+            'Residency Document Reuploaded',
+            `${clientName} has reuploaded a residency verification document. Please review.`
+          ]);
+        }
+        
+        logger.info('Notifications sent to admins for residency document reupload', {
+          documentId,
+          clientId,
+          adminCount: admins.length
+        });
+      } catch (notifError) {
+        logger.error('Failed to send notifications to admins', {
+          error: notifError.message,
+          documentId,
+          clientId
+        });
+        // Don't throw - notification failure shouldn't block the reupload
+      }
+
+      return {
+        success: true,
+        data: updatedDocument.toJSON(),
+        message: 'Document reuploaded successfully. It will be reviewed by admin.'
+      };
+    } catch (error) {
+      // Clean up uploaded file if there was an error
+      if (file && file.path && fs.existsSync(file.path)) {
+        try {
+          fs.unlinkSync(file.path);
+        } catch (cleanupError) {
+          logger.error('Failed to cleanup file after error', {
+            filePath: file.path,
+            error: cleanupError.message
+          });
+        }
+      }
+
+      logger.error('Failed to reupload document', {
+        documentId,
+        clientId,
+        error: error.message
+      });
+      throw error;
+    }
+  }
+
+  // Helper method to format document type
+  static formatDocumentType(type) {
+    const typeLabels = {
+      'utility_bill': 'Utility Bill',
+      'barangay_certificate': 'Barangay Certificate',
+      'valid_id': 'Valid ID',
+      'lease_contract': 'Lease Contract',
+      'other': 'Other Document'
+    };
+    return typeLabels[type] || type;
   }
 }
 

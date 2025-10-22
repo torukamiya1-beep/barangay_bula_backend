@@ -19,6 +19,9 @@ class ResidencyController {
     this.rejectVerification = this.rejectVerification.bind(this);
     this.deleteDocument = this.deleteDocument.bind(this);
     this.getDocumentFile = this.getDocumentFile.bind(this);
+    this.updateDocumentStatus = this.updateDocumentStatus.bind(this);
+    this.getRejectedDocuments = this.getRejectedDocuments.bind(this);
+    this.reuploadDocument = this.reuploadDocument.bind(this);
   }
 
   // Helper method to parse composite ID and extract actual client account ID
@@ -488,6 +491,117 @@ class ResidencyController {
     } catch (error) {
       console.error('Error in getVerificationStatus:', error);
       return ApiResponse.error(res, 'Internal server error', 500);
+    }
+  }
+
+  // Update individual document verification status (Admin only)
+  async updateDocumentStatus(req, res) {
+    try {
+      const { documentId } = req.params;
+      const { verification_status } = req.body;
+      const adminId = req.user.id;
+
+      if (!documentId || isNaN(parseInt(documentId))) {
+        return ApiResponse.error(res, 'Valid document ID is required', 400);
+      }
+
+      if (!verification_status || !['approved', 'rejected'].includes(verification_status)) {
+        return ApiResponse.error(res, 'Valid verification status is required (approved or rejected)', 400);
+      }
+
+      const result = await ResidencyService.updateDocumentVerificationStatus(
+        parseInt(documentId),
+        verification_status,
+        adminId
+      );
+
+      this.logger.info('Document verification status updated', {
+        documentId,
+        status: verification_status,
+        adminId,
+        ip: req.ip
+      });
+
+      return ApiResponse.success(res, result.data, result.message);
+    } catch (error) {
+      this.logger.error('Failed to update document verification status', {
+        documentId: req.params.documentId,
+        adminId: req.user?.id,
+        error: error.message
+      });
+
+      return ApiResponse.error(res, error.message, 500);
+    }
+  }
+
+  // Get rejected documents for current client
+  async getRejectedDocuments(req, res) {
+    try {
+      const clientId = req.user.id;
+
+      const result = await ResidencyService.getRejectedDocumentsForClient(clientId);
+
+      this.logger.info('Rejected documents retrieved', {
+        clientId,
+        documentsCount: result.data.length
+      });
+
+      return ApiResponse.success(res, result.data, result.message);
+    } catch (error) {
+      this.logger.error('Failed to get rejected documents', {
+        clientId: req.user?.id,
+        error: error.message
+      });
+
+      return ApiResponse.error(res, error.message, 500);
+    }
+  }
+
+  // Reupload a rejected document
+  async reuploadDocument(req, res) {
+    try {
+      const { documentId } = req.params;
+      const clientId = req.user.id;
+      const files = req.files;
+
+      if (!documentId || isNaN(parseInt(documentId))) {
+        return ApiResponse.error(res, 'Valid document ID is required', 400);
+      }
+
+      if (!files || Object.keys(files).length === 0) {
+        return ApiResponse.error(res, 'No file uploaded', 400);
+      }
+
+      // Get the first file from any field
+      const fileArray = Object.values(files)[0];
+      if (!fileArray || fileArray.length === 0) {
+        return ApiResponse.error(res, 'No file uploaded', 400);
+      }
+
+      const file = fileArray[0];
+
+      const result = await ResidencyService.reuploadRejectedDocument(
+        parseInt(documentId),
+        clientId,
+        file
+      );
+
+      this.logger.info('Document reuploaded successfully', {
+        documentId,
+        clientId,
+        fileName: file.originalname,
+        ip: req.ip
+      });
+
+      return ApiResponse.success(res, result.data, result.message);
+    } catch (error) {
+      this.logger.error('Failed to reupload document', {
+        documentId: req.params.documentId,
+        clientId: req.user?.id,
+        error: error.message
+      });
+
+      return ApiResponse.error(res, error.message, 500);
     }
   }
 }

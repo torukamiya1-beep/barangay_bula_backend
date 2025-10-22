@@ -6,6 +6,7 @@ class SupportingDocument {
   constructor(data) {
     this.id = data.id;
     this.request_id = data.request_id;
+    this.account_id = data.account_id;
     this.document_name = data.document_name;
     this.document_type = data.document_type;
     this.file_path = data.file_path;
@@ -13,6 +14,7 @@ class SupportingDocument {
     this.mime_type = data.mime_type;
     this.uploaded_by = data.uploaded_by;
     this.is_verified = data.is_verified;
+    this.verification_status = data.verification_status;
     this.verified_by = data.verified_by;
     this.verified_at = data.verified_at;
     this.created_at = data.created_at;
@@ -22,6 +24,7 @@ class SupportingDocument {
   static async create(documentData) {
     const {
       request_id,
+      account_id,
       document_name,
       document_type,
       file_path,
@@ -32,13 +35,14 @@ class SupportingDocument {
 
     const query = `
       INSERT INTO supporting_documents (
-        request_id, document_name, document_type, file_path, 
+        request_id, account_id, document_name, document_type, file_path, 
         file_size, mime_type, uploaded_by
-      ) VALUES (?, ?, ?, ?, ?, ?, ?)
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
     `;
 
     const params = [
       request_id,
+      account_id,
       document_name,
       document_type,
       file_path,
@@ -108,6 +112,24 @@ class SupportingDocument {
     this.is_verified = isVerified;
     this.verified_by = verifiedBy;
     this.verified_at = verifiedAt;
+    
+    return this;
+  }
+
+  // Update verification status (approve/reject workflow)
+  async updateVerificationStatus(status, verifiedBy, notes = null) {
+    const query = `
+      UPDATE supporting_documents 
+      SET verification_status = ?, verified_by = ?, verified_at = NOW()
+      WHERE id = ?
+    `;
+    
+    const params = [status, verifiedBy, this.id];
+    await executeQuery(query, params);
+    
+    this.verification_status = status;
+    this.verified_by = verifiedBy;
+    this.verified_at = new Date();
     
     return this;
   }

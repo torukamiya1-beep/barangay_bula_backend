@@ -4,6 +4,7 @@ class DocumentBeneficiary {
   constructor(data) {
     this.id = data.id;
     this.request_id = data.request_id;
+    this.account_id = data.account_id;
     this.first_name = data.first_name;
     this.middle_name = data.middle_name;
     this.last_name = data.last_name;
@@ -41,6 +42,7 @@ class DocumentBeneficiary {
     return {
       id: this.id,
       request_id: this.request_id,
+      account_id: this.account_id,
       first_name: this.first_name,
       middle_name: this.middle_name,
       last_name: this.last_name,
@@ -102,6 +104,7 @@ class DocumentBeneficiary {
   static async create(beneficiaryData) {
     const {
       request_id,
+      account_id,
       first_name,
       middle_name,
       last_name,
@@ -131,17 +134,17 @@ class DocumentBeneficiary {
 
     const query = `
       INSERT INTO document_beneficiaries (
-        request_id, first_name, middle_name, last_name, suffix,
+        request_id, account_id, first_name, middle_name, last_name, suffix,
         birth_date, gender, civil_status_id, nationality,
         phone_number, email, house_number, street, subdivision,
-        barangay, city_municipality, province,
-        region, region_code, province_code, city_code, barangay_code,
-        postal_code, years_of_residency, months_of_residency, relationship_to_requestor
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        barangay, city_municipality, province, postal_code,
+        years_of_residency, months_of_residency, relationship_to_requestor
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `;
 
     const values = [
       request_id,
+      account_id || null,
       first_name,
       middle_name || null,
       last_name,
@@ -158,11 +161,6 @@ class DocumentBeneficiary {
       barangay,
       city_municipality,
       province,
-      region || null,
-      region_code || null,
-      province_code || null,
-      city_code || null,
-      barangay_code || null,
       postal_code || null,
       years_of_residency || null,
       months_of_residency || null,
@@ -247,9 +245,28 @@ class DocumentBeneficiary {
     await executeQuery(query, updateValues);
 
     // Refresh the instance with updated data
-    const updated = await DocumentBeneficiary.findById(this.id);
-    Object.assign(this, updated);
+    Object.assign(this, updateData);
+    this.updated_at = new Date();
 
+    return this;
+  }
+
+  // Update verification status (approve/reject workflow)
+  async updateVerificationStatus(status, verifiedBy, notes = null) {
+    const query = `
+      UPDATE document_beneficiaries 
+      SET verification_status = ?, verified_by = ?, verified_at = NOW(), verification_notes = ?
+      WHERE id = ?
+    `;
+    
+    const params = [status, verifiedBy, notes, this.id];
+    await executeQuery(query, params);
+    
+    this.verification_status = status;
+    this.verified_by = verifiedBy;
+    this.verified_at = new Date();
+    this.verification_notes = notes;
+    
     return this;
   }
 

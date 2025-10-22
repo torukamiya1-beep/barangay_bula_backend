@@ -174,7 +174,11 @@ class VerificationDocumentController {
       let filePath;
       switch (type) {
         case 'beneficiary':
-          filePath = path.join(VerificationDocumentService.UPLOAD_DIRS.beneficiary_verification, actualFilename);
+          // Try new directory first, then fall back to old directory
+          filePath = path.join(VerificationDocumentService.UPLOAD_DIRS.beneficiary_verifications, actualFilename);
+          if (!fs.existsSync(filePath)) {
+            filePath = path.join(VerificationDocumentService.UPLOAD_DIRS.beneficiary_verification, actualFilename);
+          }
           break;
         case 'pickup-id':
           filePath = path.join(VerificationDocumentService.UPLOAD_DIRS.pickup_id, actualFilename);

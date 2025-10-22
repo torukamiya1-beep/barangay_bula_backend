@@ -13,6 +13,7 @@ class VerificationDocumentService {
   // Upload directories
   static UPLOAD_DIRS = {
     beneficiary_verification: 'uploads/verification/beneficiaries',
+    beneficiary_verifications: 'uploads/beneficiary_verifications',
     pickup_id: 'uploads/verification/pickup_ids',
     pickup_authorization: 'uploads/verification/pickup_authorization'
   };
@@ -146,6 +147,39 @@ class VerificationDocumentService {
       await executeQuery(updateQuery, updateParams);
       console.log('✅ Database updated successfully');
 
+      // Get account_id from the pickup person's request
+      const accountQuery = `
+        SELECT dr.client_id 
+        FROM authorized_pickup_persons app
+        JOIN document_requests dr ON app.request_id = dr.id
+        WHERE app.id = ?
+      `;
+      const accountResult = await executeQuery(accountQuery, [pickupPersonId]);
+      const accountId = accountResult && accountResult[0] ? accountResult[0].client_id : null;
+
+      // Also create record in authorization_documents table for separate verification
+      const insertQuery = `
+        INSERT INTO authorization_documents 
+        (authorized_pickup_person_id, document_type, document_name, file_path, file_size, mime_type, account_id, verification_status)
+        VALUES (?, 'valid_id', ?, ?, ?, ?, ?, 'pending')
+        ON DUPLICATE KEY UPDATE
+        file_path = VALUES(file_path),
+        document_name = VALUES(document_name),
+        file_size = VALUES(file_size),
+        mime_type = VALUES(mime_type),
+        verification_status = 'pending'
+      `;
+
+      await executeQuery(insertQuery, [
+        pickupPersonId,
+        file.originalname,
+        filePath,
+        file.size,
+        file.mimetype,
+        accountId
+      ]);
+      console.log('✅ authorization_documents record created for Valid ID');
+
       logger.info('Pickup person ID image uploaded', {
         pickupPersonId,
         fileName,
@@ -211,11 +245,21 @@ class VerificationDocumentService {
       await executeQuery(updateQuery, updateParams);
       console.log('✅ Database updated successfully');
 
+      // Get account_id from the pickup person's request
+      const accountQuery = `
+        SELECT dr.client_id 
+        FROM authorized_pickup_persons app
+        JOIN document_requests dr ON app.request_id = dr.id
+        WHERE app.id = ?
+      `;
+      const accountResult = await executeQuery(accountQuery, [pickupPersonId]);
+      const accountId = accountResult && accountResult[0] ? accountResult[0].client_id : null;
+
       // Also create record in authorization_documents table
       const insertQuery = `
         INSERT INTO authorization_documents 
-        (authorized_pickup_person_id, document_type, document_name, file_path, file_size, mime_type)
-        VALUES (?, 'authorization_letter', ?, ?, ?, ?)
+        (authorized_pickup_person_id, document_type, document_name, file_path, file_size, mime_type, account_id)
+        VALUES (?, 'authorization_letter', ?, ?, ?, ?, ?)
       `;
 
       await executeQuery(insertQuery, [
@@ -223,7 +267,8 @@ class VerificationDocumentService {
         file.originalname,
         filePath,
         file.size,
-        file.mimetype
+        file.mimetype,
+        accountId
       ]);
 
       logger.info('Pickup authorization document uploaded', {

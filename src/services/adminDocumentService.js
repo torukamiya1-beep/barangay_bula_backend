@@ -569,6 +569,7 @@ class AdminDocumentService {
           mime_type,
           uploaded_by,
           is_verified,
+          verification_status,
           verified_by,
           verified_at,
           created_at

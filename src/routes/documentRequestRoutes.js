@@ -159,7 +159,7 @@ router.get('/:id/authorization-status',
 
 // GET /api/client/document-requests/:id/verification-image/:type/:filename - Serve verification images
 router.get('/:id/verification-image/:type/:filename',
-  protect,
+  authenticateClient,
   validateRequestId,
   documentRequestController.serveVerificationImage
 );

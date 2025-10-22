@@ -28,8 +28,8 @@ class SMSService {
 
   /**
    * Send SMS message
-   * @param {string|string[]} recipients - Phone number(s) to send SMS to
-   * @param {string} message - SMS message content
+   * @param {string|string[]|Object} recipients - Phone number(s) to send SMS to, or object with phoneNumber and message
+   * @param {string} message - SMS message content (optional if recipients is an object)
    * @returns {Promise<Object>} SMS sending result
    */
   async sendSMS(recipients, message) {
@@ -37,6 +37,12 @@ class SMSService {
       if (!this.enabled) {
         logger.info('SMS service disabled, skipping SMS send', { recipients, message });
         return { success: true, message: 'SMS service disabled' };
+      }
+
+      // Handle object parameter format: { phoneNumber, message }
+      if (typeof recipients === 'object' && !Array.isArray(recipients) && recipients.phoneNumber) {
+        message = recipients.message;
+        recipients = recipients.phoneNumber;
       }
 
       // Ensure recipients is an array

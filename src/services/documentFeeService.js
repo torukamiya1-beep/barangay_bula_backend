@@ -11,28 +11,73 @@ class DocumentFeeService {
    */
   async getAllDocumentFeesWithTypes() {
     try {
-      const query = `
-        SELECT 
-          dt.id as document_type_id,
-          dt.type_name,
-          dt.description,
-          dt.is_active as type_is_active,
-          df.id as fee_id,
-          df.fee_amount,
-          df.effective_date,
-          df.is_active as fee_is_active,
-          df.created_at as fee_created_at
-        FROM document_types dt
-        LEFT JOIN document_fees df ON dt.id = df.document_type_id AND df.is_active = 1
-        WHERE dt.is_active = 1
-        ORDER BY dt.id
-      `;
+      // First, check if document_fees table exists
+      const tableExists = await this.checkDocumentFeesTableExists();
       
-      const [rows] = await db.query(query);
-      return rows;
+      if (tableExists) {
+        // Use the new document_fees table
+        const query = `
+          SELECT 
+            dt.id as document_type_id,
+            dt.type_name,
+            dt.description,
+            dt.is_active as type_is_active,
+            df.id as fee_id,
+            df.fee_amount,
+            df.effective_date,
+            df.is_active as fee_is_active,
+            df.created_at as fee_created_at
+          FROM document_types dt
+          LEFT JOIN document_fees df ON dt.id = df.document_type_id AND df.is_active = 1
+          WHERE dt.is_active = 1
+          ORDER BY dt.id
+        `;
+        
+        const [rows] = await db.query(query);
+        return rows;
+      } else {
+        // Fallback to document_types.base_fee
+        console.log('⚠️  document_fees table not found, using document_types.base_fee as fallback');
+        const query = `
+          SELECT 
+            dt.id as document_type_id,
+            dt.type_name,
+            dt.description,
+            dt.is_active as type_is_active,
+            NULL as fee_id,
+            dt.base_fee as fee_amount,
+            dt.created_at as effective_date,
+            1 as fee_is_active,
+            dt.created_at as fee_created_at
+          FROM document_types dt
+          WHERE dt.is_active = 1
+          ORDER BY dt.id
+        `;
+        
+        const [rows] = await db.query(query);
+        return rows;
+      }
     } catch (error) {
       console.error('Error fetching document fees:', error);
       throw new Error('Failed to fetch document fees');
+    }
+  }
+
+  /**
+   * Check if document_fees table exists
+   */
+  async checkDocumentFeesTableExists() {
+    try {
+      const [tables] = await db.query(`
+        SELECT TABLE_NAME 
+        FROM information_schema.TABLES 
+        WHERE TABLE_SCHEMA = DATABASE() 
+        AND TABLE_NAME = 'document_fees'
+      `);
+      return tables.length > 0;
+    } catch (error) {
+      console.error('Error checking table existence:', error);
+      return false;
     }
   }
 
@@ -41,25 +86,47 @@ class DocumentFeeService {
    */
   async getCurrentFee(documentTypeId) {
     try {
-      const query = `
-        SELECT 
-          df.id,
-          df.document_type_id,
-          df.fee_amount,
-          df.effective_date,
-          df.is_active,
-          dt.type_name,
-          dt.description
-        FROM document_fees df
-        JOIN document_types dt ON df.document_type_id = dt.id
-        WHERE df.document_type_id = ? 
-          AND df.is_active = 1
-          AND dt.is_active = 1
-        LIMIT 1
-      `;
+      const tableExists = await this.checkDocumentFeesTableExists();
       
-      const [rows] = await db.query(query, [documentTypeId]);
-      return rows[0] || null;
+      if (tableExists) {
+        const query = `
+          SELECT 
+            df.id,
+            df.document_type_id,
+            df.fee_amount,
+            df.effective_date,
+            df.is_active,
+            dt.type_name,
+            dt.description
+          FROM document_fees df
+          JOIN document_types dt ON df.document_type_id = dt.id
+          WHERE df.document_type_id = ? 
+            AND df.is_active = 1
+            AND dt.is_active = 1
+          LIMIT 1
+        `;
+        
+        const [rows] = await db.query(query, [documentTypeId]);
+        return rows[0] || null;
+      } else {
+        // Fallback to document_types.base_fee
+        const query = `
+          SELECT 
+            NULL as id,
+            dt.id as document_type_id,
+            dt.base_fee as fee_amount,
+            dt.created_at as effective_date,
+            1 as is_active,
+            dt.type_name,
+            dt.description
+          FROM document_types dt
+          WHERE dt.id = ? AND dt.is_active = 1
+          LIMIT 1
+        `;
+        
+        const [rows] = await db.query(query, [documentTypeId]);
+        return rows[0] || null;
+      }
     } catch (error) {
       console.error('Error fetching current fee:', error);
       throw new Error('Failed to fetch current fee');
@@ -71,23 +138,44 @@ class DocumentFeeService {
    */
   async getFeeHistory(documentTypeId) {
     try {
-      const query = `
-        SELECT 
-          df.id,
-          df.document_type_id,
-          df.fee_amount,
-          df.effective_date,
-          df.is_active,
-          df.created_at,
-          dt.type_name
-        FROM document_fees df
-        JOIN document_types dt ON df.document_type_id = dt.id
-        WHERE df.document_type_id = ?
-        ORDER BY df.effective_date DESC, df.created_at DESC
-      `;
+      const tableExists = await this.checkDocumentFeesTableExists();
       
-      const [rows] = await db.query(query, [documentTypeId]);
-      return rows;
+      if (tableExists) {
+        const query = `
+          SELECT 
+            df.id,
+            df.document_type_id,
+            df.fee_amount,
+            df.effective_date,
+            df.is_active,
+            df.created_at,
+            dt.type_name
+          FROM document_fees df
+          JOIN document_types dt ON df.document_type_id = dt.id
+          WHERE df.document_type_id = ?
+          ORDER BY df.effective_date DESC, df.created_at DESC
+        `;
+        
+        const [rows] = await db.query(query, [documentTypeId]);
+        return rows;
+      } else {
+        // Fallback: return single entry from document_types
+        const query = `
+          SELECT 
+            NULL as id,
+            dt.id as document_type_id,
+            dt.base_fee as fee_amount,
+            dt.created_at as effective_date,
+            1 as is_active,
+            dt.created_at,
+            dt.type_name
+          FROM document_types dt
+          WHERE dt.id = ? AND dt.is_active = 1
+        `;
+        
+        const [rows] = await db.query(query, [documentTypeId]);
+        return rows;
+      }
     } catch (error) {
       console.error('Error fetching fee history:', error);
       throw new Error('Failed to fetch fee history');
@@ -187,19 +275,39 @@ class DocumentFeeService {
    */
   async getFeeStatistics() {
     try {
-      const query = `
-        SELECT 
-          COUNT(DISTINCT document_type_id) as total_document_types,
-          COUNT(*) as total_fee_changes,
-          SUM(CASE WHEN is_active = 1 THEN 1 ELSE 0 END) as active_fees,
-          MIN(fee_amount) as lowest_fee,
-          MAX(fee_amount) as highest_fee,
-          AVG(fee_amount) as average_fee
-        FROM document_fees
-      `;
+      const tableExists = await this.checkDocumentFeesTableExists();
       
-      const [rows] = await db.query(query);
-      return rows[0];
+      if (tableExists) {
+        const query = `
+          SELECT 
+            COUNT(DISTINCT document_type_id) as total_document_types,
+            COUNT(*) as total_fee_changes,
+            SUM(CASE WHEN is_active = 1 THEN 1 ELSE 0 END) as active_fees,
+            MIN(fee_amount) as lowest_fee,
+            MAX(fee_amount) as highest_fee,
+            AVG(fee_amount) as average_fee
+          FROM document_fees
+        `;
+        
+        const [rows] = await db.query(query);
+        return rows[0];
+      } else {
+        // Fallback: get stats from document_types
+        const query = `
+          SELECT 
+            COUNT(*) as total_document_types,
+            COUNT(*) as total_fee_changes,
+            COUNT(*) as active_fees,
+            MIN(base_fee) as lowest_fee,
+            MAX(base_fee) as highest_fee,
+            AVG(base_fee) as average_fee
+          FROM document_types
+          WHERE is_active = 1
+        `;
+        
+        const [rows] = await db.query(query);
+        return rows[0];
+      }
     } catch (error) {
       console.error('Error fetching fee statistics:', error);
       throw new Error('Failed to fetch fee statistics');

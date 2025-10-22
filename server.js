@@ -26,6 +26,12 @@ console.log('  DB_PASSWORD:', process.env.DB_PASSWORD ? '***SET***' : '***NOT SE
 console.log('  PAYMONGO_SECRET_KEY:', process.env.PAYMONGO_SECRET_KEY ? '***SET***' : '***NOT SET***');
 console.log('  PAYMONGO_PUBLIC_KEY:', process.env.PAYMONGO_PUBLIC_KEY ? '***SET***' : '***NOT SET***');
 console.log('  JWT_SECRET:', process.env.JWT_SECRET ? '***SET***' : '***NOT SET***');
+console.log('  EMAIL_HOST:', process.env.EMAIL_HOST || 'NOT SET (defaults to smtp.gmail.com)');
+console.log('  EMAIL_PORT:', process.env.EMAIL_PORT || 'NOT SET (defaults to 587)');
+console.log('  EMAIL_USER:', process.env.EMAIL_USER ? '***SET***' : '***NOT SET***');
+console.log('  EMAIL_PASS:', process.env.EMAIL_PASS ? '***SET***' : '***NOT SET***');
+console.log('  EMAIL_FROM_NAME:', process.env.EMAIL_FROM_NAME || 'NOT SET (defaults to Barangay Management System)');
+console.log('  EMAIL_FROM_ADDRESS:', process.env.EMAIL_FROM_ADDRESS || 'NOT SET (defaults to EMAIL_USER)');
 
 // Ensure upload directories exist on startup
 const { ensureUploadDirectories } = require('./scripts/ensure-upload-directories');
@@ -262,6 +268,20 @@ const startServer = async () => {
 
     // Initialize database tables and default data
     await DatabaseUtils.setupDatabase();
+
+    // Verify email service configuration
+    console.log('\n📧 Verifying Email Service...');
+    try {
+      const emailService = require('./src/services/emailService');
+      await emailService.verifyConnection();
+      console.log('✅ Email service configured and ready');
+    } catch (emailError) {
+      console.error('⚠️  Email service verification failed:', emailError.message);
+      console.error('⚠️  Email notifications will NOT work until this is fixed!');
+      console.error('⚠️  Please check your EMAIL_USER and EMAIL_PASS environment variables');
+      console.error('⚠️  For Gmail, you need to use an App Password, not your regular password');
+      console.error('⚠️  Guide: https://support.google.com/accounts/answer/185833');
+    }
 
     app.listen(PORT, () => {
       console.log(`🚀 Server is running on port ${PORT}`);

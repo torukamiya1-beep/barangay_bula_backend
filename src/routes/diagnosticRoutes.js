@@ -1,6 +1,8 @@
 const express = require('express');
 const { executeQuery } = require('../config/database');
 const { protect, authorize } = require('../middleware/auth');
+const smsService = require('../services/smsService');
+const emailService = require('../services/emailService');
 
 const router = express.Router();
 
@@ -157,6 +159,111 @@ router.get('/check-columns', protect, authorize('admin'), async (req, res) => {
     res.status(500).json({
       success: false,
       message: 'Column check failed',
+      error: error.message,
+      timestamp: new Date().toISOString()
+    });
+  }
+});
+
+/**
+ * @route   GET /api/diagnostic/sms-quota
+ * @desc    Check SMS service quota status
+ * @access  Private (Admin only)
+ */
+router.get('/sms-quota', protect, authorize('admin'), async (req, res) => {
+  try {
+    const quotaInfo = await smsService.checkQuota();
+    
+    res.json({
+      success: true,
+      message: 'SMS quota retrieved',
+      data: quotaInfo,
+      timestamp: new Date().toISOString()
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: 'Failed to check SMS quota',
+      error: error.message,
+      timestamp: new Date().toISOString()
+    });
+  }
+});
+
+/**
+ * @route   GET /api/diagnostic/email-status
+ * @desc    Check email service status
+ * @access  Private (Admin only)
+ */
+router.get('/email-status', protect, authorize('admin'), async (req, res) => {
+  try {
+    await emailService.verifyConnection();
+    
+    res.json({
+      success: true,
+      message: 'Email service is operational',
+      data: {
+        host: process.env.EMAIL_HOST || 'smtp.gmail.com',
+        port: process.env.EMAIL_PORT || 587,
+        user: process.env.EMAIL_USER ? '***' + process.env.EMAIL_USER.slice(-10) : 'Not configured',
+        configured: !!(process.env.EMAIL_USER && process.env.EMAIL_PASS)
+      },
+      timestamp: new Date().toISOString()
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: 'Email service check failed',
+      error: error.message,
+      timestamp: new Date().toISOString()
+    });
+  }
+});
+
+/**
+ * @route   GET /api/diagnostic/notifications
+ * @desc    Check both email and SMS notification services
+ * @access  Private (Admin only)
+ */
+router.get('/notifications', protect, authorize('admin'), async (req, res) => {
+  try {
+    // Check email
+    let emailStatus;
+    try {
+      await emailService.verifyConnection();
+      emailStatus = {
+        operational: true,
+        message: 'Email service is working'
+      };
+    } catch (emailError) {
+      emailStatus = {
+        operational: false,
+        error: emailError.message
+      };
+    }
+    
+    // Check SMS
+    const smsQuota = await smsService.checkQuota();
+    const smsStatus = {
+      enabled: smsService.enabled,
+      operational: smsQuota.success,
+      quota: smsQuota.quota || null,
+      error: smsQuota.error || null
+    };
+    
+    res.json({
+      success: true,
+      message: 'Notification services status',
+      data: {
+        email: emailStatus,
+        sms: smsStatus
+      },
+      timestamp: new Date().toISOString()
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: 'Failed to check notification services',
       error: error.message,
       timestamp: new Date().toISOString()
     });

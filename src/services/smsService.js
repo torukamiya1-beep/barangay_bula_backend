@@ -95,6 +95,26 @@ class SMSService {
       };
 
     } catch (error) {
+      // Check if it's a quota limit error (429 Too Many Requests)
+      if (error.response?.status === 429) {
+        const quotaData = error.response?.data;
+        logger.warn('SMS quota exceeded', {
+          recipients,
+          dailyRemaining: quotaData?.dailyRemaining,
+          monthlyRemaining: quotaData?.monthlyRemaining,
+          dailyLimit: quotaData?.dailyLimit,
+          monthlyLimit: quotaData?.monthlyLimit
+        });
+        
+        return {
+          success: false,
+          error: 'SMS quota exceeded',
+          quotaExceeded: true,
+          quotaInfo: quotaData,
+          message: 'SMS daily limit reached. Notifications will resume tomorrow or upgrade your plan.'
+        };
+      }
+
       logger.error('Failed to send SMS via TextBee', {
         recipients,
         message,
@@ -268,6 +288,48 @@ class SMSService {
   async testSMS(phoneNumber) {
     const testMessage = 'Test message from Barangay Document Management System. SMS notifications are working!';
     return await this.sendSMS(phoneNumber, testMessage);
+  }
+
+  /**
+   * Check SMS quota status
+   * @returns {Promise<Object>} Quota information
+   */
+  async checkQuota() {
+    try {
+      if (!this.enabled) {
+        return { enabled: false, message: 'SMS service disabled' };
+      }
+
+      const response = await axios.get(
+        `${this.baseURL}/gateway/devices/${this.deviceId}`,
+        {
+          headers: {
+            'x-api-key': this.apiKey,
+            'Content-Type': 'application/json'
+          },
+          timeout: 10000
+        }
+      );
+
+      logger.info('SMS quota checked', {
+        dailyRemaining: response.data?.dailyRemaining,
+        monthlyRemaining: response.data?.monthlyRemaining
+      });
+
+      return {
+        success: true,
+        quota: response.data
+      };
+    } catch (error) {
+      logger.error('Failed to check SMS quota', {
+        error: error.message,
+        response: error.response?.data
+      });
+      return {
+        success: false,
+        error: error.message
+      };
+    }
   }
 
   /**

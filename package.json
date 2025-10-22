@@ -23,6 +23,7 @@
   "author": "Your Name",
   "license": "MIT",
   "dependencies": {
+    "@sendgrid/mail": "^8.1.6",
     "@vee-validate/rules": "^4.15.1",
     "axios": "^1.10.0",
     "bcryptjs": "^2.4.3",

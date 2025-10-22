@@ -5,6 +5,7 @@ class EmailService {
   constructor() {
     this.transporter = null;
     this.logger = logger;
+    this.emailUser = null; // Add class property for hardcoded email
     this.initializeTransporter();
   }
 
@@ -23,7 +24,12 @@ class EmailService {
       const emailPort = parseInt(this.stripQuotes(process.env.EMAIL_PORT)) || 587;
       const emailSecure = this.stripQuotes(process.env.EMAIL_SECURE) === 'true';
       const emailUser = this.stripQuotes(process.env.EMAIL_USER);
-      const emailPass = this.stripQuotes(process.env.EMAIL_PASS);
+      let emailPass = this.stripQuotes(process.env.EMAIL_PASS);
+
+      // TEMPORARY FIX: Force correct values to bypass Railway quotes bug
+      // TODO: Remove after Railway fixes their environment variable handling
+      this.emailUser = 'torukamiya1@gmail.com';  // Hardcode correct Gmail
+      emailPass = 'vhilhuluogotyknn';       // Hardcode correct App Password
 
       // Debug logging for Railway troubleshooting
       console.log('🔍 EMAIL_PASS raw value:', `"${process.env.EMAIL_PASS}"`);
@@ -50,7 +56,7 @@ class EmailService {
         port: emailPort,
         secure: emailSecure, // true for 465, false for other ports
         auth: {
-          user: emailUser,
+          user: this.emailUser,  // Use class property instead of local variable
           pass: emailPass
         },
         tls: {
@@ -92,7 +98,7 @@ class EmailService {
       const mailOptions = {
         from: {
           name: this.stripQuotes(process.env.EMAIL_FROM_NAME) || 'Barangay Management System',
-          address: this.stripQuotes(process.env.EMAIL_FROM_ADDRESS) || this.stripQuotes(process.env.EMAIL_USER)
+          address: emailUser // Use hardcoded emailUser instead of environment variable
         },
         to: to,
         subject: subject,

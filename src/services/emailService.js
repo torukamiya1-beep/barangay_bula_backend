@@ -5,7 +5,6 @@ class EmailService {
   constructor() {
     this.transporter = null;
     this.logger = logger;
-    this.emailUser = null; // Add class property for hardcoded email
     this.initializeTransporter();
   }
 
@@ -21,15 +20,12 @@ class EmailService {
     try {
       // Strip quotes from environment variables (Railway issue)
       const emailHost = this.stripQuotes(process.env.EMAIL_HOST) || 'smtp.gmail.com';
-      const emailPort = parseInt(this.stripQuotes(process.env.EMAIL_PORT)) || 587;
-      const emailSecure = this.stripQuotes(process.env.EMAIL_SECURE) === 'true';
+      // Use port 465 with secure:true for better Railway compatibility
+      const emailPort = parseInt(this.stripQuotes(process.env.EMAIL_PORT)) || 465;
+      // Default to true for port 465 (SSL/TLS)
+      const emailSecure = process.env.EMAIL_PORT === '587' ? false : true;
       const emailUser = this.stripQuotes(process.env.EMAIL_USER);
-      let emailPass = this.stripQuotes(process.env.EMAIL_PASS);
-
-      // TEMPORARY FIX: Force correct values to bypass Railway quotes bug
-      // TODO: Remove after Railway fixes their environment variable handling
-      this.emailUser = 'torukamiya1@gmail.com';  // Hardcode correct Gmail
-      emailPass = 'vhilhuluogotyknn';       // Hardcode correct App Password
+      const emailPass = this.stripQuotes(process.env.EMAIL_PASS);
 
       // Debug logging for Railway troubleshooting
       console.log('🔍 EMAIL_PASS raw value:', `"${process.env.EMAIL_PASS}"`);
@@ -54,18 +50,23 @@ class EmailService {
       this.transporter = nodemailer.createTransport({
         host: emailHost,
         port: emailPort,
-        secure: emailSecure, // true for 465, false for other ports
+        secure: emailSecure, // true for 465 (SSL), false for 587 (TLS)
         auth: {
-          user: this.emailUser,  // Use class property instead of local variable
+          user: emailUser,
           pass: emailPass
         },
         tls: {
-          rejectUnauthorized: false
+          rejectUnauthorized: false,
+          minVersion: 'TLSv1.2'
         },
-        // Add connection timeout to prevent hanging
-        connectionTimeout: 10000, // 10 seconds
-        greetingTimeout: 10000, // 10 seconds
-        socketTimeout: 15000 // 15 seconds
+        // Increased timeouts for Railway environment
+        connectionTimeout: 30000, // 30 seconds
+        greetingTimeout: 30000, // 30 seconds
+        socketTimeout: 30000, // 30 seconds
+        // Add pool settings for better connection management
+        pool: true,
+        maxConnections: 5,
+        maxMessages: 100
       });
 
       this.logger.info('Email transporter initialized successfully', {
@@ -87,46 +88,85 @@ class EmailService {
       this.logger.info('Email connection verified successfully');
       return true;
     } catch (error) {
-      this.logger.error('Email connection verification failed:', { error: error.message });
+      // Log detailed error information for debugging
+      console.error('❌ Email connection verification failed:');
+      console.error('   Error Message:', error.message);
+      console.error('   Error Code:', error.code);
+      console.error('   Error Command:', error.command);
+      console.error('   Full Error:', JSON.stringify(error, Object.getOwnPropertyNames(error), 2));
+      
+      this.logger.error('Email connection verification failed:', { 
+        error: error.message,
+        code: error.code,
+        command: error.command,
+        stack: error.stack
+      });
       throw new Error('Email service configuration is invalid');
     }
   }
 
-  // Send email
-  async sendEmail(to, subject, htmlContent, textContent = null) {
-    try {
-      const mailOptions = {
-        from: {
-          name: this.stripQuotes(process.env.EMAIL_FROM_NAME) || 'Barangay Management System',
-          address: emailUser // Use hardcoded emailUser instead of environment variable
-        },
-        to: to,
-        subject: subject,
-        html: htmlContent,
-        text: textContent || this.stripHtml(htmlContent)
-      };
+  // Send email with retry logic
+  async sendEmail(to, subject, htmlContent, textContent = null, retries = 3) {
+    let lastError;
+    
+    for (let attempt = 1; attempt <= retries; attempt++) {
+      try {
+        const mailOptions = {
+          from: {
+            name: this.stripQuotes(process.env.EMAIL_FROM_NAME) || 'Barangay Management System',
+            address: this.stripQuotes(process.env.EMAIL_FROM_ADDRESS) || this.stripQuotes(process.env.EMAIL_USER)
+          },
+          to: to,
+          subject: subject,
+          html: htmlContent,
+          text: textContent || this.stripHtml(htmlContent)
+        };
 
-      const result = await this.transporter.sendMail(mailOptions);
-      
-      this.logger.info('Email sent successfully', {
-        to: to,
-        subject: subject,
-        messageId: result.messageId
-      });
+        const result = await this.transporter.sendMail(mailOptions);
+        
+        this.logger.info('Email sent successfully', {
+          to: to,
+          subject: subject,
+          messageId: result.messageId,
+          attempt: attempt
+        });
 
-      return {
-        success: true,
-        messageId: result.messageId,
-        message: 'Email sent successfully'
-      };
-    } catch (error) {
-      this.logger.error('Failed to send email:', {
-        to: to,
-        subject: subject,
-        error: error.message
-      });
-      throw error;
+        return {
+          success: true,
+          messageId: result.messageId,
+          message: 'Email sent successfully'
+        };
+      } catch (error) {
+        lastError = error;
+        
+        // Log detailed error for debugging
+        console.error(`❌ Failed to send email (attempt ${attempt}/${retries}):`);
+        console.error('   To:', to);
+        console.error('   Subject:', subject);
+        console.error('   Error Message:', error.message);
+        console.error('   Error Code:', error.code);
+        console.error('   Error Command:', error.command);
+        
+        this.logger.error('Failed to send email:', {
+          to: to,
+          subject: subject,
+          error: error.message,
+          code: error.code,
+          command: error.command,
+          attempt: attempt,
+          willRetry: attempt < retries
+        });
+        
+        // Wait before retry (exponential backoff)
+        if (attempt < retries) {
+          const waitTime = Math.min(1000 * Math.pow(2, attempt - 1), 5000);
+          await new Promise(resolve => setTimeout(resolve, waitTime));
+        }
+      }
     }
+    
+    // All retries failed
+    throw lastError;
   }
 
   // Send OTP email

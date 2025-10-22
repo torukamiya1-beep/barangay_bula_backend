@@ -269,11 +269,20 @@ const startServer = async () => {
     // Initialize database tables and default data
     await DatabaseUtils.setupDatabase();
 
-    // Verify email service configuration
+    // Verify email service configuration (non-blocking with timeout)
     console.log('\n📧 Verifying Email Service...');
     try {
       const emailService = require('./src/services/emailService');
-      await emailService.verifyConnection();
+      
+      // Add timeout to prevent hanging
+      const verifyWithTimeout = Promise.race([
+        emailService.verifyConnection(),
+        new Promise((_, reject) => 
+          setTimeout(() => reject(new Error('Email verification timeout after 15 seconds')), 15000)
+        )
+      ]);
+      
+      await verifyWithTimeout;
       console.log('✅ Email service configured and ready');
     } catch (emailError) {
       console.error('⚠️  Email service verification failed:', emailError.message);
@@ -281,6 +290,7 @@ const startServer = async () => {
       console.error('⚠️  Please check your EMAIL_USER and EMAIL_PASS environment variables');
       console.error('⚠️  For Gmail, you need to use an App Password, not your regular password');
       console.error('⚠️  Guide: https://support.google.com/accounts/answer/185833');
+      console.error('⚠️  Server will continue to start, but emails will fail to send');
     }
 
     app.listen(PORT, () => {

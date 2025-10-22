@@ -1,94 +1,112 @@
 const nodemailer = require('nodemailer');
+const sgMail = require('@sendgrid/mail');
 const logger = require('../utils/logger');
 
-class EmailService {
+class EmailServiceHybrid {
   constructor() {
     this.transporter = null;
+    this.useSendGrid = false;
     this.logger = logger;
-    this.initializeTransporter();
+    this.initializeEmailService();
   }
 
-  // Helper to strip quotes from environment variables (Railway adds quotes)
+  // Helper to strip quotes from environment variables
   stripQuotes(str) {
     if (!str) return str;
-    // Remove leading and trailing quotes (single or double)
     return str.replace(/^["']|["']$/g, '').trim();
   }
 
-  // Initialize Gmail SMTP transporter
-  initializeTransporter() {
+  // Initialize email service (SMTP or SendGrid)
+  initializeEmailService() {
     try {
-      // Strip quotes from environment variables (Railway issue)
-      const emailHost = this.stripQuotes(process.env.EMAIL_HOST) || 'smtp.gmail.com';
-      // Use port 465 with secure:true for better Railway compatibility
-      const emailPort = parseInt(this.stripQuotes(process.env.EMAIL_PORT)) || 465;
-      // Default to true for port 465 (SSL/TLS)
-      const emailSecure = process.env.EMAIL_PORT === '587' ? false : true;
-      const emailUser = this.stripQuotes(process.env.EMAIL_USER);
-      const emailPass = this.stripQuotes(process.env.EMAIL_PASS);
+      const sendGridApiKey = this.stripQuotes(process.env.SENDGRID_API_KEY);
+      
+      // Prefer SendGrid if API key is available (better for Railway)
+      if (sendGridApiKey && sendGridApiKey !== 'undefined') {
+        console.log('🔧 Using SendGrid API for email delivery');
+        sgMail.setApiKey(sendGridApiKey);
+        this.useSendGrid = true;
+        this.logger.info('SendGrid email service initialized successfully');
+      } else {
+        // Fallback to SMTP
+        console.log('🔧 Using SMTP for email delivery');
+        this.initializeSMTPTransporter();
+      }
+    } catch (error) {
+      this.logger.error('Failed to initialize email service:', { error: error.message });
+      throw error;
+    }
+  }
 
-      // Debug logging for Railway troubleshooting
-      console.log('🔍 EMAIL_PASS raw value:', `"${process.env.EMAIL_PASS}"`);
-      console.log('🔍 EMAIL_PASS length:', process.env.EMAIL_PASS ? process.env.EMAIL_PASS.length : 'NOT SET');
+  // Initialize SMTP transporter (Gmail)
+  initializeSMTPTransporter() {
+    const emailHost = this.stripQuotes(process.env.EMAIL_HOST) || 'smtp.gmail.com';
+    const emailPort = parseInt(this.stripQuotes(process.env.EMAIL_PORT)) || 465;
+    const emailSecure = process.env.EMAIL_PORT === '587' ? false : true;
+    const emailUser = this.stripQuotes(process.env.EMAIL_USER);
+    const emailPass = this.stripQuotes(process.env.EMAIL_PASS);
 
-      this.logger.info('Email configuration debug', {
-        raw: {
-          EMAIL_HOST: process.env.EMAIL_HOST,
-          EMAIL_PORT: process.env.EMAIL_PORT,
-          EMAIL_USER: process.env.EMAIL_USER,
-          EMAIL_PASS: process.env.EMAIL_PASS ? '***SET***' : 'NOT SET'
-        },
-        stripped: {
-          host: emailHost,
-          port: emailPort,
-          secure: emailSecure,
-          user: emailUser ? '***' + emailUser.slice(-10) : 'NOT SET',
-          pass: emailPass ? '***SET***' : 'NOT SET'
-        }
-      });
+    console.log('🔍 EMAIL_PASS raw value:', `"${process.env.EMAIL_PASS}"`);
+    console.log('🔍 EMAIL_PASS length:', process.env.EMAIL_PASS ? process.env.EMAIL_PASS.length : 'NOT SET');
 
-      this.transporter = nodemailer.createTransport({
-        host: emailHost,
-        port: emailPort,
-        secure: emailSecure, // true for 465 (SSL), false for 587 (TLS)
-        auth: {
-          user: emailUser,
-          pass: emailPass
-        },
-        tls: {
-          rejectUnauthorized: false,
-          minVersion: 'TLSv1.2'
-        },
-        // Increased timeouts for Railway environment
-        connectionTimeout: 30000, // 30 seconds
-        greetingTimeout: 30000, // 30 seconds
-        socketTimeout: 30000, // 30 seconds
-        // Add pool settings for better connection management
-        pool: true,
-        maxConnections: 5,
-        maxMessages: 100
-      });
-
-      this.logger.info('Email transporter initialized successfully', {
+    this.logger.info('Email configuration debug', {
+      raw: {
+        EMAIL_HOST: process.env.EMAIL_HOST,
+        EMAIL_PORT: process.env.EMAIL_PORT,
+        EMAIL_USER: process.env.EMAIL_USER,
+        EMAIL_PASS: process.env.EMAIL_PASS ? '***SET***' : 'NOT SET'
+      },
+      stripped: {
         host: emailHost,
         port: emailPort,
         secure: emailSecure,
-        user: emailUser ? '***' + emailUser.slice(-10) : 'NOT SET'
-      });
-    } catch (error) {
-      this.logger.error('Failed to initialize email transporter:', { error: error.message });
-      throw error;
-    }
+        user: emailUser ? '***' + emailUser.slice(-10) : 'NOT SET',
+        pass: emailPass ? '***SET***' : 'NOT SET'
+      }
+    });
+
+    this.transporter = nodemailer.createTransport({
+      host: emailHost,
+      port: emailPort,
+      secure: emailSecure,
+      auth: {
+        user: emailUser,
+        pass: emailPass
+      },
+      tls: {
+        rejectUnauthorized: false,
+        minVersion: 'TLSv1.2'
+      },
+      connectionTimeout: 30000,
+      greetingTimeout: 30000,
+      socketTimeout: 30000,
+      pool: true,
+      maxConnections: 5,
+      maxMessages: 100
+    });
+
+    this.logger.info('SMTP transporter initialized successfully', {
+      host: emailHost,
+      port: emailPort,
+      secure: emailSecure,
+      user: emailUser ? '***' + emailUser.slice(-10) : 'NOT SET'
+    });
   }
 
   // Verify email configuration
   async verifyConnection() {
     try {
-      await this.transporter.verify();
-      this.logger.info('Email connection verified successfully');
-      return true;
+      if (this.useSendGrid) {
+        // SendGrid doesn't need verification, just check if API key is set
+        console.log('✅ SendGrid API key configured');
+        this.logger.info('SendGrid email service ready');
+        return true;
+      } else {
+        await this.transporter.verify();
+        this.logger.info('SMTP connection verified successfully');
+        return true;
+      }
     } catch (error) {
-      // Log detailed error information for debugging
       console.error('❌ Email connection verification failed:');
       console.error('   Error Message:', error.message);
       console.error('   Error Code:', error.code);
@@ -105,8 +123,74 @@ class EmailService {
     }
   }
 
-  // Send email with retry logic
+  // Send email with retry logic (supports both SMTP and SendGrid)
   async sendEmail(to, subject, htmlContent, textContent = null, retries = 3) {
+    if (this.useSendGrid) {
+      return await this.sendEmailViaSendGrid(to, subject, htmlContent, textContent, retries);
+    } else {
+      return await this.sendEmailViaSMTP(to, subject, htmlContent, textContent, retries);
+    }
+  }
+
+  // Send email via SendGrid API
+  async sendEmailViaSendGrid(to, subject, htmlContent, textContent = null, retries = 3) {
+    let lastError;
+    
+    for (let attempt = 1; attempt <= retries; attempt++) {
+      try {
+        const msg = {
+          to: to,
+          from: {
+            email: this.stripQuotes(process.env.EMAIL_FROM_ADDRESS) || this.stripQuotes(process.env.EMAIL_USER),
+            name: this.stripQuotes(process.env.EMAIL_FROM_NAME) || 'Barangay Management System'
+          },
+          subject: subject,
+          text: textContent || this.stripHtml(htmlContent),
+          html: htmlContent
+        };
+
+        const response = await sgMail.send(msg);
+        
+        this.logger.info('Email sent successfully via SendGrid', {
+          to: to,
+          subject: subject,
+          statusCode: response[0].statusCode,
+          attempt: attempt
+        });
+
+        return {
+          success: true,
+          messageId: response[0].headers['x-message-id'],
+          message: 'Email sent successfully via SendGrid'
+        };
+      } catch (error) {
+        lastError = error;
+        
+        console.error(`❌ Failed to send email via SendGrid (attempt ${attempt}/${retries}):`);
+        console.error('   To:', to);
+        console.error('   Subject:', subject);
+        console.error('   Error:', error.message);
+        
+        this.logger.error('Failed to send email via SendGrid:', {
+          to: to,
+          subject: subject,
+          error: error.message,
+          attempt: attempt,
+          willRetry: attempt < retries
+        });
+        
+        if (attempt < retries) {
+          const waitTime = Math.min(1000 * Math.pow(2, attempt - 1), 5000);
+          await new Promise(resolve => setTimeout(resolve, waitTime));
+        }
+      }
+    }
+    
+    throw lastError;
+  }
+
+  // Send email via SMTP
+  async sendEmailViaSMTP(to, subject, htmlContent, textContent = null, retries = 3) {
     let lastError;
     
     for (let attempt = 1; attempt <= retries; attempt++) {
@@ -124,7 +208,7 @@ class EmailService {
 
         const result = await this.transporter.sendMail(mailOptions);
         
-        this.logger.info('Email sent successfully', {
+        this.logger.info('Email sent successfully via SMTP', {
           to: to,
           subject: subject,
           messageId: result.messageId,
@@ -134,20 +218,19 @@ class EmailService {
         return {
           success: true,
           messageId: result.messageId,
-          message: 'Email sent successfully'
+          message: 'Email sent successfully via SMTP'
         };
       } catch (error) {
         lastError = error;
         
-        // Log detailed error for debugging
-        console.error(`❌ Failed to send email (attempt ${attempt}/${retries}):`);
+        console.error(`❌ Failed to send email via SMTP (attempt ${attempt}/${retries}):`);
         console.error('   To:', to);
         console.error('   Subject:', subject);
         console.error('   Error Message:', error.message);
         console.error('   Error Code:', error.code);
         console.error('   Error Command:', error.command);
         
-        this.logger.error('Failed to send email:', {
+        this.logger.error('Failed to send email via SMTP:', {
           to: to,
           subject: subject,
           error: error.message,
@@ -157,7 +240,6 @@ class EmailService {
           willRetry: attempt < retries
         });
         
-        // Wait before retry (exponential backoff)
         if (attempt < retries) {
           const waitTime = Math.min(1000 * Math.pow(2, attempt - 1), 5000);
           await new Promise(resolve => setTimeout(resolve, waitTime));
@@ -165,7 +247,6 @@ class EmailService {
       }
     }
     
-    // All retries failed
     throw lastError;
   }
 
@@ -173,9 +254,7 @@ class EmailService {
   async sendOTPEmail(email, otp, firstName = '') {
     try {
       const subject = 'Your OTP Code - Barangay Management System';
-      
       const htmlContent = this.generateOTPEmailTemplate(otp, firstName);
-      
       return await this.sendEmail(email, subject, htmlContent);
     } catch (error) {
       this.logger.error('Failed to send OTP email:', { email, error: error.message });
@@ -187,9 +266,7 @@ class EmailService {
   async sendWelcomeEmail(email, firstName, lastName) {
     try {
       const subject = 'Welcome to Barangay Management System';
-      
       const htmlContent = this.generateWelcomeEmailTemplate(firstName, lastName);
-      
       return await this.sendEmail(email, subject, htmlContent);
     } catch (error) {
       this.logger.error('Failed to send welcome email:', { email, error: error.message });
@@ -201,9 +278,7 @@ class EmailService {
   async sendPasswordResetEmail(email, resetToken, firstName = '') {
     try {
       const subject = 'Password Reset Request - Barangay Management System';
-
       const htmlContent = this.generatePasswordResetEmailTemplate(resetToken, firstName);
-
       return await this.sendEmail(email, subject, htmlContent);
     } catch (error) {
       this.logger.error('Failed to send password reset email:', { email, error: error.message });
@@ -215,9 +290,7 @@ class EmailService {
   async sendAccountApprovalEmail(email, firstName, lastName) {
     try {
       const subject = 'Account Approved - Barangay Management System';
-
       const htmlContent = this.generateAccountApprovalEmailTemplate(firstName, lastName);
-
       return await this.sendEmail(email, subject, htmlContent);
     } catch (error) {
       this.logger.error('Failed to send account approval email:', { email, error: error.message });
@@ -229,9 +302,7 @@ class EmailService {
   async sendAccountRejectionEmail(email, firstName, lastName, rejectionReason) {
     try {
       const subject = 'Account Application Update - Barangay Management System';
-
       const htmlContent = this.generateAccountRejectionEmailTemplate(firstName, lastName, rejectionReason);
-
       return await this.sendEmail(email, subject, htmlContent);
     } catch (error) {
       this.logger.error('Failed to send account rejection email:', { email, error: error.message });
@@ -504,4 +575,4 @@ class EmailService {
   }
 }
 
-module.exports = new EmailService();
+module.exports = new EmailServiceHybrid();

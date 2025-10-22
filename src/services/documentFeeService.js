@@ -3,7 +3,8 @@
  * Handles dynamic pricing for document types
  */
 
-const db = require('../config/database');
+const { pool } = require('../config/database');
+const db = pool; // Alias for compatibility
 
 class DocumentFeeService {
   /**
@@ -36,7 +37,7 @@ class DocumentFeeService {
           ORDER BY dt.id
         `;
         
-        const [rows] = await db.query(query);
+        const [rows] = await pool.query(query);
         console.log(`✅ Fetched ${rows.length} document fees`);
         return rows;
       } else {
@@ -58,7 +59,7 @@ class DocumentFeeService {
           ORDER BY dt.id
         `;
         
-        const [rows] = await db.query(query);
+        const [rows] = await pool.query(query);
         console.log(`✅ Fetched ${rows.length} document types (fallback)`);
         return rows;
       }
@@ -75,7 +76,7 @@ class DocumentFeeService {
   async checkDocumentFeesTableExists() {
     try {
       // Try to query the table directly - simpler and more reliable
-      const [result] = await db.query(`
+      const [result] = await pool.query(`
         SELECT 1 FROM document_fees LIMIT 1
       `);
       return true; // If query succeeds, table exists

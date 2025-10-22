@@ -12,10 +12,13 @@ class DocumentFeeService {
   async getAllDocumentFeesWithTypes() {
     try {
       // First, check if document_fees table exists
+      console.log('🔍 Checking if document_fees table exists...');
       const tableExists = await this.checkDocumentFeesTableExists();
+      console.log(`📊 Table exists: ${tableExists}`);
       
       if (tableExists) {
         // Use the new document_fees table
+        console.log('✅ Using document_fees table');
         const query = `
           SELECT 
             dt.id as document_type_id,
@@ -34,6 +37,7 @@ class DocumentFeeService {
         `;
         
         const [rows] = await db.query(query);
+        console.log(`✅ Fetched ${rows.length} document fees`);
         return rows;
       } else {
         // Fallback to document_types.base_fee
@@ -55,11 +59,13 @@ class DocumentFeeService {
         `;
         
         const [rows] = await db.query(query);
+        console.log(`✅ Fetched ${rows.length} document types (fallback)`);
         return rows;
       }
     } catch (error) {
-      console.error('Error fetching document fees:', error);
-      throw new Error('Failed to fetch document fees');
+      console.error('❌ Error fetching document fees:', error);
+      console.error('Stack:', error.stack);
+      throw error; // Throw original error for better debugging
     }
   }
 
@@ -68,15 +74,19 @@ class DocumentFeeService {
    */
   async checkDocumentFeesTableExists() {
     try {
-      const [tables] = await db.query(`
-        SELECT TABLE_NAME 
-        FROM information_schema.TABLES 
-        WHERE TABLE_SCHEMA = DATABASE() 
-        AND TABLE_NAME = 'document_fees'
+      // Try to query the table directly - simpler and more reliable
+      const [result] = await db.query(`
+        SELECT 1 FROM document_fees LIMIT 1
       `);
-      return tables.length > 0;
+      return true; // If query succeeds, table exists
     } catch (error) {
-      console.error('Error checking table existence:', error);
+      // If error contains "doesn't exist", table doesn't exist
+      if (error.message && error.message.includes("doesn't exist")) {
+        console.log('⚠️  document_fees table does not exist, using fallback');
+        return false;
+      }
+      // For other errors, log and assume table doesn't exist
+      console.error('Error checking table existence:', error.message);
       return false;
     }
   }

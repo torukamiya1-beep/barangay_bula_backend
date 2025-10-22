@@ -26,6 +26,9 @@ class EmailService {
       const emailPass = this.stripQuotes(process.env.EMAIL_PASS);
 
       // Debug logging for Railway troubleshooting
+      console.log('🔍 EMAIL_PASS raw value:', `"${process.env.EMAIL_PASS}"`);
+      console.log('🔍 EMAIL_PASS length:', process.env.EMAIL_PASS ? process.env.EMAIL_PASS.length : 'NOT SET');
+
       this.logger.info('Email configuration debug', {
         raw: {
           EMAIL_HOST: process.env.EMAIL_HOST,

@@ -270,5 +270,53 @@ router.get('/notifications', protect, authorize('admin'), async (req, res) => {
   }
 });
 
-module.exports = router;
+/**
+ * @route   POST /api/diagnostic/test-email
+ * @desc    Send a test email to verify Railway email configuration
+ * @access  Private (Admin only)
+ */
+router.post('/test-email', protect, authorize('admin'), async (req, res) => {
+  try {
+    const { testEmail } = req.body;
+    const recipientEmail = testEmail || 'p71345453@gmail.com'; // Default test email
 
+    const subject = 'Railway Email Test - ' + new Date().toISOString();
+    const htmlContent = `
+      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+        <h2 style="color: #007bff;">🚀 Railway Email Test</h2>
+        <p><strong>Timestamp:</strong> ${new Date().toISOString()}</p>
+        <p><strong>Environment:</strong> Railway Production</p>
+        <p><strong>Recipient:</strong> ${recipientEmail}</p>
+        <p><strong>Status:</strong> ✅ If you received this, Railway email is working!</p>
+        <hr>
+        <p style="color: #666; font-size: 12px;">
+          This is an automated test email from Railway environment.
+        </p>
+      </div>
+    `;
+
+    const result = await emailService.sendEmail(recipientEmail, subject, htmlContent);
+
+    res.json({
+      success: true,
+      message: 'Test email sent from Railway',
+      data: {
+        recipient: recipientEmail,
+        messageId: result.messageId,
+        environment: 'Railway Production',
+        timestamp: new Date().toISOString()
+      },
+      timestamp: new Date().toISOString()
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: 'Failed to send test email from Railway',
+      error: error.message,
+      environment: 'Railway Production',
+      timestamp: new Date().toISOString()
+    });
+  }
+});
+
+module.exports = router;

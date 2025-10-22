@@ -8,16 +8,30 @@ class EmailService {
     this.initializeTransporter();
   }
 
+  // Helper to strip quotes from environment variables (Railway adds quotes)
+  stripQuotes(str) {
+    if (!str) return str;
+    // Remove leading and trailing quotes
+    return str.replace(/^["']|["']$/g, '');
+  }
+
   // Initialize Gmail SMTP transporter
   initializeTransporter() {
     try {
+      // Strip quotes from environment variables (Railway issue)
+      const emailHost = this.stripQuotes(process.env.EMAIL_HOST) || 'smtp.gmail.com';
+      const emailPort = parseInt(this.stripQuotes(process.env.EMAIL_PORT)) || 587;
+      const emailSecure = this.stripQuotes(process.env.EMAIL_SECURE) === 'true';
+      const emailUser = this.stripQuotes(process.env.EMAIL_USER);
+      const emailPass = this.stripQuotes(process.env.EMAIL_PASS);
+
       this.transporter = nodemailer.createTransport({
-        host: process.env.EMAIL_HOST || 'smtp.gmail.com',
-        port: parseInt(process.env.EMAIL_PORT) || 587,
-        secure: process.env.EMAIL_SECURE === 'true', // true for 465, false for other ports
+        host: emailHost,
+        port: emailPort,
+        secure: emailSecure, // true for 465, false for other ports
         auth: {
-          user: process.env.EMAIL_USER,
-          pass: process.env.EMAIL_PASS
+          user: emailUser,
+          pass: emailPass
         },
         tls: {
           rejectUnauthorized: false
@@ -28,7 +42,12 @@ class EmailService {
         socketTimeout: 15000 // 15 seconds
       });
 
-      this.logger.info('Email transporter initialized successfully');
+      this.logger.info('Email transporter initialized successfully', {
+        host: emailHost,
+        port: emailPort,
+        secure: emailSecure,
+        user: emailUser ? '***' + emailUser.slice(-10) : 'NOT SET'
+      });
     } catch (error) {
       this.logger.error('Failed to initialize email transporter:', { error: error.message });
       throw error;
@@ -52,8 +71,8 @@ class EmailService {
     try {
       const mailOptions = {
         from: {
-          name: process.env.EMAIL_FROM_NAME || 'Barangay Management System',
-          address: process.env.EMAIL_FROM_ADDRESS || process.env.EMAIL_USER
+          name: this.stripQuotes(process.env.EMAIL_FROM_NAME) || 'Barangay Management System',
+          address: this.stripQuotes(process.env.EMAIL_FROM_ADDRESS) || this.stripQuotes(process.env.EMAIL_USER)
         },
         to: to,
         subject: subject,

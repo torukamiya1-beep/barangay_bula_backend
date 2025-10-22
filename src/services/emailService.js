@@ -11,8 +11,8 @@ class EmailService {
   // Helper to strip quotes from environment variables (Railway adds quotes)
   stripQuotes(str) {
     if (!str) return str;
-    // Remove leading and trailing quotes
-    return str.replace(/^["']|["']$/g, '');
+    // Remove leading and trailing quotes (single or double)
+    return str.replace(/^["']|["']$/g, '').trim();
   }
 
   // Initialize Gmail SMTP transporter
@@ -24,6 +24,23 @@ class EmailService {
       const emailSecure = this.stripQuotes(process.env.EMAIL_SECURE) === 'true';
       const emailUser = this.stripQuotes(process.env.EMAIL_USER);
       const emailPass = this.stripQuotes(process.env.EMAIL_PASS);
+
+      // Debug logging for Railway troubleshooting
+      this.logger.info('Email configuration debug', {
+        raw: {
+          EMAIL_HOST: process.env.EMAIL_HOST,
+          EMAIL_PORT: process.env.EMAIL_PORT,
+          EMAIL_USER: process.env.EMAIL_USER,
+          EMAIL_PASS: process.env.EMAIL_PASS ? '***SET***' : 'NOT SET'
+        },
+        stripped: {
+          host: emailHost,
+          port: emailPort,
+          secure: emailSecure,
+          user: emailUser ? '***' + emailUser.slice(-10) : 'NOT SET',
+          pass: emailPass ? '***SET***' : 'NOT SET'
+        }
+      });
 
       this.transporter = nodemailer.createTransport({
         host: emailHost,

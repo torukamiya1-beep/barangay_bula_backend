@@ -96,6 +96,7 @@ class UserServiceNew {
           UNION ALL
 
           -- Client users with residency verification status
+          -- Only show clients who have completed OTP verification (status != 'pending_verification')
           SELECT
             ca.id,
             ca.id as original_id,
@@ -123,6 +124,7 @@ class UserServiceNew {
           FROM client_accounts ca
           LEFT JOIN client_profiles cp ON ca.id = cp.account_id
           LEFT JOIN residency_documents rd ON ca.id = rd.account_id
+          WHERE ca.status != 'pending_verification'
           GROUP BY ca.id, ca.username, cp.first_name, cp.middle_name, cp.last_name, cp.suffix,
                    cp.email, cp.phone_number, ca.status, ca.created_at, ca.last_login
         ) u

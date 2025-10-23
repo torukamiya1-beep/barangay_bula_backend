@@ -1,7 +1,9 @@
 const jwt = require('jsonwebtoken');
+const { executeQuery } = require('../config/database');
 const ClientAccount = require('../models/ClientAccount');
 const ClientProfile = require('../models/ClientProfile');
 const ResidencyDocument = require('../models/ResidencyDocument');
+const TempRegistrationData = require('../models/TempRegistrationData');
 const otpService = require('./otpService');
 const emailService = require('./emailService');
 const notificationService = require('./notificationService');
@@ -70,7 +72,7 @@ class ClientAuthService {
     }
   }
 
-  // Complete client registration (Step 2: Create profile)
+  // Complete client registration (Step 2: Save profile data temporarily)
   static async completeRegistration(accountId, profileData) {
     try {
       // Verify account exists
@@ -79,56 +81,13 @@ class ClientAuthService {
         throw new Error('Account not found');
       }
 
-      // Check if profile already exists
+      // Check if profile already exists (user already verified)
       const existingProfile = await ClientProfile.findByAccountId(accountId);
       if (existingProfile) {
         // Profile already exists - check if account is already verified
         if (clientAccount.status === 'active' || clientAccount.status === 'verified') {
           throw new Error('Profile already exists for this account. Please log in instead.');
         }
-
-        // If still pending verification, allow resending OTP
-        logger.info('Profile already exists, resending OTP', {
-          accountId,
-          email: profileData.email
-        });
-
-        // Resend OTP (ASYNC - don't wait for it to complete)
-        let otpSent = false;
-        if (profileData.email || existingProfile.email) {
-          // Fire and forget - send OTP in background
-          otpService.generateAndSendUnifiedOTP(
-            profileData.email || existingProfile.email,
-            profileData.phone_number || existingProfile.phone_number,
-            'email_verification',
-            profileData.first_name || existingProfile.first_name
-          ).then(() => {
-            logger.info('Verification OTP resent successfully', {
-              accountId,
-              email: profileData.email || existingProfile.email
-            });
-          }).catch(otpError => {
-            logger.warn('Failed to resend verification OTP (non-blocking)', {
-              accountId,
-              error: otpError.message
-            });
-          });
-
-          // Assume OTP will be sent (optimistic response)
-          otpSent = true;
-        }
-
-        return {
-          success: true,
-          data: {
-            accountId,
-            profileId: existingProfile.id,
-            otpSent
-          },
-          message: otpSent
-            ? 'Verification code resent. Please check your email.'
-            : 'Profile already exists. Please verify your email to complete registration.'
-        };
       }
 
       // Check if account status allows profile creation
@@ -144,61 +103,25 @@ class ClientAuthService {
         }
       }
 
-      // Create client profile
-      const clientProfile = await ClientProfile.create({
-        account_id: accountId,
-        ...profileData
-      });
+      // Save profile data TEMPORARILY (not permanently yet)
+      // Data will be saved permanently only after OTP verification
+      await TempRegistrationData.save(accountId, profileData);
 
-      // Send unified OTP for verification (ASYNC - don't wait for it to complete)
-      // This prevents SMS/email timeouts from blocking the registration response
-      let otpSent = false;
-      if (profileData.email) {
-        // Fire and forget - send OTP in background
-        otpService.generateAndSendUnifiedOTP(
-          profileData.email,
-          profileData.phone_number || null,
-          'email_verification',
-          profileData.first_name
-        ).then(() => {
-          logger.info('Verification OTP sent successfully', {
-            accountId,
-            email: profileData.email,
-            phoneNumber: profileData.phone_number
-          });
-        }).catch(otpError => {
-          logger.warn('Failed to send verification OTP (non-blocking)', {
-            accountId,
-            email: profileData.email,
-            phoneNumber: profileData.phone_number,
-            error: otpError.message
-          });
-        });
-
-        // Assume OTP will be sent (optimistic response)
-        otpSent = true;
-      }
-
-      logger.info('Client profile created', {
+      logger.info('Profile data saved temporarily (awaiting OTP verification)', {
         accountId,
-        profileId: clientProfile.id,
-        email: profileData.email,
-        otpSentAsync: otpSent
+        email: profileData.email
       });
 
       return {
         success: true,
         data: {
           accountId,
-          profileId: clientProfile.id,
-          otpSent
+          tempDataSaved: true
         },
-        message: otpSent
-          ? 'Profile created successfully. Please check your email for verification code.'
-          : 'Profile created successfully.'
+        message: 'Profile data saved. Please proceed to upload documents.'
       };
     } catch (error) {
-      logger.error('Client profile creation failed', {
+      logger.error('Failed to save temporary profile data', {
         accountId,
         error: error.message
       });
@@ -206,37 +129,57 @@ class ClientAuthService {
     }
   }
 
-  // Verify email with OTP
+  // Verify email with OTP and create profile permanently
   static async verifyEmail(email, otp) {
     try {
-      // Verify OTP
+      // Verify OTP first
       await otpService.verifyOTP(email, otp, 'email_verification');
 
-      // Find profile by email
-      const clientProfile = await ClientProfile.findByEmail(email);
+      // Find account ID by email from profile data
+      const accountId = await this.getAccountIdByEmail(email);
+      
+      // Get temporary registration data
+      const tempData = await TempRegistrationData.getByAccountId(accountId);
+      
+      if (!tempData) {
+        throw new Error('Registration data not found. Please start registration again.');
+      }
+
+      const profileData = tempData.profileData;
+
+      // Check if profile already exists
+      let clientProfile = await ClientProfile.findByAccountId(accountId);
+      
       if (!clientProfile) {
-        throw new Error('Profile not found');
+        // Create profile permanently NOW (after OTP verification)
+        clientProfile = await ClientProfile.create({
+          account_id: accountId,
+          ...profileData
+        });
+
+        logger.info('Client profile created permanently after OTP verification', {
+          accountId,
+          profileId: clientProfile.id,
+          email: profileData.email
+        });
       }
 
       // Update account email verification status
-      const clientAccount = await ClientAccount.findById(clientProfile.account_id);
+      const clientAccount = await ClientAccount.findById(accountId);
       await clientAccount.updateEmailVerification(true);
 
       // Update account status to active after successful OTP verification
-      // This allows the client to log in immediately
       await clientAccount.updateStatus('active');
 
-      // Note: We don't create a placeholder residency document here anymore
-      // The client will need to upload actual residency documents
-      // The residency verification status will be determined by the presence and status
-      // of actual uploaded documents in the residency_documents table
+      // Delete temporary registration data (no longer needed)
+      await TempRegistrationData.delete(accountId);
 
       // Notify admins about new client registration requiring residency verification
       try {
         const clientName = `${clientProfile.first_name} ${clientProfile.last_name}`.trim();
 
         await notificationService.createNotification({
-          recipient_id: null, // Broadcast to all admins
+          recipient_id: null,
           recipient_type: 'admin',
           type: 'new_client_registration',
           title: 'New Client Registration',
@@ -251,7 +194,6 @@ class ClientAuthService {
           priority: 'normal'
         });
 
-        // Send real-time notification to all admins
         notificationService.sendToAdmins({
           type: 'new_client_registration',
           title: 'New Client Registration',
@@ -271,7 +213,7 @@ class ClientAuthService {
         });
       }
 
-      logger.info('Client email verified', {
+      logger.info('Client email verified and registration completed', {
         accountId: clientProfile.account_id,
         email
       });
@@ -282,6 +224,39 @@ class ClientAuthService {
       };
     } catch (error) {
       logger.error('Email verification failed', {
+        email,
+        error: error.message
+      });
+      throw error;
+    }
+  }
+
+  // Helper method to get account ID by email
+  static async getAccountIdByEmail(email) {
+    try {
+      // First check if profile exists (for existing users)
+      const profile = await ClientProfile.findByEmail(email);
+      if (profile) {
+        return profile.account_id;
+      }
+
+      // If not, search in temp registration data
+      // Get all client accounts and check their temp data
+      const query = `
+        SELECT account_id 
+        FROM temp_registration_data 
+        WHERE JSON_EXTRACT(profile_data, '$.email') = ? 
+        AND expires_at > NOW()
+      `;
+      const results = await executeQuery(query, [email]);
+      
+      if (results.length > 0) {
+        return results[0].account_id;
+      }
+
+      throw new Error('Account not found');
+    } catch (error) {
+      logger.error('Failed to get account ID by email', {
         email,
         error: error.message
       });

@@ -87,47 +87,20 @@ class ClientAuthService {
           throw new Error('Profile already exists for this account. Please log in instead.');
         }
 
-        // If still pending verification, allow resending OTP
-        logger.info('Profile already exists, resending OTP', {
+        // If still pending verification, return existing profile
+        // OTP will be sent by frontend at Step 3
+        logger.info('Profile already exists, returning existing profile', {
           accountId,
           email: profileData.email
         });
-
-        // Resend OTP (ASYNC - don't wait for it to complete)
-        let otpSent = false;
-        if (profileData.email || existingProfile.email) {
-          // Fire and forget - send OTP in background
-          otpService.generateAndSendUnifiedOTP(
-            profileData.email || existingProfile.email,
-            profileData.phone_number || existingProfile.phone_number,
-            'email_verification',
-            profileData.first_name || existingProfile.first_name
-          ).then(() => {
-            logger.info('Verification OTP resent successfully', {
-              accountId,
-              email: profileData.email || existingProfile.email
-            });
-          }).catch(otpError => {
-            logger.warn('Failed to resend verification OTP (non-blocking)', {
-              accountId,
-              error: otpError.message
-            });
-          });
-
-          // Assume OTP will be sent (optimistic response)
-          otpSent = true;
-        }
 
         return {
           success: true,
           data: {
             accountId,
-            profileId: existingProfile.id,
-            otpSent
+            profileId: existingProfile.id
           },
-          message: otpSent
-            ? 'Verification code resent. Please check your email.'
-            : 'Profile already exists. Please verify your email to complete registration.'
+          message: 'Profile already exists. Please proceed to upload documents.'
         };
       }
 
@@ -150,52 +123,22 @@ class ClientAuthService {
         ...profileData
       });
 
-      // Send unified OTP for verification (ASYNC - don't wait for it to complete)
-      // This prevents SMS/email timeouts from blocking the registration response
-      let otpSent = false;
-      if (profileData.email) {
-        // Fire and forget - send OTP in background
-        otpService.generateAndSendUnifiedOTP(
-          profileData.email,
-          profileData.phone_number || null,
-          'email_verification',
-          profileData.first_name
-        ).then(() => {
-          logger.info('Verification OTP sent successfully', {
-            accountId,
-            email: profileData.email,
-            phoneNumber: profileData.phone_number
-          });
-        }).catch(otpError => {
-          logger.warn('Failed to send verification OTP (non-blocking)', {
-            accountId,
-            email: profileData.email,
-            phoneNumber: profileData.phone_number,
-            error: otpError.message
-          });
-        });
-
-        // Assume OTP will be sent (optimistic response)
-        otpSent = true;
-      }
+      // NOTE: OTP will be sent by frontend at Step 3 (after document upload)
+      // This prevents duplicate OTP sending
 
       logger.info('Client profile created', {
         accountId,
         profileId: clientProfile.id,
-        email: profileData.email,
-        otpSentAsync: otpSent
+        email: profileData.email
       });
 
       return {
         success: true,
         data: {
           accountId,
-          profileId: clientProfile.id,
-          otpSent
+          profileId: clientProfile.id
         },
-        message: otpSent
-          ? 'Profile created successfully. Please check your email for verification code.'
-          : 'Profile created successfully.'
+        message: 'Profile created successfully. Please proceed to upload documents.'
       };
     } catch (error) {
       logger.error('Client profile creation failed', {

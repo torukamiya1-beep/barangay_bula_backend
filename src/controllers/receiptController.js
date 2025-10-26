@@ -278,68 +278,94 @@ class ReceiptController {
 
       if (!receipt) {
         // For GCash manual payments, generate receipt data from request
+        console.log('📋 No receipt found, generating from request data', { requestId });
         logger.info('No receipt found, generating from request data', { requestId });
         
-        const db = require('../config/database');
-        const [requests] = await db.query(`
-          SELECT 
-            dr.id,
-            dr.request_number,
-            dr.total_document_fee,
-            dr.payment_status,
-            dr.gcash_verified_at as payment_date,
-            dr.gcash_reference_number,
-            dr.requested_at,
-            ca.id as client_id,
-            cp.first_name,
-            cp.last_name,
-            cp.email,
-            cp.phone_number,
-            dt.type_name as document_type,
-            pm.method_name as payment_method,
-            pm.method_code as payment_method_code
-          FROM document_requests dr
-          JOIN client_accounts ca ON dr.client_id = ca.id
-          LEFT JOIN client_profiles cp ON ca.id = cp.account_id
-          LEFT JOIN document_types dt ON dr.document_type_id = dt.id
-          LEFT JOIN payment_methods pm ON dr.payment_method_id = pm.id
-          WHERE dr.id = ?
-        `, [parseInt(requestId)]);
+        try {
+          const db = require('../config/database');
+          console.log('🔍 Querying document_requests for ID:', requestId);
+          
+          const [requests] = await db.query(`
+            SELECT 
+              dr.id,
+              dr.request_number,
+              dr.total_document_fee,
+              dr.payment_status,
+              dr.gcash_verified_at as payment_date,
+              dr.gcash_reference_number,
+              dr.requested_at,
+              ca.id as client_id,
+              cp.first_name,
+              cp.last_name,
+              cp.email,
+              cp.phone_number,
+              dt.type_name as document_type,
+              pm.method_name as payment_method,
+              pm.method_code as payment_method_code
+            FROM document_requests dr
+            JOIN client_accounts ca ON dr.client_id = ca.id
+            LEFT JOIN client_profiles cp ON ca.id = cp.account_id
+            LEFT JOIN document_types dt ON dr.document_type_id = dt.id
+            LEFT JOIN payment_methods pm ON dr.payment_method_id = pm.id
+            WHERE dr.id = ?
+          `, [parseInt(requestId)]);
 
-        if (!requests || requests.length === 0) {
-          return ApiResponse.error(res, 'Request not found', 404);
+          console.log('📊 Query result:', {
+            found: requests && requests.length > 0,
+            count: requests ? requests.length : 0,
+            data: requests && requests.length > 0 ? requests[0] : null
+          });
+
+          if (!requests || requests.length === 0) {
+            console.error('❌ Request not found in database:', requestId);
+            return ApiResponse.error(res, 'Request not found', 404);
+          }
+
+          const request = requests[0];
+          console.log('✅ Request found:', {
+            id: request.id,
+            request_number: request.request_number,
+            client_name: `${request.first_name} ${request.last_name}`
+          });
+
+          // Generate receipt-like data for GCash manual payments
+          const generatedReceipt = {
+            id: null,
+            receipt_number: `GCASH-${request.request_number}`,
+            request_id: request.id,
+            request_number: request.request_number,
+            client_id: request.client_id,
+            client_name: `${request.first_name || ''} ${request.last_name || ''}`.trim() || 'N/A',
+            client_email: request.email || 'N/A',
+            client_phone: request.phone_number || 'N/A',
+            document_type: request.document_type || 'N/A',
+            amount: parseFloat(request.total_document_fee) || 0,
+            payment_method: request.payment_method || 'GCash Manual',
+            payment_method_code: request.payment_method_code || 'gcash_manual',
+            payment_reference: request.gcash_reference_number || 'N/A',
+            payment_status: request.payment_status || 'pending',
+            payment_date: request.payment_date || request.requested_at,
+            created_at: request.requested_at,
+            is_generated: true // Flag to indicate this is generated, not from receipts table
+          };
+
+          console.log('✅ Generated receipt:', generatedReceipt);
+          logger.info('Generated receipt data for GCash manual payment', {
+            requestId,
+            receiptNumber: generatedReceipt.receipt_number,
+            adminId: req.user?.id
+          });
+
+          return ApiResponse.success(res, generatedReceipt, 'Receipt data generated successfully');
+        } catch (generateError) {
+          console.error('❌ Error generating receipt from request:', generateError);
+          logger.error('Error generating receipt from request', {
+            requestId,
+            error: generateError.message,
+            stack: generateError.stack
+          });
+          return ApiResponse.error(res, `Failed to generate receipt: ${generateError.message}`, 500);
         }
-
-        const request = requests[0];
-
-        // Generate receipt-like data for GCash manual payments
-        const generatedReceipt = {
-          id: null,
-          receipt_number: `GCASH-${request.request_number}`,
-          request_id: request.id,
-          request_number: request.request_number,
-          client_id: request.client_id,
-          client_name: `${request.first_name || ''} ${request.last_name || ''}`.trim() || 'N/A',
-          client_email: request.email || 'N/A',
-          client_phone: request.phone_number || 'N/A',
-          document_type: request.document_type || 'N/A',
-          amount: parseFloat(request.total_document_fee) || 0,
-          payment_method: request.payment_method || 'GCash Manual',
-          payment_method_code: request.payment_method_code || 'gcash_manual',
-          payment_reference: request.gcash_reference_number || 'N/A',
-          payment_status: request.payment_status || 'pending',
-          payment_date: request.payment_date || request.requested_at,
-          created_at: request.requested_at,
-          is_generated: true // Flag to indicate this is generated, not from receipts table
-        };
-
-        logger.info('Generated receipt data for GCash manual payment', {
-          requestId,
-          receiptNumber: generatedReceipt.receipt_number,
-          adminId: req.user?.id
-        });
-
-        return ApiResponse.success(res, generatedReceipt, 'Receipt data generated successfully');
       }
 
       // Get complete receipt information

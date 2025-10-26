@@ -525,7 +525,7 @@ class GCashPaymentService {
       const transactionResult = await executeQuery(transactionQuery, [
         requestId,
         request.payment_method_id,
-        request.total_document_fee || request.total_amount || 0
+        request.total_document_fee || 0
       ]);
 
       const transactionId = transactionResult.insertId;
@@ -546,9 +546,9 @@ class GCashPaymentService {
         document_type: request.document_type,
         payment_method: 'GCash Manual Upload',
         payment_method_code: 'GCASH_MANUAL',
-        amount: request.total_document_fee || request.total_amount || 0,
+        amount: request.total_document_fee || 0,
         processing_fee: 0,
-        net_amount: request.total_document_fee || request.total_amount || 0,
+        net_amount: request.total_document_fee || 0,
         currency: 'PHP',
         external_transaction_id: request.gcash_reference_number || null,
         paymongo_payment_intent_id: null,

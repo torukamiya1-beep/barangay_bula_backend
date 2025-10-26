@@ -793,6 +793,68 @@ class DocumentRequestService {
 
     return result[0].insertId;
   }
+
+  // Get client's requests with pagination and filters
+  static async getClientRequests(clientId, filters = {}) {
+    try {
+      // Import DocumentRequest model to use its static method
+      const DocumentRequest = require('../models/DocumentRequest');
+
+      const result = await DocumentRequest.getClientRequests(clientId, filters);
+
+      logger.info('Client requests retrieved successfully', {
+        clientId,
+        requestCount: result.requests.length,
+        pagination: result.pagination
+      });
+
+      return {
+        success: true,
+        data: result.requests,
+        pagination: result.pagination,
+        message: 'Client requests retrieved successfully'
+      };
+    } catch (error) {
+      logger.error('Error retrieving client requests', {
+        error: error.message,
+        clientId,
+        filters
+      });
+      throw error;
+    }
+  }
+
+  // Get request details with complete information
+  static async getRequestDetails(requestId, clientId = null) {
+    try {
+      const DocumentRequest = require('../models/DocumentRequest');
+      const request = await DocumentRequest.getRequestDetails(requestId, clientId);
+
+      if (!request) {
+        throw new Error('Request not found');
+      }
+
+      logger.info('Request details retrieved successfully', {
+        requestId,
+        clientId,
+        hasBeneficiary: !!request.beneficiary,
+        hasAuthorizedPickup: !!request.authorized_pickup
+      });
+
+      return {
+        success: true,
+        data: request,
+        message: 'Request details retrieved successfully'
+      };
+    } catch (error) {
+      logger.error('Error retrieving request details', {
+        error: error.message,
+        requestId,
+        clientId
+      });
+      throw error;
+    }
+  }
 }
 
 module.exports = DocumentRequestService;

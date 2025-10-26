@@ -116,10 +116,12 @@ pnpm-debug.log*
 
 # Environment variables
 .env
+.env.*
 .env.local
 .env.development.local
 .env.test.local
 .env.production.local
+.env.production
 
 # Editor directories and files
 .idea
@@ -183,10 +185,14 @@ uploads/**/*.tmp
 uploads/**/*.temp
 
 # Test files
+test_*.js
 test-*.js
+debug_*.js
 debug-*.js
+check_*.js
 check-*.js
 *-test.js
+*_test.js
 
 # Backup and temporary scripts
 *_backup.js

@@ -41,6 +41,17 @@ class Receipt {
   }
 
   /**
+   * Find receipt by request ID
+   * @param {number} requestId - Document request ID
+   * @returns {Receipt|null} Receipt instance or null
+   */
+  static async findByRequestId(requestId) {
+    const query = 'SELECT * FROM receipts WHERE request_id = ? ORDER BY created_at DESC LIMIT 1';
+    const results = await executeQuery(query, [requestId]);
+    return results.length > 0 ? new Receipt(results[0]) : null;
+  }
+
+  /**
    * Get receipts for a client with pagination
    * @param {number} clientId - Client ID
    * @param {Object} options - Query options

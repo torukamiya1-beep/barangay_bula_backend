@@ -260,6 +260,48 @@ class ReceiptController {
   }
 
   /**
+   * Admin: Get receipt by request ID
+   * @route GET /api/admin/receipts/:requestId
+   * @access Private (Admin only)
+   */
+  async getReceiptByRequestId(req, res) {
+    try {
+      const { requestId } = req.params;
+
+      // Validate request ID
+      if (!requestId || isNaN(parseInt(requestId))) {
+        return ApiResponse.error(res, 'Invalid request ID', 400);
+      }
+
+      // Get receipt by request ID
+      const receipt = await Receipt.findByRequestId(parseInt(requestId));
+
+      if (!receipt) {
+        return ApiResponse.error(res, 'Receipt not found for this request', 404);
+      }
+
+      // Get complete receipt information
+      const completeReceipt = await Receipt.getCompleteReceipt(receipt.id);
+
+      logger.info('Admin retrieved receipt by request ID', {
+        requestId,
+        receiptId: receipt.id,
+        adminId: req.user?.id
+      });
+
+      return ApiResponse.success(res, completeReceipt, 'Receipt retrieved successfully');
+    } catch (error) {
+      logger.error('Failed to get receipt by request ID (admin)', {
+        requestId: req.params.requestId,
+        adminId: req.user?.id,
+        error: error.message,
+        stack: error.stack
+      });
+      return ApiResponse.error(res, 'Failed to retrieve receipt', 500);
+    }
+  }
+
+  /**
    * Validation middleware for receipt queries
    */
   static receiptQueryValidation() {

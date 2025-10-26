@@ -176,8 +176,17 @@ class DocumentRequestController {
         filters.limit = 50;
       }
 
+      console.log('🔄 Controller: Getting client requests for client:', clientId);
+      console.log('📋 Filters:', filters);
+
       const result = await DocumentRequestService.getClientRequests(clientId, filters);
-      
+
+      console.log('✅ Controller: Client requests retrieved successfully:', {
+        clientId,
+        requestCount: result.data.length,
+        pagination: result.pagination
+      });
+
       return ApiResponse.success(res, {
         requests: result.data,
         pagination: result.pagination

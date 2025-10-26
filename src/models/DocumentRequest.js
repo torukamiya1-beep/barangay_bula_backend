@@ -289,7 +289,14 @@ class DocumentRequest {
         pm.method_code as payment_method_code,
         pm.is_online as is_online_payment,
         dr.payment_method_id,
-        dr.total_document_fee as total_fee
+        dr.total_document_fee as total_fee,
+        dr.gcash_verification_status,
+        dr.gcash_proof_name,
+        dr.gcash_proof_path,
+        dr.gcash_reference_number,
+        dr.gcash_rejection_reason,
+        dr.gcash_verified_by,
+        dr.gcash_verified_at
       FROM document_requests dr
       JOIN document_types dt ON dr.document_type_id = dt.id
       JOIN purpose_categories pc ON dr.purpose_category_id = pc.id

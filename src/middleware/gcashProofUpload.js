@@ -74,12 +74,16 @@ const createGCashProofUpload = () => {
 // Middleware for handling GCash payment proof upload
 const uploadGCashProof = (req, res, next) => {
   try {
+    console.log('🔧 GCash proof upload middleware started');
+    console.log('  Content-Type:', req.headers['content-type']);
+    console.log('  Request ID:', req.params.requestId);
+    
     const upload = createGCashProofUpload();
     const uploadMiddleware = upload.single('payment_proof');
     
     uploadMiddleware(req, res, (err) => {
       if (err instanceof multer.MulterError) {
-        console.error('Multer error during GCash proof upload:', err);
+        console.error('❌ Multer error during GCash proof upload:', err);
         if (err.code === 'LIMIT_FILE_SIZE') {
           return res.status(400).json({
             success: false,
@@ -100,7 +104,7 @@ const uploadGCashProof = (req, res, next) => {
           code: 'UPLOAD_ERROR'
         });
       } else if (err) {
-        console.error('Error during GCash proof upload:', err);
+        console.error('❌ Error during GCash proof upload:', err);
         return res.status(400).json({
           success: false,
           error: err.message,
@@ -110,6 +114,9 @@ const uploadGCashProof = (req, res, next) => {
 
       // Validate that file was uploaded
       if (!req.file) {
+        console.error('❌ No file received by multer');
+        console.log('  Body:', req.body);
+        console.log('  Files:', req.files);
         return res.status(400).json({
           success: false,
           error: 'No payment proof file uploaded',
@@ -117,10 +124,11 @@ const uploadGCashProof = (req, res, next) => {
         });
       }
 
+      console.log('✅ File uploaded successfully:', req.file.filename);
       next();
     });
   } catch (error) {
-    console.error('Error creating GCash proof upload middleware:', error);
+    console.error('❌ Error creating GCash proof upload middleware:', error);
     return res.status(500).json({
       success: false,
       error: 'Failed to setup file upload middleware',

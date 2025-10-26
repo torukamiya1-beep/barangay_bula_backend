@@ -13,17 +13,35 @@ const { cleanupGCashProof } = require('../middleware/gcashProofUpload');
  */
 exports.uploadPaymentProof = async (req, res) => {
   try {
+    console.log('📤 Upload payment proof request received');
+    console.log('  Request ID:', req.params.requestId);
+    console.log('  User:', req.user ? req.user.id : 'NO USER');
+    console.log('  File:', req.file ? req.file.filename : 'NO FILE');
+    console.log('  Body:', req.body);
+
     const requestId = parseInt(req.params.requestId);
-    const clientId = req.user.id; // From authentication middleware
+    
+    // Check if user is authenticated
+    if (!req.user || !req.user.id) {
+      console.error('❌ No authenticated user found');
+      return res.status(401).json({
+        success: false,
+        error: 'Authentication required'
+      });
+    }
+    
+    const clientId = req.user.id;
     const referenceNumber = req.body.reference_number || null;
 
     if (!req.file) {
+      console.error('❌ No file uploaded');
       return res.status(400).json({
         success: false,
         error: 'No payment proof file uploaded'
       });
     }
 
+    console.log('✅ Calling gcashPaymentService.uploadPaymentProof');
     const result = await gcashPaymentService.uploadPaymentProof(
       requestId,
       req.file,
@@ -31,8 +49,10 @@ exports.uploadPaymentProof = async (req, res) => {
       referenceNumber
     );
 
+    console.log('✅ Upload successful:', result);
     res.json(result);
   } catch (error) {
+    console.error('❌ Error in uploadPaymentProof controller:', error);
     logger.error('Error in uploadPaymentProof controller:', error);
     
     // Clean up uploaded file if error occurs

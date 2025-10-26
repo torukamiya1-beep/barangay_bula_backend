@@ -291,9 +291,10 @@ class ReceiptController {
               dr.request_number,
               dr.total_document_fee,
               dr.payment_status,
-              dr.gcash_verified_at as payment_date,
+              dr.gcash_verified_at,
               dr.gcash_reference_number,
               dr.requested_at,
+              dr.paid_at,
               ca.id as client_id,
               cp.first_name,
               cp.last_name,
@@ -344,7 +345,8 @@ class ReceiptController {
             payment_method_code: request.payment_method_code || 'gcash_manual',
             payment_reference: request.gcash_reference_number || 'N/A',
             payment_status: request.payment_status || 'pending',
-            payment_date: request.payment_date || request.requested_at,
+            payment_date: request.gcash_verified_at || request.paid_at || request.requested_at,
+            receipt_date: request.gcash_verified_at || request.paid_at || request.requested_at,
             created_at: request.requested_at,
             is_generated: true // Flag to indicate this is generated, not from receipts table
           };

@@ -151,6 +151,7 @@ class GCashPaymentService {
           gcash_verified_by = ?,
           gcash_verified_at = CURRENT_TIMESTAMP,
           payment_status = 'paid',
+          paid_at = CURRENT_TIMESTAMP,
           status_id = ?,
           updated_at = CURRENT_TIMESTAMP
         WHERE id = ?

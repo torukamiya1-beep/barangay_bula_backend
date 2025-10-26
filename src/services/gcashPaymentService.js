@@ -535,6 +535,7 @@ class GCashPaymentService {
       const receiptNumber = Receipt.generateReceiptNumber(transactionId);
 
       // Create receipt
+      const now = new Date().toISOString().slice(0, 19).replace('T', ' ');
       const receiptData = {
         transaction_id: transactionId,
         client_id: request.client_id,
@@ -554,8 +555,8 @@ class GCashPaymentService {
         external_transaction_id: request.gcash_reference_number || null,
         paymongo_payment_intent_id: null,
         payment_status: 'succeeded',
-        receipt_date: new Date(),
-        payment_date: new Date(),
+        receipt_date: now,
+        payment_date: now,
         description: `GCash manual payment for ${request.document_type}`,
         notes: 'Payment verified by admin'
       };

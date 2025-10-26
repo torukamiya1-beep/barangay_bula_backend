@@ -282,10 +282,10 @@ class ReceiptController {
         logger.info('No receipt found, generating from request data', { requestId });
         
         try {
-          const db = require('../config/database');
+          const { pool } = require('../config/database');
           console.log('🔍 Querying document_requests for ID:', requestId);
           
-          const [requests] = await db.query(`
+          const [requests] = await pool.query(`
             SELECT 
               dr.id,
               dr.request_number,

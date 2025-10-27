@@ -421,7 +421,7 @@ class GCashPaymentService {
           dr.total_document_fee,
           COALESCE(cp.first_name, '') as first_name,
           COALESCE(cp.last_name, '') as last_name,
-          COALESCE(cp.email, ca.email, '') as email,
+          COALESCE(cp.email, '') as email,
           COALESCE(cp.phone_number, '') as phone_number,
           dt.type_name as document_type
         FROM document_requests dr
@@ -480,7 +480,7 @@ class GCashPaymentService {
         dr.total_document_fee,
         COALESCE(cp.first_name, '') as first_name,
         COALESCE(cp.last_name, '') as last_name,
-        COALESCE(cp.email, ca.email, '') as email,
+        COALESCE(cp.email, '') as email,
         COALESCE(cp.phone_number, '') as phone_number,
         dt.type_name as document_type,
         pm.method_name as payment_method,

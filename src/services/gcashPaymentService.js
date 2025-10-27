@@ -419,13 +419,14 @@ class GCashPaymentService {
           dr.gcash_proof_uploaded_at,
           dr.gcash_reference_number,
           dr.total_document_fee,
-          ca.first_name,
-          ca.last_name,
-          ca.email,
-          ca.phone_number,
+          COALESCE(cp.first_name, '') as first_name,
+          COALESCE(cp.last_name, '') as last_name,
+          COALESCE(cp.email, ca.email, '') as email,
+          COALESCE(cp.phone_number, '') as phone_number,
           dt.type_name as document_type
         FROM document_requests dr
         JOIN client_accounts ca ON dr.client_id = ca.id
+        LEFT JOIN client_profiles cp ON ca.id = cp.account_id
         JOIN document_types dt ON dr.document_type_id = dt.id
         WHERE dr.gcash_verification_status = 'pending'
           AND dr.gcash_proof_name IS NOT NULL
@@ -477,10 +478,10 @@ class GCashPaymentService {
         dr.gcash_verified_at,
         dr.gcash_reference_number,
         dr.total_document_fee,
-        COALESCE(cp.first_name, ca.first_name, '') as first_name,
-        COALESCE(cp.last_name, ca.last_name, '') as last_name,
+        COALESCE(cp.first_name, '') as first_name,
+        COALESCE(cp.last_name, '') as last_name,
         COALESCE(cp.email, ca.email, '') as email,
-        COALESCE(cp.phone_number, ca.phone_number, '') as phone_number,
+        COALESCE(cp.phone_number, '') as phone_number,
         dt.type_name as document_type,
         pm.method_name as payment_method,
         pm.method_code as payment_method_code

@@ -516,6 +516,13 @@ class GCashPaymentService {
         lastName: request.last_name,
         email: request.email
       });
+      
+      console.log('🔍 RECEIPT GENERATION - Request data:', {
+        requestId,
+        clientId: request.client_id,
+        clientName: `${request.first_name} ${request.last_name}`,
+        email: request.email
+      });
 
       // Check if receipt already exists
       const existingReceiptQuery = 'SELECT * FROM receipts WHERE request_id = ?';
@@ -578,10 +585,19 @@ class GCashPaymentService {
       logger.info('Creating receipt with data', { requestId, receiptData });
       const receipt = await Receipt.create(receiptData);
 
+      console.log('✅ RECEIPT CREATED SUCCESSFULLY:', {
+        receiptId: receipt.id,
+        receiptNumber: receipt.receipt_number,
+        clientId: receipt.client_id,
+        requestId: receipt.request_id,
+        clientName: receipt.client_name
+      });
+
       logger.info('Receipt generated for GCash payment', {
         requestId,
         receiptId: receipt.id,
-        receiptNumber
+        receiptNumber,
+        clientId: receipt.client_id
       });
 
       return receipt;

@@ -25,6 +25,13 @@ class ReceiptController {
         sortOrder = 'DESC'
       } = req.query;
 
+      console.log('📥 CLIENT RECEIPTS REQUEST:', {
+        clientId,
+        userEmail: req.user.email,
+        page,
+        limit
+      });
+
       // Validate pagination parameters
       const pageNum = Math.max(1, parseInt(page));
       const limitNum = Math.min(50, Math.max(1, parseInt(limit))); // Max 50 per page
@@ -45,6 +52,18 @@ class ReceiptController {
       };
 
       const result = await Receipt.getClientReceipts(clientId, options);
+
+      console.log('📤 CLIENT RECEIPTS RESPONSE:', {
+        clientId,
+        totalReceipts: result.pagination.total,
+        receiptsReturned: result.receipts.length,
+        receipts: result.receipts.map(r => ({
+          id: r.id,
+          receipt_number: r.receipt_number,
+          client_id: r.client_id,
+          amount: r.amount
+        }))
+      });
 
       logger.info('Client receipts retrieved', {
         clientId,

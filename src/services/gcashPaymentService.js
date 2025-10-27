@@ -477,10 +477,10 @@ class GCashPaymentService {
         dr.gcash_verified_at,
         dr.gcash_reference_number,
         dr.total_document_fee,
-        cp.first_name,
-        cp.last_name,
-        cp.email,
-        cp.phone_number,
+        COALESCE(cp.first_name, ca.first_name, '') as first_name,
+        COALESCE(cp.last_name, ca.last_name, '') as last_name,
+        COALESCE(cp.email, ca.email, '') as email,
+        COALESCE(cp.phone_number, ca.phone_number, '') as phone_number,
         dt.type_name as document_type,
         pm.method_name as payment_method,
         pm.method_code as payment_method_code
@@ -501,10 +501,20 @@ class GCashPaymentService {
    */
   async generateReceipt(requestId) {
     try {
+      logger.info('Starting receipt generation', { requestId });
+      
       const request = await this.getRequestById(requestId);
       if (!request) {
         throw new Error('Request not found');
       }
+
+      logger.info('Request data retrieved', { 
+        requestId, 
+        clientId: request.client_id,
+        firstName: request.first_name,
+        lastName: request.last_name,
+        email: request.email
+      });
 
       // Check if receipt already exists
       const existingReceiptQuery = 'SELECT * FROM receipts WHERE request_id = ?';
@@ -516,6 +526,7 @@ class GCashPaymentService {
       }
 
       // Create transaction record for GCash payment
+      logger.info('Creating payment transaction', { requestId });
       const transactionQuery = `
         INSERT INTO payment_transactions (
           request_id, payment_method_id, amount, status,
@@ -530,9 +541,11 @@ class GCashPaymentService {
       ]);
 
       const transactionId = transactionResult.insertId;
+      logger.info('Payment transaction created', { requestId, transactionId });
 
       // Generate receipt number
       const receiptNumber = Receipt.generateReceiptNumber(transactionId);
+      logger.info('Receipt number generated', { requestId, receiptNumber });
 
       // Create receipt
       const now = new Date().toISOString().slice(0, 19).replace('T', ' ');
@@ -541,9 +554,9 @@ class GCashPaymentService {
         client_id: request.client_id,
         request_id: requestId,
         receipt_number: receiptNumber,
-        client_name: `${request.first_name} ${request.last_name}`,
-        client_email: request.email,
-        client_phone: request.phone_number,
+        client_name: `${request.first_name || ''} ${request.last_name || ''}`.trim() || 'Unknown',
+        client_email: request.email || '',
+        client_phone: request.phone_number || '',
         request_number: request.request_number,
         document_type: request.document_type,
         payment_method: 'GCash Manual Upload',
@@ -561,6 +574,7 @@ class GCashPaymentService {
         notes: 'Payment verified by admin'
       };
 
+      logger.info('Creating receipt with data', { requestId, receiptData });
       const receipt = await Receipt.create(receiptData);
 
       logger.info('Receipt generated for GCash payment', {
@@ -571,7 +585,11 @@ class GCashPaymentService {
 
       return receipt;
     } catch (error) {
-      logger.error('Error generating receipt for GCash payment:', error);
+      logger.error('Error generating receipt for GCash payment:', {
+        requestId,
+        error: error.message,
+        stack: error.stack
+      });
       throw error;
     }
   }

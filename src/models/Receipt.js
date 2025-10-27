@@ -69,44 +69,94 @@ class Receipt {
     } = options;
 
     const offset = (page - 1) * limit;
-    let whereConditions = ['client_id = ?'];
-    let queryParams = [clientId];
-
-    // Add status filter
-    if (status) {
-      whereConditions.push('payment_status = ?');
-      queryParams.push(status);
-    }
-
-    // Add date range filter
-    if (startDate) {
-      whereConditions.push('receipt_date >= ?');
-      queryParams.push(startDate);
-    }
-
-    if (endDate) {
-      whereConditions.push('receipt_date <= ?');
-      queryParams.push(endDate);
-    }
-
-    const whereClause = whereConditions.join(' AND ');
-    const orderClause = `ORDER BY ${sortBy} ${sortOrder}`;
-
-    // Get receipts
-    const receiptsQuery = `
-      SELECT * FROM receipts 
-      WHERE ${whereClause} 
-      ${orderClause}
+    
+    // SOLUTION: Query both receipts table AND generate from document_requests
+    // This matches what the admin endpoint does
+    const combinedQuery = `
+      SELECT 
+        r.id,
+        r.receipt_number,
+        r.transaction_id,
+        r.client_id,
+        r.request_id,
+        r.client_name,
+        r.client_email,
+        r.client_phone,
+        r.request_number,
+        r.document_type,
+        r.payment_method,
+        r.payment_method_code,
+        r.amount,
+        r.processing_fee,
+        r.net_amount,
+        r.currency,
+        r.external_transaction_id,
+        r.paymongo_payment_intent_id,
+        r.payment_status,
+        r.receipt_date,
+        r.payment_date,
+        r.description,
+        r.notes,
+        r.created_at,
+        r.updated_at,
+        'receipts' as source
+      FROM receipts r
+      WHERE r.client_id = ?
+      
+      UNION ALL
+      
+      SELECT 
+        NULL as id,
+        CONCAT('GCASH-', dr.request_number) as receipt_number,
+        NULL as transaction_id,
+        dr.client_id,
+        dr.id as request_id,
+        CONCAT(COALESCE(cp.first_name, ''), ' ', COALESCE(cp.last_name, '')) as client_name,
+        COALESCE(cp.email, '') as client_email,
+        COALESCE(cp.phone_number, '') as client_phone,
+        dr.request_number,
+        dt.type_name as document_type,
+        COALESCE(pm.method_name, 'GCash Manual') as payment_method,
+        COALESCE(pm.method_code, 'gcash_manual') as payment_method_code,
+        dr.total_document_fee as amount,
+        0 as processing_fee,
+        dr.total_document_fee as net_amount,
+        'PHP' as currency,
+        dr.gcash_reference_number as external_transaction_id,
+        NULL as paymongo_payment_intent_id,
+        dr.payment_status,
+        COALESCE(dr.gcash_verified_at, dr.paid_at, dr.requested_at) as receipt_date,
+        COALESCE(dr.gcash_verified_at, dr.paid_at, dr.requested_at) as payment_date,
+        CONCAT('GCash manual payment for ', dt.type_name) as description,
+        'Payment verified by admin' as notes,
+        dr.requested_at as created_at,
+        dr.updated_at,
+        'generated' as source
+      FROM document_requests dr
+      LEFT JOIN client_profiles cp ON dr.client_id = cp.account_id
+      LEFT JOIN document_types dt ON dr.document_type_id = dt.id
+      LEFT JOIN payment_methods pm ON dr.payment_method_id = pm.id
+      WHERE dr.client_id = ?
+        AND dr.payment_status = 'paid'
+        AND NOT EXISTS (SELECT 1 FROM receipts r WHERE r.request_id = dr.id)
+      
+      ORDER BY receipt_date DESC
       LIMIT ? OFFSET ?
     `;
-    queryParams.push(limit, offset);
 
-    const receipts = await executeQuery(receiptsQuery, queryParams);
+    const receipts = await executeQuery(combinedQuery, [clientId, clientId, limit, offset]);
 
-    // Get total count
-    const countQuery = `SELECT COUNT(*) as total FROM receipts WHERE ${whereClause}`;
-    const countParams = queryParams.slice(0, -2); // Remove limit and offset
-    const countResult = await executeQuery(countQuery, countParams);
+    // Get total count (both sources)
+    const countQuery = `
+      SELECT 
+        (SELECT COUNT(*) FROM receipts WHERE client_id = ?) +
+        (SELECT COUNT(*) FROM document_requests dr 
+         WHERE dr.client_id = ? 
+           AND dr.payment_status = 'paid'
+           AND NOT EXISTS (SELECT 1 FROM receipts r WHERE r.request_id = dr.id))
+        as total
+    `;
+    const countResult = await executeQuery(countQuery, [clientId, clientId]);
     const total = countResult[0].total;
 
     return {

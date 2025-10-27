@@ -271,6 +271,77 @@ router.get('/notifications', protect, authorize('admin'), async (req, res) => {
 });
 
 /**
+ * @route   GET /api/diagnostic/receipts
+ * @desc    Check receipts table and their relationships
+ * @access  Private (Admin only)
+ */
+router.get('/receipts', protect, authorize('admin'), async (req, res) => {
+  try {
+    // Get recent receipts
+    const receiptsQuery = `
+      SELECT id, receipt_number, client_id, request_id, client_name, 
+             amount, payment_status, created_at 
+      FROM receipts 
+      ORDER BY created_at DESC 
+      LIMIT 10
+    `;
+    const receipts = await executeQuery(receiptsQuery);
+
+    // Get recent paid requests
+    const requestsQuery = `
+      SELECT dr.id, dr.request_number, dr.client_id, dr.payment_status, 
+             dr.gcash_verification_status, dr.paid_at,
+             cp.first_name, cp.last_name, cp.email
+      FROM document_requests dr
+      LEFT JOIN client_profiles cp ON dr.client_id = cp.account_id
+      WHERE dr.payment_status = 'paid'
+      ORDER BY dr.id DESC
+      LIMIT 10
+    `;
+    const paidRequests = await executeQuery(requestsQuery);
+
+    // Check for requests with no receipts
+    const orphanedQuery = `
+      SELECT dr.id, dr.request_number, dr.client_id, dr.payment_status
+      FROM document_requests dr
+      WHERE dr.payment_status = 'paid'
+        AND NOT EXISTS (SELECT 1 FROM receipts r WHERE r.request_id = dr.id)
+      ORDER BY dr.id DESC
+      LIMIT 10
+    `;
+    const orphanedRequests = await executeQuery(orphanedQuery);
+
+    res.json({
+      success: true,
+      message: 'Receipts diagnostic completed',
+      data: {
+        receipts: {
+          count: receipts.length,
+          data: receipts
+        },
+        paidRequests: {
+          count: paidRequests.length,
+          data: paidRequests
+        },
+        orphanedRequests: {
+          count: orphanedRequests.length,
+          data: orphanedRequests,
+          note: 'These are paid requests without receipts'
+        }
+      },
+      timestamp: new Date().toISOString()
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: 'Failed to check receipts',
+      error: error.message,
+      timestamp: new Date().toISOString()
+    });
+  }
+});
+
+/**
  * @route   POST /api/diagnostic/test-email
  * @desc    Send a test email to verify Railway email configuration
  * @access  Private (Admin only)
